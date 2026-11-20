@@ -862,6 +862,11 @@ body:has(.pointage){background:#36402f url(data:image/jpeg;base64,/9j/4AAQSkZJRg
 .arf-tag b{font-family:var(--f-type);font-weight:400;font-size:clamp(18px,2.2cqw,26px);line-height:1.1}
 .arf-tag i{font-family:var(--f-sig);font-style:normal;font-size:clamp(16px,1.8cqw,22px);color:#1d2a52}
 .dlg .arf-r .arch-photo{float:none;width:72%;margin:.6cqw 0 0!important;transform:rotate(2.4deg)}
+.dlg .arf-r .arch-photo .fix{display:none}
+.dlg .arf-r .arch-photo::before,.dlg .arf-r .arch-photo::after{content:"";position:absolute;width:26px;height:26px;background:#1f1d1a;opacity:.88;z-index:2}
+.dlg .arf-r .arch-photo::before{left:-5px;top:-5px;clip-path:polygon(0 0,100% 0,0 100%)}
+.dlg .arf-r .arch-photo::after{right:-5px;bottom:-5px;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.dlg .arf-r .arch-photo{box-shadow:0 1px 2px rgba(0,0,0,.35),0 4px 8px rgba(0,0,0,.2)}
 .arf-nophoto{width:60%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;text-align:center;border:2px dashed rgba(42,29,12,.4);font-family:var(--f-sig);font-size:18px;color:rgba(42,29,12,.6)}
 .arf-lv{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#3a3226}
 .arf-pips{display:flex;gap:5px}
