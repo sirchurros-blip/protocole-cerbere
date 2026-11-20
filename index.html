@@ -906,7 +906,7 @@ body:has(.pointage){background:#36402f url(data:image/jpeg;base64,/9j/4AAQSkZJRg
 .pcols .pimg{background:linear-gradient(135deg,rgba(27,26,23,.55),rgba(27,26,23,.25) 60%,rgba(27,26,23,.5)),repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 1px,transparent 1px 3px);border:1px solid #1b1a17;opacity:.8}
 .desk-top .pbar{height:7px}
 .hd-left .plaque{padding:14px 20px}
-.hd-left .plaque h1{font-size:clamp(22px,2.3vw,32px);white-space:nowrap}
+.hd-left .plaque h1{font-size:clamp(20px,2vw,28px);white-space:nowrap}
 .hd-left .plaque .sub{font-size:13px}
 .hd-left .telex-paper{font-size:15px;padding:12px 22px;gap:6px}
 .hd-left .tx-line.last{font-size:13px}
@@ -929,9 +929,19 @@ body:has(.pointage){background:#36402f url(data:image/jpeg;base64,/9j/4AAQSkZJRg
 .eph-of{font-family:var(--f-news);font-style:italic;font-size:13px;color:#5a5245}
 .eph-day{margin-top:4px;padding-top:3px;border-top:1px solid rgba(28,26,22,.35);font-family:var(--f-display);font-weight:600;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#5a5245}
 .ephem.ring .eph-n::after{content:"";position:absolute;inset:-6px -16px -2px -16px;border:3px solid #c0281c;border-radius:50% 46% 52% 48%/55% 50% 48% 52%;transform:rotate(-8deg);opacity:.85}
-.eph-post{position:absolute;left:-46px;top:46%;background:#f7e58a;color:#6d1d12;font-family:var(--f-sig);font-size:17px;line-height:1;padding:6px 8px;transform:rotate(-8deg);box-shadow:0 3px 5px rgba(0,0,0,.4);z-index:3;animation:ephpost 2.4s ease-in-out infinite}
-@keyframes ephpost{0%,85%,100%{transform:rotate(-8deg)}90%{transform:rotate(-12deg) translateY(-2px)}95%{transform:rotate(-5deg)}}
-@media (prefers-reduced-motion:reduce){.eph-post{animation:none}}
+
+.eph-due{font-family:var(--f-sig)!important;font-style:normal!important;font-size:18px!important;color:#c0281c!important;transform:rotate(-4deg);margin-top:2px}
+.plaque{position:relative}
+.pl-menu{margin-left:auto;flex:none;margin-right:2px;align-self:center;background:linear-gradient(180deg,#3a2a12,#22180a);color:#e8cf8e;border:0;border-radius:2px;padding:6px 12px;font-family:var(--f-display);font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 2px rgba(0,0,0,.7),0 1px 0 rgba(255,240,200,.35)}
+.plaque>div{flex:1}
+.pl-menu:hover{color:#fff1c4}
+
+.hd-left .plaque{max-width:100%;box-sizing:border-box}.hd-left .plaque>div{min-width:0}
+@media (max-width:980px){.desk-top>.hd-left{grid-column:1/-1}.desk-top>.hd-side{grid-column:auto}.desk-top{grid-template-columns:minmax(0,1fr) auto!important}.desk-top .paper{grid-column:1}.hd-left .plaque{align-self:stretch}}
+@media (max-width:560px){.hd-left .plaque h1{font-size:19px;white-space:normal}.hd-left .plaque{padding:10px 12px}.pl-menu{padding:5px 8px;font-size:11px}.desk-top .paper{grid-column:1/-1}}
+
+@media (max-width:980px){.desk-top>.hd-left{display:contents}.desk-top .plaque{grid-column:1/-1;grid-row:1}.desk-top .telex{grid-column:1;grid-row:2}.desk-top>.hd-side{grid-column:2;grid-row:2}.desk-top .paper{grid-column:1/-1!important;grid-row:3}}
+@media (max-width:560px){.ephem{width:96px}.eph-n{font-size:40px}}
 
 /* ===== Menu ===== */
 .menu-wrap{display:flex;justify-content:center;padding-block:clamp(8px,4vh,40px) 20px}
@@ -1477,8 +1487,8 @@ const JOURS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi'];
 function phoneHTML(){const u=urgentIncs();const w=Math.min(S.week,WEEKS);
   return `<button class="ephem ${u.length?'ring':''}" data-a="phone" aria-label="Éphéméride : semaine ${w}${u.length?`, ${u.length} échéance${u.length>1?'s':''} cette semaine`:''}">
     <span class="eph-rings"><i></i><i></i></span>
-    <span class="eph-page"><span class="eph-top">Semaine</span><b class="eph-n">${w}</b><span class="eph-of">sur ${WEEKS}</span><span class="eph-day">${JOURS[(w*3)%5]}</span></span>
-    ${u.length?`<span class="eph-post">${u.length>1?`${u.length} échéances !`:'Échéance !'}</span>`:''}</button>`;}
+    <span class="eph-page"><span class="eph-top">Semaine</span><b class="eph-n">${w}</b>${u.length?`<span class="eph-of eph-due">${u.length>1?`${u.length} échéances`:'échéance !'}</span>`:`<span class="eph-of">sur ${WEEKS}</span>`}<span class="eph-day">${JOURS[(w*3)%5]}</span></span>
+</button>`;}
 function phoneHTML_call(){const u=urgentIncs();
   if(!u.length)return `<div class="call"><span class="call-k">Éphéméride · semaine ${Math.min(S.week,WEEKS)}</span><h2>Rien de noté cette semaine.</h2><p class="call-line">La date est entourée de rouge lorsqu'un incident arrive à échéance.</p><div class="foot"><button class="btn primary" data-a="closemodal">Fermer</button></div></div>`;
   const lines=u.map(inc=>{const A=ANOM[inc.type];
@@ -1488,12 +1498,12 @@ function phoneHTML_call(){const u=urgentIncs();
 function header(){const h=headline();const hot=S.expo>=50;
   const date=`Semaine ${Math.min(S.week,WEEKS)}`;
   return `<header class="top desk-top">
-    <div class="hd-left"><div class="plaque"><span class="screw"></span><div><h1>Protocole <b>Cerbère</b></h1><div class="sub">Commandement régional Europe · ${esc(curProf()?curProf().name:'')} · ${dif().name}</div></div><span class="screw"></span></div>
+    <div class="hd-left"><div class="plaque"><span class="screw"></span><div><h1>Protocole <b>Cerbère</b></h1><div class="sub">Commandement régional Europe · ${esc(curProf()?curProf().name:'')} · ${dif().name}</div></div><button class="pl-menu" data-a="tomenu" aria-label="Menu principal" title="Menu principal">Menu</button><span class="screw"></span></div>
     <div class="telex" aria-label="Ressources"><div class="telex-paper"><div class="tx-line"><span>SEM ${String(Math.min(S.week,WEEKS)).padStart(2,'0')}/${WEEKS}</span><span>CRÉDITS <b>${S.credits}</b></span><span>RECHERCHE <b>${S.rp}</b> PTS</span><span>MATÉRIEL <b>${S.mat}</b></span></div>
       <div class="tx-line last">${S.telex?esc(S.telex):'TRANSMISSION O5 ÉTABLIE · EN ATTENTE DE RAPPORT'}<i class="caret"></i></div></div></div></div>
     <div class="paper ${hot?'hot':''}" title="Exposition ${S.expo}/${EXPO_MAX}"><div class="mast">Le Courrier du Soir</div><div class="pdate"><span>${date}</span><span>Exposition ${S.expo}/${EXPO_MAX}</span></div>
       <div class="ph1">${h[1]}</div><div class="psub">${h[2]}</div><div class="pcols" aria-hidden="true"><span class="pimg"></span><span></span><span></span></div><div class="pbar"><i style="width:${S.expo}%"></i></div></div>
-    <div class="hd-side"><button class="btn brass" data-a="tomenu">Menu</button>${phoneHTML()}</div>
+    <div class="hd-side">${phoneHTML()}</div>
   </header>
   <div class="blotter"><nav class="folders">${[['net','Réseau'],['wing','Base'],['lab','Recherche'],['shop','Atelier'],['staff','Personnel'],['recruit','Recrutement']].map(([k,l])=>`<button class="folder ${X.tab===k?'on':''}" data-a="tab" data-v="${k}">${l}</button>`).join('')}
     <span class="spacer"></span><button class="stampbtn" data-a="endweek" ${S.over||X.stamping?'disabled':''} aria-label="Clore la semaine"><span class="st-handle"></span><span class="st-base">Clore la semaine</span></button></nav>`;
