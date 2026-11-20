@@ -5,6 +5,6 @@ Installable comme application (Windows, Android, iPhone) et jouable hors ligne.
 
 - `index.html` : le jeu complet
 - `manifest.webmanifest`, `sw.js`, `icons/` : installation et mode hors ligne
-- `netlify.toml` : publication sur Netlify (aucun build)
+- publié avec GitHub Pages (aucun build)
 
 Voir `LISEZMOI.txt` pour l'installation.
