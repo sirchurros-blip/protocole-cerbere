@@ -975,6 +975,57 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .board .u-barr{background:repeating-linear-gradient(-45deg,#8a7e63 0 7px,#5e5644 7px 14px);color:#f1e7cc}
 .board .unit.sel{outline:3px solid #d99a1e}
 
+
+/* ===== Combat : instruments, porte-bloc, télex, éventail ===== */
+.cgrid .card.status{background:linear-gradient(180deg,#3a3f3a,#262a26);border:2px solid #15171a;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -2px 0 rgba(0,0,0,.4),0 10px 20px rgba(0,0,0,.6);position:relative}
+.cgrid .card.status::before,.cgrid .card.status::after{content:"";position:absolute;top:8px;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#d6d9dc,#6f747a 70%)}
+.cgrid .card.status::before{left:8px}.cgrid .card.status::after{right:8px}
+.status .gauges{gap:14px}
+.status .g{background:#1b1e1b;border:1px solid #0d0f0d;border-radius:4px;padding:8px 10px 6px;box-shadow:inset 0 2px 6px rgba(0,0,0,.6)}
+.status .g .track{display:none}
+.status .g label{color:#c9c2a8}
+.i-dial{display:block;width:100%;max-width:170px;margin:4px auto 0;height:auto}
+.i-dial .arc{fill:none;stroke:#e9e2c8;stroke-width:3}
+.i-dial .arc.hi{stroke:#4fa3b3}
+.i-dial .tk path{stroke:#e9e2c8;stroke-width:1.6}
+.i-dial .ndl{stroke:#e0624f;stroke-width:2.6;stroke-linecap:round}
+.i-dial .hub{fill:#c9a55b;stroke:#3a2a12;stroke-width:1}
+.i-thermo{position:relative;display:flex;align-items:center;margin:16px 4px 14px 2px}
+.i-thermo .bulb{width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8b78,#c0281c 55%,#6d1d12);border:2px solid #e9e2c8;flex:none;z-index:1}
+.i-thermo .tube{position:relative;flex:1;height:12px;margin-left:-4px;border:2px solid #e9e2c8;border-left:0;border-radius:0 8px 8px 0;background:#101210;overflow:visible}
+.i-thermo .tube i{position:absolute;left:0;top:1px;bottom:1px;background:linear-gradient(180deg,#ff6b55,#b51f12);border-radius:0 4px 4px 0;transition:width .5s}
+.i-thermo .tube b{position:absolute;top:-8px;width:1px;height:5px;background:#e9e2c8}
+.i-scope{display:block;width:100%;height:58px;margin-top:6px;background:radial-gradient(ellipse at center,#0f2a1c,#061409);border-radius:6px;border:3px solid #111;box-shadow:inset 0 0 12px rgba(0,0,0,.8)}
+.i-scope .grid{stroke:rgba(110,220,150,.18);stroke-width:.6;fill:none}
+.i-scope .wave{fill:none;stroke:#7dffaa;stroke-width:1.6;filter:drop-shadow(0 0 2px #46ff8a)}
+.status .pips i{width:16px;height:16px;border-radius:50%;border:1.5px solid #8a6a2a;background:#2a2418}
+.status .pips i.on{background:radial-gradient(circle at 35% 30%,#ffe7a3,#c9a55b 50%,#8a6a2a);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.status .btn.primary.big{background:linear-gradient(180deg,#d8402e,#9b1f12);color:#fff3e6;border:3px solid #2a2a26;border-radius:6px;box-shadow:inset 0 2px 0 rgba(255,255,255,.3),inset 0 -3px 0 rgba(0,0,0,.35),0 4px 0 #111,0 6px 10px rgba(0,0,0,.6);letter-spacing:.14em;text-transform:uppercase}
+.status .btn.primary.big:active:not(:disabled){transform:translateY(3px);box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 1px 0 #111}
+.status .btn.primary.big:disabled{background:linear-gradient(180deg,#6d5a52,#4a3c36);color:#bfb2a6}
+/* dossier sur porte-bloc */
+.cgrid .side .dossier{position:relative;background:#f4efe1;border-radius:2px;margin-top:22px;box-shadow:0 0 0 10px #7a5a36,0 0 0 11px #4a3418,0 12px 20px rgba(0,0,0,.6);background-image:linear-gradient(transparent 0 18px,rgba(178,58,43,.4) 18px 19px,transparent 19px)}
+.cgrid .side .dossier::before{content:"";position:absolute;left:50%;top:-30px;width:120px;height:30px;margin-left:-60px;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#d9dde0,#8a9095 55%,#b9bec2);box-shadow:0 2px 3px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.6)}
+.cgrid .side .dossier::after{content:"";position:absolute;left:50%;top:-22px;width:30px;height:12px;margin-left:-15px;border-radius:6px;background:#4a4f54;box-shadow:inset 0 2px 2px rgba(0,0,0,.5)}
+.cgrid .side{gap:20px}
+/* objectifs sur fiche */
+.cgrid .card.obj{background:#ece3c6;background-image:repeating-linear-gradient(transparent 0 19px,rgba(84,124,186,.25) 19px 20px);border:0;color:#2a2116;transform:rotate(-.8deg);box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.cgrid .card.obj .eyebrow{color:#8f2519}
+.cgrid .card.obj .ok{color:#2f6b3a}.cgrid .card.obj .ko{color:#8f2519}.cgrid .card.obj .wait{color:#1d2a52}
+.cgrid .card.obj .btn{background:#2a2116;color:#f1e6cf;border-color:#2a2116}
+/* journal en télex */
+.cgrid .card.log{background:#f2eedf;background-image:radial-gradient(circle at 7px 12px,#2a2116 2.5px,transparent 3px),radial-gradient(circle at calc(100% - 7px) 12px,#2a2116 2.5px,transparent 3px);background-size:100% 18px;background-repeat:repeat-y;border:0;color:#1f1d19;font-family:"Courier New",ui-monospace,monospace;font-size:12px;text-transform:uppercase;letter-spacing:.02em;padding:10px 22px;transform:rotate(.6deg);box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.cgrid .card.log>div:first-child{font-weight:700}
+.cgrid .card.log .bad{color:#a3241a}.cgrid .card.log .warn{color:#8a5a12}.cgrid .card.log .good{color:#2f6b3a}.cgrid .card.log .info{color:#1f5f6e}
+/* main en éventail */
+@media (min-width:900px){
+ .handzone .hand{flex-wrap:nowrap;gap:0;padding:18px 10px 6px}
+ .handzone .hand>.c{margin:0 3px;rotate:calc(var(--fi,0) * 2.2deg);translate:0 calc(var(--fa,0) * var(--fa,0) * 2.2px);transition:rotate .2s,translate .2s;transform-origin:50% 120%}
+ .handzone .hand>.c:hover,.handzone .hand>.c.sel,.handzone .hand>.c:focus-visible{rotate:0deg;translate:0 -16px;z-index:5}
+}
+.cgrid .card.handzone{background:rgba(16,14,11,.35);border-color:transparent;box-shadow:none;backdrop-filter:none}
+.handzone .actionbar{background:rgba(16,14,11,.75);border:1px solid rgba(201,165,91,.35);border-radius:4px;padding:8px 10px}
+
 /* ===== Menu ===== */
 .menu-wrap{display:flex;justify-content:center;padding-block:clamp(8px,4vh,40px) 20px}
 .cover{position:relative;width:min(640px,100%);background:linear-gradient(160deg,#d9c48f,#c3a865);color:var(--ink);border-radius:3px 10px 10px 3px;padding:44px clamp(18px,5vw,48px) 30px;box-shadow:0 2px 0 rgba(0,0,0,.4),0 18px 40px rgba(0,0,0,.45),inset 6px 0 0 rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
@@ -2182,7 +2233,13 @@ function clickLane(i){
 function playSelected(){const c=C.hand.find(x=>x.uid===(C.sel&&C.sel.uid));if(!c)return;if(!playable(c).ok)return;const t=def(c).target;if(t==='none'||t==='opp'){resolve(c);return;}C.targeting=c.uid;render();}
 
 /* --- rendu combat --- */
-function gauge(cls,label,val,max,extra,note){return `<div class="g ${cls}"><label>${label}<b>${val}/${max}</b></label><div class="track"><i style="width:${Math.round(val/max*100)}%"></i>${extra||''}</div>${note?`<small>${note}</small>`:''}</div>`;}
+function gauge(cls,label,val,max,extra,note){const f=Math.max(0,Math.min(1,val/max));let inst='';
+  if(cls==='conf'){const a=-90+f*180;const ticks=Array.from({length:11},(_,k)=>{const r=(-90+k*18)*Math.PI/180;const l=k%5===0?10:6;return `<path d="M${50+Math.sin(r)*40} ${52-Math.cos(r)*40}L${50+Math.sin(r)*(40-l)} ${52-Math.cos(r)*(40-l)}"/>`;}).join('');
+    inst=`<svg class="i-dial" viewBox="0 0 100 60" aria-hidden="true"><path d="M10 52A40 40 0 0 1 90 52" class="arc"/><path d="M50 12A40 40 0 0 1 90 52" class="arc hi"/><g class="tk">${ticks}</g><g style="transform:rotate(${a}deg);transform-origin:50px 52px;transition:transform .5s"><path d="M50 52L50 18" class="ndl"/></g><circle cx="50" cy="52" r="4" class="hub"/></svg>`;}
+  else if(cls==='breach'){inst=`<div class="i-thermo" aria-hidden="true"><span class="bulb"></span><span class="tube"><i style="width:${f*100}%"></i>${Array.from({length:max+1},(_,k)=>`<b style="left:${k/max*100}%"></b>`).join('')}</span></div>`;}
+  else{const amp=4+f*16;let dd='M0 30';for(let x=0;x<=100;x+=2)dd+=`L${x} ${(30-Math.sin(x/100*Math.PI*6)*amp*(0.85+0.15*Math.sin(x*1.7))).toFixed(1)}`;
+    inst=`<svg class="i-scope" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 15H100M0 30H100M0 45H100M25 0V60M50 0V60M75 0V60" class="grid"/><path d="${dd}" class="wave"/></svg>`;}
+  return `<div class="g ${cls}"><label>${label}<b>${val}/${max}</b></label>${inst}<div class="track"><i style="width:${Math.round(f*100)}%"></i>${extra||''}</div>${note?`<small>${note}</small>`:''}</div>`;}
 function statusHTML(){const A=AN(),c=core();
   const phase=C.phase==='deploy'?'Placement':C.phase==='player'?'Votre tour':C.phase==='enemy'?'Tour hostile':'Opération terminée';
   return `<div class="st-top"><h1>${C.internal?'Brèche interne':'Confinement'} : <b>${A.name}</b></h1><span class="eyebrow">${esc(C.place)} · tour ${C.turn} · ${phase}</span></div>
@@ -2352,7 +2409,7 @@ function sideHTML(){const A=AN();const weak=C.conf>=CONF_MAX/2;const surv=C.p.fi
   <div class="card log" aria-live="polite">${C.log.slice(-18).reverse().map(l=>`<div class="${l.c}">› ${esc(l.t)}</div>`).join('')}</div>`;}
 function renderCombat(){
   if(!$('#cstatus'))$('#root').innerHTML=`<div class="cgrid"><div class="main"><section class="card status" id="cstatus"></section><section class="card board" id="cboard"></section><section class="card handzone"><div class="actionbar" id="cbar"></div><div class="hand" id="chand"></div></section></div><aside class="side" id="cside"></aside></div>`;
-  $('#cstatus').innerHTML=statusHTML();$('#cboard').innerHTML=boardHTML();$('#cbar').innerHTML=actionHTML();$('#chand').innerHTML=C.hand.map(cardHTML).join('');$('#cside').innerHTML=sideHTML();
+  $('#cstatus').innerHTML=statusHTML();$('#cboard').innerHTML=boardHTML();$('#cbar').innerHTML=actionHTML();$('#chand').innerHTML=C.hand.map(cardHTML).join('');{const cs=[...$('#chand').children];const n=cs.length;cs.forEach((el,i)=>{const fi=i-(n-1)/2;el.style.setProperty('--fi',fi);el.style.setProperty('--fa',Math.abs(fi));});}$('#cside').innerHTML=sideHTML();
 }
 function combatModal(){
   const A=AN();
