@@ -1,0 +1,38 @@
+PROTOCOLE CERBÈRE · VERSION INSTALLABLE
+=======================================
+
+Contenu du dossier
+  index.html             le jeu complet
+  manifest.webmanifest   la fiche d'application (nom, icônes)
+  sw.js                  permet de jouer hors ligne
+  icons/                 les icônes de l'application
+
+1. JOUER TOUT DE SUITE SUR WINDOWS (sans installation)
+   Double-cliquez sur index.html : le jeu s'ouvre dans votre navigateur.
+   Les parties sont enregistrées dans ce navigateur.
+
+2. INSTALLER COMME UNE VRAIE APPLICATION (Windows, Android, iPhone)
+   Le dossier doit d'abord être mis en ligne en HTTPS, une seule fois,
+   par exemple sur GitHub Pages ou Netlify (gratuits) : déposez-y tout
+   le contenu de ce dossier, tel quel.
+
+   Windows (Edge ou Chrome) : ouvrez l'adresse du site, puis cliquez sur
+   l'icône « Installer l'application » dans la barre d'adresse.
+   Le jeu s'ouvre alors dans sa propre fenêtre, avec une icône dans le
+   menu Démarrer.
+
+   Android (Chrome) : ouvrez l'adresse, menu ⋮ puis
+   « Installer l'application » (ou « Ajouter à l'écran d'accueil »).
+
+   iPhone / iPad (Safari) : ouvrez l'adresse, bouton Partager puis
+   « Sur l'écran d'accueil ».
+
+   Après le premier lancement en ligne, le jeu fonctionne hors ligne.
+
+3. MISES À JOUR
+   Remplacez les fichiers en ligne par la nouvelle version : les
+   applications installées la récupèrent au lancement suivant (avec
+   une connexion).
+
+Remarque : chaque version (lien Claude, fichier ouvert directement,
+application installée) garde ses propres sauvegardes.
