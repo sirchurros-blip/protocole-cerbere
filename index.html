@@ -900,6 +900,31 @@ body:has(.pointage){background:#36402f url(data:image/jpeg;base64,/9j/4AAQSkZJRg
 .call-inc{display:flex;flex-direction:column;gap:6px;padding:8px 0;border-top:1px dashed rgba(34,30,24,.4)}
 @media (max-width:980px){.hd-side{flex-direction:row}.phone{width:72px}}
 
+
+/* ===== En-tête agrandi ===== */
+.desk-top{grid-template-columns:minmax(0,1.05fr) minmax(340px,1fr) auto!important;gap:22px;align-items:center;padding-bottom:22px}
+.hd-left{display:flex;flex-direction:column;gap:14px;min-width:0}
+.hd-left .plaque{align-self:flex-start}
+.desk-top .paper{padding:12px 18px 14px;gap:5px;transform:rotate(1.2deg)}
+.desk-top .mast{font-size:clamp(28px,3vw,40px);padding-bottom:5px}
+.desk-top .pdate{font-size:11px}
+.desk-top .ph1{font-size:clamp(20px,1.9vw,26px);margin-top:4px}
+.desk-top .paper.hot .ph1{font-size:clamp(21px,2vw,28px)}
+.desk-top .psub{font-size:13px}
+.pcols{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:10px;height:62px;margin-top:4px;border-top:1px solid #1b1a17;padding-top:6px}
+.pcols span{background:repeating-linear-gradient(180deg,rgba(27,26,23,.42) 0 2px,transparent 2px 6px);opacity:.75}
+.pcols .pimg{background:linear-gradient(135deg,rgba(27,26,23,.55),rgba(27,26,23,.25) 60%,rgba(27,26,23,.5)),repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 1px,transparent 1px 3px);border:1px solid #1b1a17;opacity:.8}
+.desk-top .pbar{height:7px}
+.hd-left .plaque{padding:14px 20px}
+.hd-left .plaque h1{font-size:clamp(22px,2.3vw,32px);white-space:nowrap}
+.hd-left .plaque .sub{font-size:13px}
+.hd-left .telex-paper{font-size:15px;padding:12px 22px;gap:6px}
+.hd-left .tx-line.last{font-size:13px}
+.hd-side{gap:14px}
+.phone{width:clamp(130px,13vw,180px)}
+@media (max-width:980px){.desk-top{grid-template-columns:minmax(0,1fr) auto!important}.desk-top .paper{grid-column:1/-1;order:3}.hd-left{grid-column:1}.hd-side{grid-column:2;flex-direction:column}.phone{width:110px}}
+@media (max-width:560px){.hd-side{flex-direction:column}.phone{width:86px}.pcols{height:40px}}
+
 /* ===== Menu ===== */
 .menu-wrap{display:flex;justify-content:center;padding-block:clamp(8px,4vh,40px) 20px}
 .cover{position:relative;width:min(640px,100%);background:linear-gradient(160deg,#d9c48f,#c3a865);color:var(--ink);border-radius:3px 10px 10px 3px;padding:44px clamp(18px,5vw,48px) 30px;box-shadow:0 2px 0 rgba(0,0,0,.4),0 18px 40px rgba(0,0,0,.45),inset 6px 0 0 rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
@@ -1451,11 +1476,11 @@ function phoneHTML_call(){const u=urgentIncs();
 function header(){const h=headline();const hot=S.expo>=50;
   const date=`Semaine ${Math.min(S.week,WEEKS)}`;
   return `<header class="top desk-top">
-    <div class="plaque"><span class="screw"></span><div><h1>Protocole <b>Cerbère</b></h1><div class="sub">Commandement régional Europe · ${esc(curProf()?curProf().name:'')} · ${dif().name}</div></div><span class="screw"></span></div>
+    <div class="hd-left"><div class="plaque"><span class="screw"></span><div><h1>Protocole <b>Cerbère</b></h1><div class="sub">Commandement régional Europe · ${esc(curProf()?curProf().name:'')} · ${dif().name}</div></div><span class="screw"></span></div>
     <div class="telex" aria-label="Ressources"><div class="telex-paper"><div class="tx-line"><span>SEM ${String(Math.min(S.week,WEEKS)).padStart(2,'0')}/${WEEKS}</span><span>CRÉDITS <b>${S.credits}</b></span><span>RECHERCHE <b>${S.rp}</b> PTS</span><span>MATÉRIEL <b>${S.mat}</b></span></div>
-      <div class="tx-line last">${S.telex?esc(S.telex):'TRANSMISSION O5 ÉTABLIE · EN ATTENTE DE RAPPORT'}<i class="caret"></i></div></div></div>
+      <div class="tx-line last">${S.telex?esc(S.telex):'TRANSMISSION O5 ÉTABLIE · EN ATTENTE DE RAPPORT'}<i class="caret"></i></div></div></div></div>
     <div class="paper ${hot?'hot':''}" title="Exposition ${S.expo}/${EXPO_MAX}"><div class="mast">Le Courrier du Soir</div><div class="pdate"><span>${date}</span><span>Exposition ${S.expo}/${EXPO_MAX}</span></div>
-      <div class="ph1">${h[1]}</div><div class="psub">${h[2]}</div><div class="pbar"><i style="width:${S.expo}%"></i></div></div>
+      <div class="ph1">${h[1]}</div><div class="psub">${h[2]}</div><div class="pcols" aria-hidden="true"><span class="pimg"></span><span></span><span></span></div><div class="pbar"><i style="width:${S.expo}%"></i></div></div>
     <div class="hd-side"><button class="btn brass" data-a="tomenu">Menu</button>${phoneHTML()}</div>
   </header>
   <div class="blotter"><nav class="folders">${[['net','Réseau'],['wing','Base'],['lab','Recherche'],['shop','Atelier'],['staff','Personnel'],['recruit','Recrutement']].map(([k,l])=>`<button class="folder ${X.tab===k?'on':''}" data-a="tab" data-v="${k}">${l}</button>`).join('')}
