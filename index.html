@@ -1068,6 +1068,9 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 @media (prefers-reduced-motion:reduce){.board .unit.tgt .pawn{animation:none}}
 @media (max-width:760px){.board .slot{min-height:110px}.board .pw-tag .ttl{font-size:10px}.board .pw-tag .nums{font-size:14px}}
 
+.board .u-agent .pw-face,.board .u-surv .pw-face{box-shadow:none}
+.board .pw-emb{width:62%;height:62%;color:#3b2c10;stroke-width:2.2;opacity:.85;filter:drop-shadow(0 1px 0 rgba(255,236,170,.55)) drop-shadow(0 -1px 0 rgba(0,0,0,.35))}
+
 /* ===== Menu ===== */
 .menu-wrap{display:flex;justify-content:center;padding-block:clamp(8px,4vh,40px) 20px}
 .cover{position:relative;width:min(640px,100%);background:linear-gradient(160deg,#d9c48f,#c3a865);color:var(--ink);border-radius:3px 10px 10px 3px;padding:44px clamp(18px,5vw,48px) 30px;box-shadow:0 2px 0 rgba(0,0,0,.4),0 18px 40px rgba(0,0,0,.45),inset 6px 0 0 rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
@@ -2313,8 +2316,8 @@ function unitHTML(u,side,i){
   else{sub="Manifestation";nums=`<span>⚔ ${u.atk}</span><span>${u.hp} PV</span>`;}
   const badges=`${u.prot?`<span class="badge prot">PROT ${u.prot}</span>`:''}${u.stun?'<span class="badge stun">ÉTOURDI</span>':''}${u.hidden?'<span class="badge prot">INVISIBLE</span>':''}${u.mark?'<span class="badge stun">MARQUÉ</span>':''}${u.trap?'<span class="badge stun">PIÉGÉ</span>':''}`;
   let face='';
-  if(u.kind==='agent'){const ra=S.roster.find(r=>r.id===u.aid);face=ra?photoSVG(ra):'';}
-  else if(u.kind==='surv')face='<svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#d8cfb4"/><circle cx="20" cy="15" r="7" fill="#5a5245"/><path d="M6 40c1-10 7-15 14-15s13 5 14 15z" fill="#5a5245"/></svg>';
+  if(u.kind==='agent')face=icon({S:'aim',A:'melee',G:'blast',P:'heal'}[C.agents[u.aid].cls]||'shield','pw-ic pw-emb');
+  else if(u.kind==='surv')face=icon('shield','pw-ic pw-emb');
   else if(u.kind==='core')face=icon('cell','pw-ic');
   else if(u.kind!=='barr')face=icon('eye','pw-ic');
   const short=u.kind==='agent'?C.agents[u.aid].short:u.name;
