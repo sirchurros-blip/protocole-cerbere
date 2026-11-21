@@ -1261,7 +1261,7 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 
 
 /* ===== Ordre de mission ===== */
-.dlg:has(.om){width:min(980px,100%);background-color:#f1ead6;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"),radial-gradient(ellipse at 15% 10%,rgba(255,255,255,.55),transparent 55%),radial-gradient(ellipse at 90% 95%,rgba(150,115,60,.18),transparent 55%);border-radius:2px;box-shadow:0 20px 40px rgba(0,0,0,.6);padding:26px clamp(16px,3.5vw,40px) 22px}
+.dlg:has(.om),.dlg:has(.bt){width:min(980px,100%);background-color:#f1ead6;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"),radial-gradient(ellipse at 15% 10%,rgba(255,255,255,.55),transparent 55%),radial-gradient(ellipse at 90% 95%,rgba(150,115,60,.18),transparent 55%);border-radius:2px;box-shadow:0 20px 40px rgba(0,0,0,.6);padding:26px clamp(16px,3.5vw,40px) 22px}
 .om{display:flex;flex-direction:column;gap:12px;color:#22201b}
 .om-head{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;border-bottom:3px double #22201b;padding-bottom:8px}
 .om-head .fo-emb{width:44px;height:44px;color:#22201b}
@@ -1380,6 +1380,24 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .cb .om-foot{min-height:96px}
 .cb-dead ul{margin:2px 0 0;padding-left:20px;font-family:var(--f-sig);font-size:19px;color:#1d2a52}
 @media (max-width:560px){.cb-stamp{left:auto;right:4%;bottom:110px}}
+
+
+/* ===== Bon de travaux ===== */
+.dlg:has(.bt){width:min(820px,100%)}
+.bt-list{display:flex;flex-direction:column;border-top:1.5px solid #22201b}
+.bt-row{display:grid;grid-template-columns:28px 34px minmax(0,1fr) auto 128px;gap:12px;align-items:center;padding:10px 4px;border-bottom:1px dotted rgba(34,32,27,.5)}
+.bt-n{font-family:"Courier New",monospace;font-weight:700;font-size:13px;color:#5a5245}
+.bt-ic{width:30px;height:30px;color:#1d2a52;stroke-width:1.6}
+.bt-d{display:flex;flex-direction:column;gap:2px;min-width:0}
+.bt-d b{font-family:"Courier New",monospace;font-weight:700;font-size:15px}
+.bt-d span{font-size:12.5px;line-height:1.35;color:#3a352c}
+.bt-d i{font-style:normal;font-family:var(--f-display);font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#7a6f5e}
+.bt-c{display:flex;flex-direction:column;align-items:flex-end;font-family:var(--f-sig);font-size:22px;line-height:1;color:#1d2a52;white-space:nowrap}
+.bt-c small{font-family:var(--f-display);font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#7a6f5e;margin-top:2px}
+.bt-row .om-b{justify-self:stretch;padding:6px 8px}
+.bt-st{justify-self:center;font-family:var(--f-type);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#a3241a;border:3px double #a3241a;padding:1px 6px;transform:rotate(-8deg);mix-blend-mode:multiply;text-align:center}
+.bt-row.dup .bt-d,.bt-row.dup .bt-c,.bt-row.dup .bt-ic{opacity:.5}
+@media (max-width:560px){.bt-row{grid-template-columns:28px minmax(0,1fr) auto;gap:8px}.bt-row .bt-ic,.bt-row .bt-n{display:none}.bt-row .om-b,.bt-st{grid-column:1/-1}}
 
 /* ===== Menu ===== */
 .menu-wrap{display:flex;justify-content:center;padding-block:clamp(8px,4vh,40px) 20px}
@@ -2068,9 +2086,16 @@ function wingView(){
   </div></div><span class="bp-memo">Penser à renforcer<br>les cellules !</span><span class="bp-pencil" aria-hidden="true"></span></div>`;
 }
 function buildHTML(i){
-  const rows=Object.keys(FACILITIES).map(k=>{const F=FACILITIES[k];const dup=F.unique&&S.slots.some(x=>x.f===k);
-    return `<div class="report"><div class="report-h"><b>${F.name}</b><span class="dl">${F.cost} cr</span></div><span class="small">${F.text}</span><div class="row"><button class="btn primary" data-a="buildfac" data-v="${i}:${k}" ${dup||S.credits<F.cost?'disabled':''}>${dup?'Déjà construite':'Construire'}</button></div></div>`;}).join('');
-  return `<span class="stamp">PLAN</span><h2>Construire une installation</h2><p class="muted">Salle ${i+1} · ${S.credits} cr disponibles.</p>${rows}<div class="foot"><button class="btn ghost" data-a="closemodal">Annuler</button></div>`;
+  const rows=Object.keys(FACILITIES).map((k,n)=>{const F=FACILITIES[k];const dup=F.unique&&S.slots.some(x=>x.f===k);const poor=S.credits<F.cost;
+    return `<div class="bt-row ${dup?'dup':''}"><span class="bt-n">${String(n+1).padStart(2,'0')}</span>${icon(FAC_IC[k]||'cell','bt-ic')}
+      <div class="bt-d"><b>${F.name}</b><span>${F.text}</span>${F.unique?'<i>Installation unique</i>':''}</div>
+      <span class="bt-c">${F.cost} cr<small>1 semaine</small></span>
+      ${dup?'<span class="bt-st">Déjà construite</span>':`<button class="om-b ${poor?'':'go'}" data-a="buildfac" data-v="${i}:${k}" ${poor?'disabled':''} title="${poor?'Crédits insuffisants':''}">Commander</button>`}</div>`;}).join('');
+  return `<div class="om bt"><div class="om-head">${FO_EMB}<div class="om-ht"><span>Fondation SCP · Service technique · Site-Cerbère</span><b>Bon de travaux</b><span>Aménagement de la salle S-${i+1}</span></div><span class="om-ref">N° BT-${String(S.week).padStart(2,'0')}-${i+1}<br>Semaine ${Math.min(S.week,WEEKS)}</span></div>
+    <div class="om-fields"><span><i>Emplacement</i><b>S-${i+1} · niv. ${i<3?'−1':'−2'}</b></span><span><i>Crédits disponibles</i><b>${S.credits} cr</b></span><span><i>Délai</i><b>fin de semaine</b></span></div>
+    <p class="om-hint">Choisissez l'installation à construire. Les travaux s'achèvent en fin de semaine.</p>
+    <div class="bt-list">${rows}</div>
+    <div class="om-foot">${sigHTML()}<span class="om-btns"><button class="om-b" data-a="closemodal">Annuler</button></span></div></div>`;
 }
 const nbWeeks=(tot,left)=>`<span class="nb-weeks" title="${left} semaine${left>1?'s':''} restante${left>1?'s':''}">${Array.from({length:tot},(_,i)=>`<i class="${i<tot-left?'on':''}"></i>`).join('')}</span>`;
 function studiesHTML(){normS();const cap=studyCap();
