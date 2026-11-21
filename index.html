@@ -1149,6 +1149,20 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .tg-none{font-family:var(--f-sig);font-size:22px;color:#f1e6cf;text-shadow:0 1px 2px #000;text-align:center}
 @media (max-width:980px){.net2{grid-template-columns:minmax(0,1fr)}.net2-r{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}.tg-head2{grid-column:1/-1}}
 
+
+/* étiquettes manuscrites sur la carte, télégramme tapé directement */
+.netmap .tagt{font-family:var(--f-sig);font-weight:700;font-size:38px;fill:#a3241a;letter-spacing:0;paint-order:stroke;stroke:rgba(244,236,214,.85);stroke-width:6px;stroke-linejoin:round}
+.netmap .tagd{font-family:var(--f-sig);font-size:26px;fill:#a3241a;paint-order:stroke;stroke:rgba(244,236,214,.85);stroke-width:6px;stroke-linejoin:round}
+.netmap .lbl{font-family:var(--f-sig);font-weight:700;font-size:44px;fill:#1d2a52;paint-order:stroke;stroke:rgba(244,236,214,.85);stroke-width:7px;stroke-linejoin:round}
+.netmap .role{font-family:"Courier New",monospace;font-weight:700;font-size:16px;fill:#2a2520;text-transform:uppercase;letter-spacing:.06em;paint-order:stroke;stroke:rgba(244,236,214,.85);stroke-width:5px;stroke-linejoin:round}
+.netmap .site.bad .lbl{fill:#5a1a12}.netmap .site.bad .role{fill:#a3241a}
+.netmap .xout{stroke:#a3241a;stroke-width:4;stroke-linecap:round}
+.map-note{background:none!important;box-shadow:none!important;padding:0!important;right:14px!important;bottom:14px!important;color:#7a1f16!important;font-size:18px!important;line-height:1.05!important;text-align:right;transform:rotate(-4deg)!important;text-shadow:0 0 3px rgba(244,236,214,.9),0 0 6px rgba(244,236,214,.8)}
+.tg-s>span,.tg-c.c1 span,.tg-c.c3{background:none!important;box-shadow:none!important}
+.tg-s>span{color:#22201b;transform:none;font-weight:700;opacity:.9}
+.tg-c.c3{transform:none;left:64.3%;width:28.5%;top:15.6%;height:11.5%}
+.tg-c.c3 span{display:none}
+
 /* ===== Menu ===== */
 .menu-wrap{display:flex;justify-content:center;padding-block:clamp(8px,4vh,40px) 20px}
 .cover{position:relative;width:min(640px,100%);background:linear-gradient(160deg,#d9c48f,#c3a865);color:var(--ink);border-radius:3px 10px 10px 3px;padding:44px clamp(18px,5vw,48px) 30px;box-shadow:0 2px 0 rgba(0,0,0,.4),0 18px 40px rgba(0,0,0,.45),inset 6px 0 0 rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
@@ -1730,10 +1744,10 @@ function netSVG(){
   S.incidents.forEach(inc=>{const s=MAPXY[inc.site];let base=MAPXY[inc.place]||[s[0]+60,s[1]-60];base=[Math.min(Math.max(base[0],VB[0]+25),VB[0]+VB[2]-230),Math.min(Math.max(base[1],VB[1]+70),VB[1]+VB[3]-30)];const n=used[inc.place]=(used[inc.place]||0)+1;const x=base[0]+(n-1)*26,y=base[1]-(n-1)*22;
     const mx=(s[0]+x)/2,my=Math.max(s[1],y)+30;
     h+=`<g class="inc ${inc.internal?'int':''}"><path d="M${s[0]} ${s[1]} Q${mx} ${my} ${x} ${y}" class="string"/>${pin(x,y,inc.internal?'#5a1a12':'#c0392b',9)}
-      <g transform="translate(${x+12} ${y-46}) rotate(${(inc.id%5)-2})"><rect width="${inc.code.length*15+56}" height="40" rx="2" class="tag"/><text x="10" y="27" class="tagt">${inc.code} · ${inc.deadline} sem.</text></g></g>`;});
+      <g transform="translate(${x+14} ${y-30}) rotate(${(inc.id%5)-4})"><text class="tagt">${inc.code}</text><text y="30" class="tagd">${inc.deadline<=1?"cette semaine !":inc.deadline+" sem."}</text></g></g>`;});
   const LO={cerbere:[-120,22],hermes:[110,34],orphee:[0,22]};
   Object.keys(SITES).forEach(k=>{const [x,y]=MAPXY[k],ok=S.sites[k].ok;const nm=SITES[k].name;const w=Math.max(nm.length*18,210);const o=LO[k]||[0,20];
-    h+=`<g class="site ${ok?'':'bad'}">${pin(x,y,ok?'#d8b15a':'#7d1a10',13)}<g transform="translate(${x+o[0]-w/2} ${y+o[1]})"><rect width="${w}" height="60" rx="2" class="lab"/><text x="${w/2}" y="27" text-anchor="middle" class="lbl">${nm}</text><text x="${w/2}" y="50" text-anchor="middle" class="role">${ok?SITES[k].role:'COMPROMIS'}</text></g></g>`;});
+    h+=`<g class="site ${ok?'':'bad'}">${pin(x,y,ok?'#d8b15a':'#7d1a10',13)}<g transform="translate(${x+o[0]} ${y+o[1]+16}) rotate(-3)"><text text-anchor="middle" class="lbl">${nm}</text><text y="24" text-anchor="middle" class="role">${ok?SITES[k].role:"compromis"}</text>${ok?"":`<path d="M${-w*.32} -12L${w*.32} -4" class="xout"/>`}</g></g>`;});
   return h+`</svg>`;
 }
 function netView(){
@@ -1759,7 +1773,7 @@ function netView(){
   const grid=(head,rows)=>{let h=head.map(x=>`<span class="lg-hd">${x}</span>`).join('');for(let r=0;r<15;r++){const row=rows[r]||['','','',''];h+=row.map(x=>`<span>${x}</span>`).join('');}return h;};
   return `<div class="net2">
     <div class="net2-l"><div class="map-desk"><div class="map-paper"><span class="bp-tape tl"></span><span class="bp-tape tr"></span><span class="bp-tape bl"></span><span class="bp-tape br"></span>${netSVG()}</div>
-      <span class="map-note">Ficelle rouge : incident en cours.<br>Liaison rouge : site compromis.</span></div>
+      <span class="map-note">ficelle rouge = incident en cours<br>liaison rouge = site compromis</span></div>
       <div class="logbk"><div class="lg-g l">${grid(['N°','Sem.','État','Site · observations'],L)}</div><div class="lg-g r">${grid(['Sem.','Expo.','Seuil','Le Voile · observations'],R)}</div></div></div>
     <div class="net2-r"><div class="tg-head2"><b>Télégrammes reçus</b><span>${S.opDone?"L'escouade est rentrée. Prochaine opération la semaine prochaine.":'Une opération possible cette semaine.'}</span></div>${reps}</div></div>`;
 }
