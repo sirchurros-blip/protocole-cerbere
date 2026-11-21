@@ -1259,6 +1259,55 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .desk-stamp:focus-visible{outline:2px solid #f0d68e;outline-offset:4px}
 @media (max-width:760px){.folders.tuck{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:8px 8px 0 10px;gap:3px;margin-bottom:-26px}.folders.tuck .folder{flex:none;padding:6px 7px 34px;font-size:11px}.ds-stamp{width:40px;height:62px}.ds-pad{width:40px;height:46px}.ds-l{font-size:9px}}
 
+
+/* ===== Ordre de mission ===== */
+.dlg:has(.om){width:min(980px,100%);background-color:#f1ead6;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"),radial-gradient(ellipse at 15% 10%,rgba(255,255,255,.55),transparent 55%),radial-gradient(ellipse at 90% 95%,rgba(150,115,60,.18),transparent 55%);border-radius:2px;box-shadow:0 20px 40px rgba(0,0,0,.6);padding:26px clamp(16px,3.5vw,40px) 22px}
+.om{display:flex;flex-direction:column;gap:12px;color:#22201b}
+.om-head{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;border-bottom:3px double #22201b;padding-bottom:8px}
+.om-head .fo-emb{width:44px;height:44px;color:#22201b}
+.om-ht{display:flex;flex-direction:column;gap:1px}
+.om-ht span{font-family:var(--f-display);font-weight:600;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5a5245}
+.om-ht b{font-family:var(--f-type);font-weight:400;font-size:clamp(22px,3vw,30px);letter-spacing:.08em;text-transform:uppercase;line-height:1.05}
+.om-ref{font-family:"Courier New",monospace;font-size:12px;text-align:right;line-height:1.4;border:1.5px solid #22201b;padding:4px 8px}
+.om-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 18px}
+.om-fields span{display:flex;align-items:baseline;gap:8px;border-bottom:1px dotted rgba(34,32,27,.55);padding-bottom:2px;min-width:0}
+.om-fields i{font-style:normal;font-family:var(--f-display);font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#5a5245;flex:none}
+.om-fields b{font-family:"Courier New",monospace;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.om-hint{margin:0;font-size:13px;color:#4a4438;font-style:italic}
+.om-warn{margin:0;font-family:var(--f-sig);font-size:18px;color:#a3241a}
+.om-warn::before{content:"⚠ "}
+.om-ags{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px 14px;padding:6px 2px}
+.om-ag{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;background:#f8f4e6;border:0;padding:8px 8px 10px;box-shadow:0 2px 4px rgba(0,0,0,.3);cursor:pointer;color:#22201b;transition:transform .15s,box-shadow .15s;transform:rotate(-.6deg)}
+.om-ag:nth-child(2n){transform:rotate(.7deg)}
+.om-ag:hover:not(:disabled){transform:translateY(-3px) rotate(0);box-shadow:0 6px 10px rgba(0,0,0,.3)}
+.om-ag .om-ph{width:70%;background:#fff;padding:3px 3px 8px;box-shadow:0 1px 2px rgba(0,0,0,.35);margin-bottom:4px}
+.om-ag .om-ph svg{display:block;width:100%;height:auto;filter:grayscale(.45) sepia(.3)}
+.om-nm{font-family:"Courier New",monospace;font-weight:700;font-size:13.5px;text-align:center;line-height:1.15}
+.om-cl{font-size:11px;color:#5a5245;text-align:center;line-height:1.2}
+.om-hp{font-family:var(--f-sig);font-size:16px;color:#1d2a52}
+.om-ag.hurt{opacity:.55;cursor:not-allowed}.om-ag.hurt .om-hp{color:#a3241a}
+.om-ag.on{background:#fffbea;box-shadow:0 0 0 2px #2f6b3a,0 4px 8px rgba(0,0,0,.3)}
+.om-tick{position:absolute;top:8px;right:-6px;font-family:var(--f-type);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#2f6b3a;border:3px double #2f6b3a;padding:0 6px;transform:rotate(12deg);opacity:.85;mix-blend-mode:multiply;pointer-events:none;background:rgba(255,251,234,.25)}
+.om-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;border-top:1px solid rgba(34,32,27,.45);padding-top:12px;margin-top:4px}
+.om-sig{position:relative;min-width:200px;border-top:1px solid #22201b;padding-top:3px;font-family:var(--f-display);font-weight:600;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#5a5245;margin-top:26px}
+.om-sig i{position:absolute;left:20px;bottom:14px;font-family:var(--f-sig);font-style:normal;font-size:28px;letter-spacing:0;text-transform:none;color:#1d2a52;transform:rotate(-6deg);white-space:nowrap}
+.om-btns{display:flex;gap:8px;flex-wrap:wrap}
+.om-b{background:transparent;border:2px solid #22201b;border-radius:2px;font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;cursor:pointer;color:#22201b}
+.om-b:hover:not(:disabled){background:#22201b;color:#f1ead6}
+.om-b.go{background:#8f2519;border-color:#8f2519;color:#f4ecd8}
+.om-b.go:hover:not(:disabled){background:#6d1d12}
+.om-b:disabled{opacity:.45;cursor:not-allowed}
+/* section 2 : dotation */
+.prep.om .dk-sum{border:1.5px solid #22201b;background:transparent;font-family:"Courier New",monospace;font-size:12.5px}
+.prep.om .dk-tips{font-family:var(--f-sig);font-size:17px;color:#a3241a;list-style:"⚠ "}
+.prep.om .dk-grp{border-top:1px dashed rgba(34,32,27,.45)}
+.prep.om .dk-h b{font-family:"Courier New",monospace;font-weight:700}
+.prep.om .dk{background:#f8f4e6;border:0;box-shadow:0 1px 3px rgba(0,0,0,.35);border-radius:1px;background-image:repeating-linear-gradient(transparent 0 13px,rgba(84,124,186,.15) 13px 14px)}
+.prep.om .dk{width:118px}
+.prep.om .dk-nm{overflow-wrap:normal;word-break:normal;hyphens:none;font-size:11px}
+.prep.om .dk.off{box-shadow:0 0 0 1px rgba(34,32,27,.3);background:transparent}
+@media (max-width:560px){.om-head{grid-template-columns:34px minmax(0,1fr)}.om-ref{grid-column:1/-1;text-align:left}.om-ags{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 /* ===== Menu ===== */
 .menu-wrap{display:flex;justify-content:center;padding-block:clamp(8px,4vh,40px) 20px}
 .cover{position:relative;width:min(640px,100%);background:linear-gradient(160deg,#d9c48f,#c3a865);color:var(--ink);border-radius:3px 10px 10px 3px;padding:44px clamp(18px,5vw,48px) 30px;box-shadow:0 2px 0 rgba(0,0,0,.4),0 18px 40px rgba(0,0,0,.45),inset 6px 0 0 rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
@@ -2156,21 +2205,28 @@ function prepHTML(){
   if(!roles['Soins'])tips.push("Aucune carte de soin : un agent à terre ne pourra pas être relevé.");
   if(knows(inc.type)&&A.contagion&&!(roles['Contre-mesures']))tips.push("Aucune contre-mesure mémétique contre la contagion.");
   if(deck.length>32)tips.push("Deck long : vos meilleures cartes reviendront moins souvent.");
-  return `<div class="prep"><span class="stamp">PRÉPARATION</span><h2>Deck de l'opération</h2><p class="muted">${inc.code} · ${esc(inc.place)}. Touchez une carte pour la retirer ou la remettre. Chaque agent garde au moins ${MIN_AGENT_CARDS} cartes, et vos choix sont mémorisés pour les prochaines missions.</p>
+  return `<div class="prep om">${omHead('Ordre de mission','Section 2 · Dotation en cartes',inc)}<p class="om-hint">Touchez une carte pour la retirer ou la remettre. Chaque agent garde au moins ${MIN_AGENT_CARDS} cartes, et vos choix sont mémorisés pour les prochaines missions.</p>
     <div class="dk-sum"><span><b>${deck.length}</b> cartes</span><span>coût moyen <b>${avg}</b></span>${order.filter(r=>roles[r]).map(r=>`<span>${r} <b>${roles[r]}</b></span>`).join('')}</div>
     ${tips.length?`<ul class="dk-tips">${tips.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
     ${agents}${ars}
-    <div class="foot"><button class="btn ghost" data-a="backsquad">Retour à l'escouade</button><button class="btn primary" data-a="launch">Lancer l'opération</button></div></div>`;
+    <div class="om-foot"><span class="om-sig">Visa du commandant<i>${esc(curProf()?curProf().name:'Cdt.')}</i></span><span class="om-btns"><button class="om-b" data-a="backsquad">‹ Section 1</button><button class="om-b go launch" data-a="launch">Signer et lancer l'opération</button></span></div></div>`;
 }
+function omHead(title,sub,inc){const A=ANOM[inc.type];
+  return `<div class="om-head">${FO_EMB}<div class="om-ht"><span>Fondation SCP · Commandement régional Europe</span><b>${title}</b><span>${sub}</span></div><span class="om-ref">N° OM-${String(S.week).padStart(2,'0')}-${String(inc.id).padStart(3,'0')}<br>Semaine ${Math.min(S.week,WEEKS)}</span></div>
+  <div class="om-fields"><span><i>Incident</i><b>${inc.code}</b></span><span><i>Objet</i><b>« ${A.name} »</b></span><span><i>Lieu</i><b>${esc(inc.place)}</b></span><span><i>Classe</i><b>${A.cls}</b></span><span><i>Site</i><b>${SITES[inc.site].name}</b></span></div>`;}
 function squadHTML(){
   const q=X.squad;const inc=S.incidents.find(i=>i.id===q.inc);const A=ANOM[inc.type];
-  const rows=S.roster.map(a=>{const on=q.sel.has(a.id);return `<button class="pickrow ${on?'on':''}" data-a="sq" data-v="${a.id}" ${a.wound?'disabled':''}><span class="box"></span><span><strong>${esc(a.name)}</strong> · ${CLASS[a.cls].name} (${SPECS[a.cls][a.spec]})</span><span class="small">${a.wound?`${gA(a,'blessé','blessée')} ${a.wound} sem.`:`${CLASS[a.cls].hp} PV`}</span></button>`;}).join('');
+  const rows=S.roster.map(a=>{const on=q.sel.has(a.id);const dis=!!a.wound||(!on&&q.sel.size>=4);
+    return `<button class="om-ag ${on?'on':''} ${a.wound?'hurt':''}" data-a="sq" data-v="${a.id}" ${a.wound?'disabled':''} aria-pressed="${on}" title="${dis&&!a.wound?'Escouade complète (4 agents)':''}">
+      <span class="om-ph">${photoSVG(a)}</span><span class="om-nm">${esc(a.name)}</span><span class="om-cl">${CLASS[a.cls].name} · ${SPECS[a.cls][a.spec]}</span>
+      <span class="om-hp">${a.wound?`${gA(a,'Blessé','Blessée')} · ${a.wound} sem.`:`${agentHp(a)} PV · grade ${a.level}`}</span>${on?'<span class="om-tick">Affecté</span>':''}</button>`;}).join('');
   const classes=[...q.sel].map(id=>S.roster.find(a=>a.id===id).cls);
   const warn=[];if(!classes.includes('P')&&A.contagion)warn.push("Aucun Spécialiste : peu de moyens contre les Refrains.");
   if(!inc.internal&&freeCell()<0)warn.push("Aucune cellule libre : une capture serait impossible, l'anomalie serait relâchée.");
-  return `<span class="stamp">ORDRE DE MISSION</span><h2>${inc.code} · ${esc(inc.place)}</h2><p class="muted">Choisissez jusqu'à 4 agents. Leurs cartes formeront le deck, avec ${fondationDeck().length} cartes Fondation.</p>
-    <div style="display:flex;flex-direction:column;gap:6px">${rows}</div>${warn.map(w=>`<p><strong>⚠</strong> ${w}</p>`).join('')}
-    <div class="foot"><button class="btn ghost" data-a="closemodal">Annuler</button><button class="btn primary" data-a="prep" ${q.sel.size?'':'disabled'}>Préparer le deck (${q.sel.size}/4)</button></div>`;
+  return `<div class="om">${omHead('Ordre de mission','Section 1 · Personnel affecté',inc)}
+    <p class="om-hint">Désignez jusqu'à 4 agents. Leurs cartes formeront le deck, avec ${fondationDeck().length} cartes Fondation.</p>
+    <div class="om-ags">${rows}</div>${warn.map(w=>`<p class="om-warn">${w}</p>`).join('')}
+    <div class="om-foot"><span class="om-sig">Visa du commandant<i>${esc(curProf()?curProf().name:'Cdt.')}</i></span><span class="om-btns"><button class="om-b" data-a="closemodal">Annuler</button><button class="om-b go" data-a="prep" ${q.sel.size?'':'disabled'}>Section 2 · Dotation (${q.sel.size}/4) ›</button></span></div></div>`;
 }
 function overHTML(){
   if(S.over==='victory')return `<span class="stamp ok">VALIDÉ</span><h2>Évaluation du Conseil O5</h2><p>Dix semaines de commandement. Le Voile a tenu : exposition finale ${S.expo}/${EXPO_MAX}.</p>
