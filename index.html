@@ -17,7 +17,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600&family=Old+Standard+TT:wght@400;700&family=UnifrakturMaguntia&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Special+Elite&family=Caveat:wght@600&family=Old+Standard+TT:wght@400;700&family=UnifrakturMaguntia&family=Mrs+Saint+Delafield&display=swap">
 <style>
 /* Layout : bureau du commandant — feuilles de dossier posées sur une table sombre (réseau, aile, recherche, personnel) ; le combat ouvre la table d'opération. Thème sombre unique, assumé. */
 :root{
@@ -1308,6 +1308,15 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .prep.om .dk.off{box-shadow:0 0 0 1px rgba(34,32,27,.3);background:transparent}
 @media (max-width:560px){.om-head{grid-template-columns:34px minmax(0,1fr)}.om-ref{grid-column:1/-1;text-align:left}.om-ags{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+
+.om-sig{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-width:220px;border-top:0!important;padding-top:0!important;margin-top:8px!important}
+.sig-ink{position:relative;display:block;height:58px;min-width:220px;border-bottom:1px solid #22201b}
+.sig-ink b{text-transform:none;position:absolute;left:14px;bottom:6px;font-family:"Mrs Saint Delafield",var(--f-sig);font-weight:400;font-size:46px;line-height:1;color:#1b2a5c;transform:rotate(-7deg);transform-origin:left bottom;white-space:nowrap;letter-spacing:.5px;text-shadow:0 0 .6px rgba(27,42,92,.7)}
+.sig-ink svg{position:absolute;left:2px;bottom:-14px;width:230px;height:70px;overflow:visible}
+.sig-fl{fill:none;stroke:#1b2a5c;stroke-width:1.8;stroke-linecap:round;opacity:.9}
+.sig-fl.thin{stroke-width:1.2}
+.sig-lab{margin-top:4px;font-family:var(--f-display);font-weight:600;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#5a5245}
+
 /* ===== Menu ===== */
 .menu-wrap{display:flex;justify-content:center;padding-block:clamp(8px,4vh,40px) 20px}
 .cover{position:relative;width:min(640px,100%);background:linear-gradient(160deg,#d9c48f,#c3a865);color:var(--ink);border-radius:3px 10px 10px 3px;padding:44px clamp(18px,5vw,48px) 30px;box-shadow:0 2px 0 rgba(0,0,0,.4),0 18px 40px rgba(0,0,0,.45),inset 6px 0 0 rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
@@ -2209,11 +2218,15 @@ function prepHTML(){
     <div class="dk-sum"><span><b>${deck.length}</b> cartes</span><span>coût moyen <b>${avg}</b></span>${order.filter(r=>roles[r]).map(r=>`<span>${r} <b>${roles[r]}</b></span>`).join('')}</div>
     ${tips.length?`<ul class="dk-tips">${tips.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
     ${agents}${ars}
-    <div class="om-foot"><span class="om-sig">Visa du commandant<i>${esc(curProf()?curProf().name:'Cdt.')}</i></span><span class="om-btns"><button class="om-b" data-a="backsquad">‹ Section 1</button><button class="om-b go launch" data-a="launch">Signer et lancer l'opération</button></span></div></div>`;
+    <div class="om-foot">${sigHTML()}<span class="om-btns"><button class="om-b" data-a="backsquad">‹ Section 1</button><button class="om-b go launch" data-a="launch">Signer et lancer l'opération</button></span></div></div>`;
 }
 function omHead(title,sub,inc){const A=ANOM[inc.type];
   return `<div class="om-head">${FO_EMB}<div class="om-ht"><span>Fondation SCP · Commandement régional Europe</span><b>${title}</b><span>${sub}</span></div><span class="om-ref">N° OM-${String(S.week).padStart(2,'0')}-${String(inc.id).padStart(3,'0')}<br>Semaine ${Math.min(S.week,WEEKS)}</span></div>
   <div class="om-fields"><span><i>Incident</i><b>${inc.code}</b></span><span><i>Objet</i><b>« ${A.name} »</b></span><span><i>Lieu</i><b>${esc(inc.place)}</b></span><span><i>Classe</i><b>${A.cls}</b></span><span><i>Site</i><b>${SITES[inc.site].name}</b></span></div>`;}
+function sigHTML(){const nm=(curProf()?curProf().name:'Commandant')||'Commandant';let h=7;for(const ch of nm)h=(h*31+ch.charCodeAt(0))%9973;
+  const r=k=>((h*(k+3)*7919)%97)/97;const w=150+r(1)*40;
+  const fl=`M8 ${44+r(2)*4} C ${40+r(3)*20} ${30+r(4)*8}, ${w*.55} ${58+r(5)*6}, ${w*.8} ${40+r(6)*6} S ${w+20} ${30+r(7)*6}, ${w+6} ${46+r(8)*4}`;
+  return `<span class="om-sig"><span class="sig-ink" aria-label="Signature : ${esc(nm)}"><b>${esc(nm)}</b><svg viewBox="0 0 ${Math.round(w+30)} 70" aria-hidden="true"><path d="${fl}" class="sig-fl"/><path d="M${w*.62} 18 l${10+r(9)*8} 26" class="sig-fl thin"/></svg></span><span class="sig-lab">Visa du commandant</span></span>`;}
 function squadHTML(){
   const q=X.squad;const inc=S.incidents.find(i=>i.id===q.inc);const A=ANOM[inc.type];
   const rows=S.roster.map(a=>{const on=q.sel.has(a.id);const dis=!!a.wound||(!on&&q.sel.size>=4);
@@ -2226,7 +2239,7 @@ function squadHTML(){
   return `<div class="om">${omHead('Ordre de mission','Section 1 · Personnel affecté',inc)}
     <p class="om-hint">Désignez jusqu'à 4 agents. Leurs cartes formeront le deck, avec ${fondationDeck().length} cartes Fondation.</p>
     <div class="om-ags">${rows}</div>${warn.map(w=>`<p class="om-warn">${w}</p>`).join('')}
-    <div class="om-foot"><span class="om-sig">Visa du commandant<i>${esc(curProf()?curProf().name:'Cdt.')}</i></span><span class="om-btns"><button class="om-b" data-a="closemodal">Annuler</button><button class="om-b go" data-a="prep" ${q.sel.size?'':'disabled'}>Section 2 · Dotation (${q.sel.size}/4) ›</button></span></div></div>`;
+    <div class="om-foot">${sigHTML()}<span class="om-btns"><button class="om-b" data-a="closemodal">Annuler</button><button class="om-b go" data-a="prep" ${q.sel.size?'':'disabled'}>Section 2 · Dotation (${q.sel.size}/4) ›</button></span></div></div>`;
 }
 function overHTML(){
   if(S.over==='victory')return `<span class="stamp ok">VALIDÉ</span><h2>Évaluation du Conseil O5</h2><p>Dix semaines de commandement. Le Voile a tenu : exposition finale ${S.expo}/${EXPO_MAX}.</p>
