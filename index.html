@@ -1607,6 +1607,18 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 }
 
 
+
+/* dotation : cartes réelles */
+.prep.om .dk-row{gap:14px 10px;padding-top:6px;align-items:flex-start}
+.dkc{position:relative;background:none;border:0;padding:0;cursor:pointer;transition:transform .15s}
+.dkc>.c{zoom:.74;pointer-events:none;box-shadow:0 2px 5px rgba(0,0,0,.35)}
+.dkc:not(:disabled):hover{transform:translateY(-4px)}
+.dkc.off>.c{filter:grayscale(.9) brightness(.92);opacity:.5}
+.dkc-st{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%) rotate(-14deg);font-family:var(--f-type);font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:#a3241a;border:3px double #a3241a;padding:1px 8px;background:rgba(248,244,230,.55);mix-blend-mode:multiply;pointer-events:none}
+.dkc-lk{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-family:var(--f-sig);font-size:15px;color:#1d2a52;background:#f8f4e6;padding:0 6px;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.dkc:disabled{cursor:not-allowed}
+.dkc:focus-visible{outline:3px solid #1d2a52;outline-offset:3px}
+@media (max-width:560px){.dkc>.c{zoom:.86}.prep.om .dk-row{justify-content:center}}
 /* ===== Fiche de situation (combat) ===== */
 .cgrid .card.status:has(.sit){background:none;border:0;box-shadow:none;backdrop-filter:none;padding:0}
 .sit{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center}
@@ -2473,6 +2485,8 @@ const MIN_AGENT_CARDS=4;
 function agentCards(a){const l=CLASS[a.cls].cards.slice();a.skills.forEach(s=>{if(SKILL_CARD[s])l.push(SKILL_CARD[s]);});return l;}
 const ROLE={aim:'Attaque',melee:'Attaque',blast:'Attaque',shield:'Défense',wall:'Défense',smoke:'Défense',mask:'Défense',mirror:'Défense',heal:'Soins',cell:'Confinement',trap:'Attaque',eye:'Pioche',bolt:'Pioche',coin:'Pioche',phone:'Pioche',light:'Pioche',clean:'Contre-mesures',wave:'Contre-mesures',note:'Contre-mesures'};
 function roleOf(id){if(['analyse'].includes(id))return 'Confinement';if(id==='rupture')return 'Attaque';return ROLE[ICONOF[id]]||'Autre';}
+function dkCard(id,on,act,val,locked,who){const d=CARDS[id];const k=cardKind(id,who?'A':'F');
+  return `<button class="dkc ${on?'':'off'}" data-a="${act}" data-v="${val}" ${locked?'disabled':''} aria-pressed="${on}" aria-label="${esc(d.name)} : ${on?'embarquée':'retirée'}"><span class="c static k-${k}" style="--dc:${d.dept?DEPT[d.dept].col:'var(--red)'}">${cardFace(id,who?{owner:'A',label:who}:{})}</span>${on?'':'<span class="dkc-st">Retirée</span>'}${locked&&on?'<span class="dkc-lk">minimum</span>':''}</button>`;}
 function dkTile(id,on,act,val,locked){const d=CARDS[id];
   return `<button class="dk ${on?'':'off'} ${d.anom?'anom':''}" style="--dc:${DEPT[d.dept].col}" data-a="${act}" data-v="${val}" ${locked?'disabled':''} title="${esc(d.text)}"><span class="dk-cost">${d.cost}</span>${icon(ICONOF[id],'dk-ic')}<span class="dk-nm">${d.name}</span><span class="dk-st">${on?'Embarquée':'Retirée'}</span></button>`;}
 function prepHTML(){
@@ -2481,10 +2495,10 @@ function prepHTML(){
   const agents=ids.map(id=>{const a=S.roster.find(r=>r.id===id);const l=agentCards(a);const off=a.deckOff||[];const onN=l.length-off.length;
     l.forEach((c,i)=>{if(!off.includes(i))deck.push(c);});
     return `<div class="dk-grp"><div class="dk-h"><b>${esc(a.name)}</b><span class="small muted">${CLASS[a.cls].name} · ${SPECS[a.cls][a.spec]} · ${onN}/${l.length} cartes</span></div>
-      <div class="dk-row">${l.map((c,i)=>{const on=!off.includes(i);return dkTile(c,on,'dkoff',`${a.id}:${i}`,on&&onN<=MIN_AGENT_CARDS);}).join('')}</div></div>`;}).join('');
+      <div class="dk-row">${l.map((c,i)=>{const on=!off.includes(i);return dkCard(c,on,'dkoff',`${a.id}:${i}`,on&&onN<=MIN_AGENT_CARDS,a.name.split(' ').pop());}).join('')}</div></div>`;}).join('');
   S.arsenal.filter(x=>x.on).forEach(x=>deck.push(x.id));
   const ars=`<div class="dk-grp"><div class="dk-h"><b>Arsenal Fondation</b><span class="small muted">${arsenalOn()}/${ARSENAL_MAX} cartes embarquées</span></div>
-    <div class="dk-row">${S.arsenal.map(x=>dkTile(x.id,x.on,'dkars',x.uid,!x.on&&arsenalOn()>=ARSENAL_MAX)).join('')}</div></div>`;
+    <div class="dk-row">${S.arsenal.map(x=>dkCard(x.id,x.on,'dkars',x.uid,!x.on&&arsenalOn()>=ARSENAL_MAX)).join('')}</div></div>`;
   const roles={};deck.forEach(id=>{const r=roleOf(id);roles[r]=(roles[r]||0)+1;});
   const avg=deck.length?(deck.reduce((s,id)=>s+CARDS[id].cost,0)/deck.length).toFixed(1):'0';
   const order=['Attaque','Défense','Soins','Confinement','Pioche','Contre-mesures','Autre'];
