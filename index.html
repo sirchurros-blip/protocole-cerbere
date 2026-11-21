@@ -1363,6 +1363,24 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .sk-card .om-b{align-self:flex-start;padding:4px 10px;font-size:11.5px}
 @media (max-width:560px){.sk-row{grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);gap:6px}.sk-rk{width:38px;height:38px;font-size:15px}.sk-card{padding:8px}.sk-card b{font-size:12px}.sk-tx{font-size:11.5px}}
 
+
+/* ===== Briefing et rapport d'opération ===== */
+.dlg:has(.cb){width:min(760px,100%);background-color:#f1ead6;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"),radial-gradient(ellipse at 15% 10%,rgba(255,255,255,.55),transparent 55%),radial-gradient(ellipse at 90% 95%,rgba(150,115,60,.18),transparent 55%);border-radius:2px;box-shadow:0 20px 40px rgba(0,0,0,.6);padding:26px clamp(16px,3.5vw,40px) 22px}
+.cb{position:relative}
+.cb-stamp{position:absolute;right:7%;bottom:84px;font-family:var(--f-type);font-size:clamp(22px,4vw,36px);letter-spacing:.14em;text-transform:uppercase;border:5px double;padding:2px 16px;transform:rotate(-10deg);opacity:.78;mix-blend-mode:multiply;pointer-events:none;z-index:2}
+.cb-stamp.ok{color:#2f6b3a}.cb-stamp.ko,.cb-stamp.sec{color:#a3241a}
+.cb-stamp.sec{font-size:clamp(18px,3vw,26px)}
+.cb-desc{margin:4px 0 0;font-family:"Courier New",monospace;font-size:14px;line-height:1.5}
+.cb-h{margin:6px 0 0;font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px}
+.cb-rules{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px;font-size:13.5px;line-height:1.4;list-style:decimal-leading-zero}
+.cb-rules li::marker{font-family:"Courier New",monospace;font-weight:700}
+.cb-rules strong{font-family:"Courier New",monospace}
+.cb-lines{margin:6px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:6px;font-family:"Courier New",monospace;font-size:14px;line-height:1.45;list-style:decimal-leading-zero}
+.cb-dead p{margin:6px 0 0;font-size:13.5px}
+.cb .om-foot{min-height:96px}
+.cb-dead ul{margin:2px 0 0;padding-left:20px;font-family:var(--f-sig);font-size:19px;color:#1d2a52}
+@media (max-width:560px){.cb-stamp{left:auto;right:4%;bottom:110px}}
+
 /* ===== Menu ===== */
 .menu-wrap{display:flex;justify-content:center;padding-block:clamp(8px,4vh,40px) 20px}
 .cover{position:relative;width:min(640px,100%);background:linear-gradient(160deg,#d9c48f,#c3a865);color:var(--ink);border-radius:3px 10px 10px 3px;padding:44px clamp(18px,5vw,48px) 30px;box-shadow:0 2px 0 rgba(0,0,0,.4),0 18px 40px rgba(0,0,0,.45),inset 6px 0 0 rgba(0,0,0,.08);display:flex;flex-direction:column;gap:12px}
@@ -2791,6 +2809,9 @@ function renderCombat(){
   if(!$('#cstatus'))$('#root').innerHTML=`<div class="cgrid"><div class="main"><section class="card status" id="cstatus"></section><section class="card board" id="cboard"></section><section class="card handzone"><div class="actionbar" id="cbar"></div><div class="hand" id="chand"></div></section></div><aside class="side" id="cside"></aside></div>`;
   $('#cstatus').innerHTML=statusHTML();$('#cboard').innerHTML=boardHTML();$('#cbar').innerHTML=actionHTML();$('#chand').innerHTML=C.hand.map(cardHTML).join('');{const cs=[...$('#chand').children];const n=cs.length;cs.forEach((el,i)=>{const fi=i-(n-1)/2;el.style.setProperty('--fi',fi);el.style.setProperty('--fa',Math.abs(fi));});}$('#cside').innerHTML=sideHTML();
 }
+function cbHead(title,sub){const A=AN();
+  return `<div class="om-head">${FO_EMB}<div class="om-ht"><span>Fondation SCP · Commandement régional Europe</span><b>${title}</b><span>${sub}</span></div><span class="om-ref">${C.code}<br>Semaine ${Math.min(S.week,WEEKS)}</span></div>
+  <div class="om-fields"><span><i>Objet</i><b>« ${A.name} »</b></span><span><i>Lieu</i><b>${esc(C.place)}</b></span><span><i>Classe</i><b>${A.cls}</b></span>${C.over?`<span><i>Durée</i><b>${C.turn} tour${C.turn>1?'s':''}</b></span>`:''}</div>`;}
 function combatModal(){
   const A=AN();
   if(C.report&&!C.over)return anomReportHTML(C.A,S,'<button class="btn primary" data-a="crepclose">Refermer le rapport</button>');
@@ -2809,16 +2830,20 @@ function combatModal(){
     else if(C.over==='wipe')lines.push("L'équipe de l'Infirmerie récupère les agents à terre : ils survivent, gravement blessés.");
     else if(!win&&downs.length)lines.push(`Évacués à terre : ${downs.map(u=>u.name).join(', ')} (blessés).`);
     const dead=C.dead.length?`<p><strong>Au mémorial :</strong></p><ul>${C.dead.map(d=>`<li>${esc(d.name)} (${d.cls}) — ${d.cards} cartes perdues</li>`).join('')}</ul>`:'<p>Aucun mort dans l\'escouade.</p>';
-    return `<span class="stamp ${win?'ok':''}">${win?(C.over==='capture'?'CONFINÉ':'REPOUSSÉ'):C.over==='retreat'?'REPLI':'ÉCHEC'}</span><h2>${title}</h2><p class="muted">Rapport d'opération · ${C.code} · tour ${C.turn}</p>${lines.map(l=>`<p>${l}</p>`).join('')}${dead}<div class="foot"><button class="btn primary" data-a="creturn">Retour au commandement</button></div>`;}
-  if(C.intro)return `<span class="stamp">BRIEFING</span><h2>${C.code} · ${esc(C.place)}</h2><p>${A.desc}</p>
-    <ul><li><strong>Plateau</strong> : 6 couloirs. Chaque hostile attaque l'unité en face. Un couloir vide le laisse passer : la brèche monte.</li>
+    const stp=win?(C.over==='capture'?'Confiné':'Repoussé'):C.over==='retreat'?'Repli':'Échec';
+    return `<div class="om cb">${cbHead("Rapport d'opération",title)}<span class="cb-stamp ${win?'ok':'ko'}">${stp}</span>
+      <ol class="cb-lines">${lines.map(l=>`<li>${l}</li>`).join('')}</ol><div class="cb-dead">${dead}</div>
+      <div class="om-foot">${sigHTML()}<span class="om-btns"><button class="om-b go" data-a="creturn">Classer le rapport · retour au bureau</button></span></div></div>`;}
+  if(C.intro)return `<div class="om cb">${cbHead('Briefing opérationnel','Transmis par le Service des opérations · lecture obligatoire')}<span class="cb-stamp sec">Secret</span>
+    <p class="cb-desc">${A.desc}</p><h3 class="cb-h">Consignes d'engagement</h3>
+    <ul class="cb-rules"><li><strong>Plateau</strong> : 6 couloirs. Chaque hostile attaque l'unité en face. Un couloir vide le laisse passer : la brèche monte.</li>
     <li><strong>Cartes</strong> : chaque agent apporte les siennes. Un agent mort emporte ses cartes, à jamais.</li>
     <li><strong>Brûler</strong> une carte par tour : +1 accréditation maximale et une gemme de son département.</li>
     <li><strong>Déplacement</strong> une fois par tour : couloir voisin ou échange avec un allié voisin (gratuit), couloir éloigné (1 accréditation).</li>
     <li><strong>À terre</strong> : un agent à 0 PV est ignoré par les hostiles mais meurt en 3 tours s'il n'est pas relevé (Soin, Médikit).</li>
     <li><strong>Victoire</strong> : confinement ${CONF_MAX} (capture) ou ${A.resName.toLowerCase()} à 0. <strong>Défaite</strong> : brèche ${BREACH_MAX} ou plus aucun agent debout.</li>
     <li><strong>Durée</strong> : à partir du tour 12, l'anomalie s'intensifie et la brèche monte d'elle-même. Vous pouvez toujours <strong>ordonner le repli</strong> (compte comme un échec).</li></ul>
-    <div class="foot"><button class="btn primary" data-a="cclose">Commencer</button></div>`;
+    <div class="om-foot">${sigHTML()}<span class="om-btns"><button class="om-b go" data-a="cclose">Pris connaissance · engager l'escouade</button></span></div></div>`;
   return '';
 }
 function applyCombat(){
