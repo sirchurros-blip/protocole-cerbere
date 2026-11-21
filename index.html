@@ -1304,7 +1304,7 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .prep.om .dk-grp{border-top:1px dashed rgba(34,32,27,.45)}
 .prep.om .dk-h b{font-family:"Courier New",monospace;font-weight:700}
 .prep.om .dk{background:#f8f4e6;border:0;box-shadow:0 1px 3px rgba(0,0,0,.35);border-radius:1px;background-image:repeating-linear-gradient(transparent 0 13px,rgba(84,124,186,.15) 13px 14px)}
-.prep.om .dk{width:118px}
+
 .prep.om .dk-nm{overflow-wrap:normal;word-break:normal;hyphens:none;font-size:11px}
 .prep.om .dk.off{box-shadow:0 0 0 1px rgba(34,32,27,.3);background:transparent}
 @media (max-width:560px){.om-head{grid-template-columns:34px minmax(0,1fr)}.om-ref{grid-column:1/-1;text-align:left}.om-ags{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -1609,7 +1609,12 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 
 
 /* dotation : cartes réelles */
-.prep.om .dk-row{gap:14px 10px;padding-top:6px;align-items:flex-start}
+.prep.om .dk-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;align-items:stretch}
+.prep.om .dk{width:auto;text-align:left}
+.dk-tx{font-size:11px;line-height:1.3;color:#3a3226}
+.dk-req{font-family:var(--f-display);font-weight:700;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#8f2519}
+.dk.off .dk-tx{text-decoration:none}
+@media (max-width:560px){.prep.om .dk-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .dkc{position:relative;background:none;border:0;padding:0;cursor:pointer;transition:transform .15s}
 .dkc>.c{zoom:.74;pointer-events:none;box-shadow:0 2px 5px rgba(0,0,0,.35)}
 .dkc:not(:disabled):hover{transform:translateY(-4px)}
@@ -2488,17 +2493,17 @@ function roleOf(id){if(['analyse'].includes(id))return 'Confinement';if(id==='ru
 function dkCard(id,on,act,val,locked,who){const d=CARDS[id];const k=cardKind(id,who?'A':'F');
   return `<button class="dkc ${on?'':'off'}" data-a="${act}" data-v="${val}" ${locked?'disabled':''} aria-pressed="${on}" aria-label="${esc(d.name)} : ${on?'embarquée':'retirée'}"><span class="c static k-${k}" style="--dc:${d.dept?DEPT[d.dept].col:'var(--red)'}">${cardFace(id,who?{owner:'A',label:who}:{})}</span>${on?'':'<span class="dkc-st">Retirée</span>'}${locked&&on?'<span class="dkc-lk">minimum</span>':''}</button>`;}
 function dkTile(id,on,act,val,locked){const d=CARDS[id];
-  return `<button class="dk ${on?'':'off'} ${d.anom?'anom':''}" style="--dc:${DEPT[d.dept].col}" data-a="${act}" data-v="${val}" ${locked?'disabled':''} title="${esc(d.text)}"><span class="dk-cost">${d.cost}</span>${icon(ICONOF[id],'dk-ic')}<span class="dk-nm">${d.name}</span><span class="dk-st">${on?'Embarquée':'Retirée'}</span></button>`;}
+  return `<button class="dk ${on?'':'off'} ${d.anom?'anom':''}" style="--dc:${DEPT[d.dept].col}" data-a="${act}" data-v="${val}" ${locked?'disabled':''} title="${esc(d.text)}"><span class="dk-cost">${d.cost}</span>${icon(ICONOF[id],'dk-ic')}<span class="dk-nm">${d.name}</span>${d.req?`<span class="dk-req">Requiert ${Object.keys(d.req).map(k=>`${d.req[k]} ${DEPT[k].name}`).join(', ')}</span>`:''}<span class="dk-tx">${d.text}</span><span class="dk-st">${on?'Embarquée':'Retirée'}</span></button>`;}
 function prepHTML(){
   const q=X.squad;const inc=S.incidents.find(i=>i.id===q.inc);if(!inc)return '';const ids=[...q.sel];
   const deck=[];
   const agents=ids.map(id=>{const a=S.roster.find(r=>r.id===id);const l=agentCards(a);const off=a.deckOff||[];const onN=l.length-off.length;
     l.forEach((c,i)=>{if(!off.includes(i))deck.push(c);});
     return `<div class="dk-grp"><div class="dk-h"><b>${esc(a.name)}</b><span class="small muted">${CLASS[a.cls].name} · ${SPECS[a.cls][a.spec]} · ${onN}/${l.length} cartes</span></div>
-      <div class="dk-row">${l.map((c,i)=>{const on=!off.includes(i);return dkCard(c,on,'dkoff',`${a.id}:${i}`,on&&onN<=MIN_AGENT_CARDS,a.name.split(' ').pop());}).join('')}</div></div>`;}).join('');
+      <div class="dk-row">${l.map((c,i)=>{const on=!off.includes(i);return dkTile(c,on,'dkoff',`${a.id}:${i}`,on&&onN<=MIN_AGENT_CARDS);}).join('')}</div></div>`;}).join('');
   S.arsenal.filter(x=>x.on).forEach(x=>deck.push(x.id));
   const ars=`<div class="dk-grp"><div class="dk-h"><b>Arsenal Fondation</b><span class="small muted">${arsenalOn()}/${ARSENAL_MAX} cartes embarquées</span></div>
-    <div class="dk-row">${S.arsenal.map(x=>dkCard(x.id,x.on,'dkars',x.uid,!x.on&&arsenalOn()>=ARSENAL_MAX)).join('')}</div></div>`;
+    <div class="dk-row">${S.arsenal.map(x=>dkTile(x.id,x.on,'dkars',x.uid,!x.on&&arsenalOn()>=ARSENAL_MAX)).join('')}</div></div>`;
   const roles={};deck.forEach(id=>{const r=roleOf(id);roles[r]=(roles[r]||0)+1;});
   const avg=deck.length?(deck.reduce((s,id)=>s+CARDS[id].cost,0)/deck.length).toFixed(1):'0';
   const order=['Attaque','Défense','Soins','Confinement','Pioche','Contre-mesures','Autre'];
