@@ -1641,6 +1641,10 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .np-cap{position:absolute;left:3%;width:35.6%;top:73.5%;bottom:4%;background:rgba(202,176,138,.9);box-shadow:0 0 8px 6px rgba(202,176,138,.9);display:flex;flex-direction:column;justify-content:center;gap:1cqw}
 .desk-top .np .psub{font-size:2.15cqw;line-height:1.2;text-align:left}
 .desk-top .np .pbar{height:1.1cqw;margin:0;border-color:#3a352b}
+
+.dlg:has(.arch){width:min(1120px,100%);padding:0;background:none;box-shadow:none}
+.msheet.arch{width:100%}
+.pl-btns{margin-left:auto;display:flex;flex-direction:column;gap:4px;flex:none;align-self:center}.pl-btns .pl-menu{margin:0;padding:4px 10px;font-size:11px;width:100%}
 /* dotation : cartes réelles */
 .prep.om .dk-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;align-items:stretch}
 .prep.om .dk{width:auto;text-align:left}
@@ -2242,7 +2246,7 @@ function phoneHTML_call(){const u=urgentIncs();
 function header(){const h=headline();const hot=S.expo>=50;
   const date=`Semaine ${Math.min(S.week,WEEKS)}`;
   return `<header class="top desk-top">
-    <div class="hd-left"><div class="plaque"><span class="screw"></span><div><h1>Protocole <b>Cerbère</b></h1><div class="sub">Commandement régional Europe · ${esc(curProf()?curProf().name:'')} · ${dif().name}</div></div><button class="pl-menu" data-a="tomenu" aria-label="Menu principal" title="Menu principal">Menu</button><span class="screw"></span></div>
+    <div class="hd-left"><div class="plaque"><span class="screw"></span><div><h1>Protocole <b>Cerbère</b></h1><div class="sub">Commandement régional Europe · ${esc(curProf()?curProf().name:'')} · ${dif().name}</div></div><span class="pl-btns"><button class="pl-menu" data-a="archives" title="Fiches des anomalies">Archives</button><button class="pl-menu pl-menu2" data-a="tomenu" aria-label="Menu principal" title="Menu principal">Menu</button></span><span class="screw"></span></div>
     <div class="telex" aria-label="Ressources"><div class="telex-paper"><div class="tx-line"><span>SEM ${String(Math.min(S.week,WEEKS)).padStart(2,'0')}/${WEEKS}</span><span>CRÉDITS <b>${S.credits}</b></span><span>RECHERCHE <b>${S.rp}</b> PTS</span><span>MATÉRIEL <b>${S.mat}</b></span></div>
       <div class="tx-line last">${S.telex?esc(S.telex):'TRANSMISSION O5 ÉTABLIE · EN ATTENTE DE RAPPORT'}<i class="caret"></i></div></div></div></div>
     <div class="paper np ${hot?'hot':''}" title="Exposition ${S.expo}/${EXPO_MAX}"><div class="np-top"><div class="mast">Le Courrier du Soir</div><div class="pdate"><span>${date}</span><span>Exposition ${S.expo}/${EXPO_MAX}</span></div>
@@ -3317,14 +3321,18 @@ function tutoVis(v){
   if(v==='redact')return `<div class="prop" style="border:0"><b><span>Contagion mémétique</span><span class="on">active</span></b><span class="redact">██ ███████ █████ ████ █████ ████ ██ ████</span></div>`;
   return '';
 }
+function anomGridHTML(sv,btn){return `<div class="enc-grid">`+Object.keys(ANOM).map(k=>{const A=ANOM[k];
+      const seen=!!(sv&&sv.seen&&sv.seen[k]);const plv=profLv(k,sv);const known=plv>=profMax(k);const capt=!!(sv&&sv.cells&&sv.cells.some(c=>c.a&&c.a.type===k));
+      if(!seen)return `<div class="enc-anom locked"><span class="code">${A.code}</span><h3><span class="redact">████████████</span></h3><p class="small">Aucune rencontre enregistrée. Fiche verrouillée.</p><span class="stamp">CLASSÉ</span></div>`;
+      return `<div class="enc-anom"><span class="code">${A.code} · ${A.cls}${capt?' · en cellule':''}</span><h3>« ${A.name} »</h3>${btn(k)}<p class="small">${A.desc}</p>${known?`<p class="small"><strong>${A.resName}</strong> ${A.res} · attaque ${A.atk} · manifestations : ${A.mani}${A.strong!==A.mani?' puis '+A.strong:''}</p>`:`<p class="prof">Dossier au niveau ${plv}/${profMax(k)} : effets partiellement caviardés.</p>`}${anomPropsHTML(A,plv,false)}<span class="stamp ${known?'ok':''}">${known?'PROFIL COMPLET':'PARTIEL'}</span></div>`;}).join('')+`</div>`;}
+function archHTML(){return `<div class="msheet om enc arch">${mHead('Archives centrales','Fiches des anomalies · consultation sur place',`Registre A-0<br>Semaine ${Math.min(S.week,WEEKS)}`)}
+  ${anomGridHTML(S,k=>`<button class="om-b" data-a="archrep" data-v="${k}" style="align-self:flex-start">Lire le rapport</button>`)}
+  <div class="om-foot"><span class="om-hand">— ne pas sortir du site —</span><span class="om-btns"><button class="om-b" data-a="closemodal">Refermer les archives</button></span></div></div>`;}
 function encyHTML(){
   const sv=peek(PROF.cur);const tabs=[['anom','Anomalies'],['cards','Cartes'],['classes','Classes'],['rules','Règles']];const tab=X.ency||'anom';
   let body='';
   if(tab==='anom'){
-    body=`<p class="small muted">${sv?'Données issues de la campagne du profil actif.':'Aucune campagne sur ce profil : toutes les fiches sont verrouillées.'}</p><div class="enc-grid">`+Object.keys(ANOM).map(k=>{const A=ANOM[k];
-      const seen=!!(sv&&sv.seen&&sv.seen[k]);const plv=profLv(k,sv);const known=plv>=profMax(k);const capt=!!(sv&&sv.cells&&sv.cells.some(c=>c.a&&c.a.type===k));
-      if(!seen)return `<div class="enc-anom locked"><span class="code">${A.code}</span><h3><span class="redact">████████████</span></h3><p class="small">Aucune rencontre enregistrée. Fiche verrouillée.</p><span class="stamp">CLASSÉ</span></div>`;
-      return `<div class="enc-anom"><span class="code">${A.code} · ${A.cls}${capt?' · en cellule':''}</span><h3>« ${A.name} »</h3><button class="btn ghost" data-a="m" data-v="rep:${k}" style="align-self:flex-start">Lire le rapport</button><p class="small">${A.desc}</p>${known?`<p class="small"><strong>${A.resName}</strong> ${A.res} · attaque ${A.atk} · manifestations : ${A.mani}${A.strong!==A.mani?' puis '+A.strong:''}</p>`:`<p class="prof">Dossier au niveau ${plv}/${profMax(k)} : effets partiellement caviardés.</p>`}${anomPropsHTML(A,plv,false)}<span class="stamp ${known?'ok':''}">${known?'PROFIL COMPLET':'PARTIEL'}</span></div>`;}).join('')+`</div>`;}
+    body=`<p class="small muted">${sv?'Données issues de la campagne du profil actif.':'Aucune campagne sur ce profil : toutes les fiches sont verrouillées.'}</p>`+anomGridHTML(sv,k=>`<button class="btn ghost" data-a="m" data-v="rep:${k}" style="align-self:flex-start">Lire le rapport</button>`);}
   else if(tab==='cards'){
     const grp=[["Tireur d'élite",[...new Set(CLASS.S.cards)],'S1'],["Assaut",[...new Set(CLASS.A.cards)],'A1'],["Grenadier",[...new Set(CLASS.G.cards)],'G1'],["Spécialiste",[...new Set(CLASS.P.cards)],'P1'],
       ...Object.keys(CLASS).map(k=>["Compétences · "+CLASS[k].name,[...new Set([0,1].flatMap(sp=>SKILLS[k][sp].flat().map(s=>SKILL_CARD[s.id]).filter(Boolean)))],k+'1']),["Fondation et atelier",['silence','omega','amn','ravit','escorte','medikit','thermique','decon','projecteur','faussemonnaie','gyrophare','drapnoir','coupure','brouilleur','ancre'],'F'],
@@ -3452,6 +3460,8 @@ function act(a,v){
     case 'launch':{const q=X.squad;const inc=S.incidents.find(i=>i.id===q.inc);if(!inc||!q.sel.size)return;X.modal=null;X.squad=null;startCombat(inc,[...q.sel]);$('#root').innerHTML='';break;}
     case 'phone':X.modal=()=>phoneHTML_call();break;
     case 'closemodal':X.modal=null;X.squad=null;break;
+    case 'archives':X.modal=archHTML;break;
+    case 'archrep':{const k=v;X.modal=()=>anomReportHTML(k,S,'<button class="btn" data-a="archives">‹ Archives</button> <button class="btn primary" data-a="closemodal">Refermer</button>');break;}
     case 'closenotice':S.notices.shift();break;
     case 'newgame':X.confirmNew=true;break;
     case 'cancelnew':X.confirmNew=false;break;
