@@ -1372,7 +1372,7 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .cb-stamp.sec{font-size:clamp(18px,3vw,26px)}
 .cb-desc{margin:4px 0 0;font-family:"Courier New",monospace;font-size:14px;line-height:1.5}
 .cb-h{margin:6px 0 0;font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px}
-.cb-rules{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px;font-size:13.5px;line-height:1.4;list-style:decimal-leading-zero}
+.cb-rules{margin:0;padding-left:34px;display:flex;flex-direction:column;gap:5px;font-size:13.5px;line-height:1.4;list-style:decimal-leading-zero}
 .cb-rules li::marker{font-family:"Courier New",monospace;font-weight:700}
 .cb-rules strong{font-family:"Courier New",monospace}
 .cb-lines{margin:6px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:6px;font-family:"Courier New",monospace;font-size:14px;line-height:1.45;list-style:decimal-leading-zero}
@@ -1603,6 +1603,46 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
   .unit .sub{display:none}
   .brow,.lanes{gap:4px}
   .brand h1{font-size:24px}
+}
+
+/* ===== Combat sur téléphone ===== */
+.m-only{display:none}
+@media (max-width:700px),(max-height:520px) and (orientation:landscape){
+  .m-only{display:revert}
+  .cgrid{gap:8px}
+  .cgrid .card.status{padding:8px 8px 10px}
+  .st-top{gap:2px 8px}.st-top h1{font-size:18px}.st-top .eyebrow{font-size:10px}
+  .cs-thermo{gap:8px}.cs-tlab{font-size:10px}
+  .res-row{gap:6px 10px}.res-row .piles{display:none}.res-row .gem{font-size:11px;padding:2px 6px}.res-row .btn{padding:5px 10px;font-size:12px;min-height:0}
+  .cgrid .card.board{padding:8px 6px}
+  .cgrid .card.handzone{position:sticky;bottom:0;z-index:30;margin:0 -12px;padding:6px 8px calc(8px + env(safe-area-inset-bottom,0px));background:linear-gradient(rgba(16,14,11,.82),rgba(16,14,11,.96));border-top:1px solid rgba(201,165,91,.45);border-radius:0;backdrop-filter:blur(4px);gap:4px}
+  .handzone .actionbar{padding:6px 8px;gap:6px;min-height:0}
+  .d-only{display:none}
+  .handzone .actionbar .hint{font-size:12px;line-height:1.3;flex:1 1 150px}
+  .handzone .actionbar .btn{padding:6px 12px;font-size:12.5px;min-height:34px;flex:0 1 auto}
+  .handzone .hand{flex-wrap:nowrap;overflow-x:auto;overflow-y:visible;justify-content:flex-start;gap:8px;padding:26px 10px 4px;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .handzone .hand::-webkit-scrollbar{display:none}
+  .handzone .hand>.c{flex:none;margin:0;rotate:0deg;translate:0 0;scroll-snap-align:center;zoom:.8}
+  .handzone .hand>.c.sel{translate:0 -10px;box-shadow:0 0 0 3px #c9a55b,0 8px 16px rgba(0,0,0,.6)}
+  .handzone .hand>.c:hover{translate:0 0}
+  .handzone .hand>.c.sel:hover{translate:0 -10px}
+  .sd-tabs{display:flex;gap:4px}
+  .sd-tabs button{flex:1;background:#b8995a;background-image:linear-gradient(#cdb47a,#b8995a);border:0;border-radius:6px 6px 0 0;padding:8px 6px;font-family:var(--f-display);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#2a2116;cursor:pointer;opacity:.75}
+  .sd-tabs button.on{opacity:1;background:#ece3c6}
+  #cside[data-t="obj"]>.dossier,#cside[data-t="obj"]>.log,#cside[data-t="log"]>.dossier,#cside[data-t="log"]>.obj,#cside[data-t="dos"]>.obj,#cside[data-t="dos"]>.log{display:none}
+  .cgrid .card.log{max-height:none}
+}
+
+@media (max-height:520px) and (orientation:landscape){
+  .cgrid .main{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.35fr) minmax(0,1fr);gap:8px;align-items:start}
+  .cgrid .card.status{align-self:stretch}
+  .st-top h1{font-size:15px}.res-row .gem{font-size:10px}
+  .cgrid .card.handzone{position:sticky;top:4px;bottom:auto;margin:0;max-height:calc(100vh - 8px);border:1px solid rgba(201,165,91,.35);border-radius:4px;overflow:hidden;display:flex}
+  .handzone .hand{flex-wrap:wrap;overflow-x:hidden;overflow-y:auto;justify-content:center;gap:6px;padding:14px 4px 6px;flex:1;min-height:0}
+  .handzone .hand>.c{zoom:.62}
+  .board .slot{min-height:80px}
+  .board .pw-tag .nums{white-space:nowrap;font-size:13px;gap:4px}.board .pw-tag .ttl{font-size:9px}
+  .res-row .mana{font-size:11px;letter-spacing:.06em}
 }
 @media (prefers-reduced-motion:reduce){.fx,.unit.tgt,.k-anom .c-fig .ic,.rf-hum{animation:none}.c{transition:none}}
 </style>
@@ -2890,7 +2930,7 @@ function actionHTML(){
     const bt=c.id==='refrain'?`Brûler (efface${AN().echo?', +1 brèche':''})`:`Brûler (+1 accréditation, +1 ${DEPT[d.dept].name})`;
     return `<span class="hint">${p.ok?`<strong>${d.name}</strong>`:p.why}</span>${c.id==='refrain'?'':`<button class="btn primary" data-a="cplay" ${p.ok?'':'disabled'}>Jouer · ${costOf(c)}</button>`}
       <button class="btn danger" data-a="cburn" ${C.burned?'disabled':''}>${C.burned?'Déjà brûlé ce tour':bt}</button><button class="btn" data-a="ccancel">Annuler</button>`;}}
-  return `<span class="hint">Touchez une carte pour la jouer ou la brûler. Touchez un agent pour le déplacer.${C.burned?'':' <strong>Vous pouvez brûler une carte ce tour.</strong>'}</span>`;
+  return `<span class="hint"><span class="d-only">Touchez une carte pour la jouer ou la brûler. Touchez un agent pour le déplacer.${C.burned?'':' <strong>Vous pouvez brûler une carte ce tour.</strong>'}</span><span class="m-only">Touchez une carte ou un agent.${C.burned?'':' <strong>Brûlage disponible.</strong>'}</span></span><button class="btn primary m-only" data-a="cend">Fin du tour</button>`;
 }
 function anomProps(A){const L=[];
   if(A.contagion)L.push({n:"Contagion mémétique",on:"active",t:"Un Refrain entre dans votre main un tour sur deux. Dès que vous en tenez 2 ou plus, ils contaminent une carte voisine en fin de tour."});
@@ -2913,8 +2953,8 @@ function anomPropsHTML(A,lv,weak){const k=Object.keys(ANOM).find(x=>ANOM[x]===A)
   out.push(`<div class="prop"><b><span>Masse</span><span class="${weak?'off':'on'}">${weak?'neutralisée':'active'}</span></b>Une manifestation (${A.mani}) apparaît tous les ${R_(A.spawnEvery)} tours, ${R_(A.maniMax)} au maximum, jusqu'à 50 % de confinement.</div>`);
   out.push(`<div class="prop"><b><span>Comportement</span></b>${A.name} ${A.verb} le couloir en face (${R_(A.atk)} dégâts, ou +${R_(A.emptyBreach)} brèche s'il est vide). Les manifestations attaquent en face ou franchissent un couloir vide (+1 brèche).</div>`);
   return out.join('');}
-function sideHTML(){const A=AN();const weak=C.conf>=CONF_MAX/2;const surv=C.p.find(u=>u&&u.kind==='surv');const known=knows(C.A);const plv=profLv(C.A);
-  return `<div class="dossier"><span class="stamp">${A.cls.toUpperCase()}</span><span class="code">${C.code}</span><h2>« ${A.name} »</h2><p style="font-size:12.5px">${A.desc} Origine : <span class="redact">██████████</span>.</p>${known?'':`<p class="prof">Dossier incomplet (niveau ${plv}/${profMax(C.A)}). Les études du Département scientifique lèvent le caviardage par étapes.</p>`}${anomPropsHTML(A,plv,weak)}<button class="btn" data-a="crep" style="background:#2a2520;color:var(--paper);border-color:#2a2520">Rapport complet</button></div>
+function sideHTML(){const A=AN();const weak=C.conf>=CONF_MAX/2;const surv=C.p.find(u=>u&&u.kind==='surv');const known=knows(C.A);const plv=profLv(C.A);const t=X.cside||'obj';
+  return `<nav class="sd-tabs m-only">${[['obj','Objectifs'],['log','Journal'],['dos','Dossier']].map(([k,l])=>`<button class="${t===k?'on':''}" data-a="cside" data-v="${k}">${l}</button>`).join('')}</nav><div class="dossier"><span class="stamp">${A.cls.toUpperCase()}</span><span class="code">${C.code}</span><h2>« ${A.name} »</h2><p style="font-size:12.5px">${A.desc} Origine : <span class="redact">██████████</span>.</p>${known?'':`<p class="prof">Dossier incomplet (niveau ${plv}/${profMax(C.A)}). Les études du Département scientifique lèvent le caviardage par étapes.</p>`}${anomPropsHTML(A,plv,weak)}<button class="btn" data-a="crep" style="background:#2a2520;color:var(--paper);border-color:#2a2520">Rapport complet</button></div>
   <div class="card obj"><span class="eyebrow">Objectifs</span>
     <div><span>Capturer (confinement ${CONF_MAX})</span><span class="${C.conf>=CONF_MAX?'ok':'wait'}">${C.conf}/${CONF_MAX}</span></div>
     <div><span>Ou repousser (${A.resName.toLowerCase()} à 0)</span><span class="wait">${core()?core().hp:0}</span></div>
@@ -2924,7 +2964,7 @@ function sideHTML(){const A=AN();const weak=C.conf>=CONF_MAX/2;const surv=C.p.fi
   <div class="card log" aria-live="polite">${C.log.slice(-18).reverse().map(l=>`<div class="${l.c}">› ${esc(l.t)}</div>`).join('')}</div>`;}
 function renderCombat(){
   if(!$('#cstatus'))$('#root').innerHTML=`<div class="cgrid"><div class="main"><section class="card status" id="cstatus"></section><section class="card board" id="cboard"></section><section class="card handzone"><div class="actionbar" id="cbar"></div><div class="hand" id="chand"></div></section></div><aside class="side" id="cside"></aside></div>`;
-  $('#cstatus').innerHTML=statusHTML();$('#cboard').innerHTML=boardHTML();$('#cbar').innerHTML=actionHTML();$('#chand').innerHTML=C.hand.map(cardHTML).join('');{const cs=[...$('#chand').children];const n=cs.length;cs.forEach((el,i)=>{const fi=i-(n-1)/2;el.style.setProperty('--fi',fi);el.style.setProperty('--fa',Math.abs(fi));});}$('#cside').innerHTML=sideHTML();
+  $('#cstatus').innerHTML=statusHTML();$('#cboard').innerHTML=boardHTML();$('#cbar').innerHTML=actionHTML();$('#chand').innerHTML=C.hand.map(cardHTML).join('');{const cs=[...$('#chand').children];const n=cs.length;cs.forEach((el,i)=>{const fi=i-(n-1)/2;el.style.setProperty('--fi',fi);el.style.setProperty('--fa',Math.abs(fi));});}$('#cside').innerHTML=sideHTML();$('#cside').dataset.t=X.cside||'obj';
 }
 function cbHead(title,sub){const A=AN();
   return `<div class="om-head">${FO_EMB}<div class="om-ht"><span>Fondation SCP · Commandement régional Europe</span><b>${title}</b><span>${sub}</span></div><span class="om-ref">${C.code}<br>Semaine ${Math.min(S.week,WEEKS)}</span></div>
@@ -3255,8 +3295,9 @@ function act(a,v){
     case 'cburn':{const c=C.hand.find(x=>x.uid===(C.sel&&C.sel.uid));if(c)burn(c);return;}
     case 'ccancel':C.sel=null;C.targeting=null;break;
     case 'cend':endTurn();return;
-    case 'cgo':if(C.phase==='deploy'){C.phase='player';C.sel=null;clog("Opération lancée.",'warn');}break;
+    case 'cgo':if(C.phase==='deploy'){C.phase='player';C.sel=null;clog("Opération lancée.",'warn');if(innerWidth<=700)setTimeout(()=>{const b=$('#cboard');b&&b.scrollIntoView({block:'start',behavior:RM?'auto':'smooth'});},60);}break;
     case 'chelp':C.intro=true;break;
+    case 'cside':X.cside=v;break;
     case 'cclose':C.intro=false;break;
     case 'creturn':applyCombat();$('#root').innerHTML='';break;
   }
