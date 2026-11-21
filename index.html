@@ -2537,7 +2537,7 @@ function staffView(){
       <dl class="fo-dl"><dt>Spécialité</dt><dd>${SPECS[a.cls][a.spec]}</dd><dt>Santé</dt><dd>${agentHp(a)} PV</dd><dt>Volonté</dt><dd>${agentWill(a)}</dd><dt>États</dt><dd>${a.missions} op. · ${a.kills} dissip.</dd></dl>
       <div class="fo-xp"><span>${next?`${a.xp}/${next} XP`:'Grade maximal'}</span><i><b style="width:${pct}%"></b></i></div>
       <p class="fo-sk">${sk.length?sk.join(' · '):'Aucune compétence acquise.'}</p>
-      ${pc?`<button class="fo-post" data-a="skills" data-v="${a.id}">${pc} compétence${pc>1?'s':''} à choisir</button>`:note?`<span class="fo-note">${note}</span>`:''}
+      ${pc?`<button class="fo-post" data-a="skills" data-v="${a.id}">${pc} compétence${pc>1?'s':''}</button>`:note?`<span class="fo-note">${note}</span>`:''}
       <span class="fo-conf" aria-hidden="true">Confidentiel</span>
       <div class="fo-act"><div class="fo-btns"><button class="fo-btn" data-a="dossier" data-v="${a.id}">Dossier</button><button class="fo-btn" data-a="skills" data-v="${a.id}">Compétences</button></div><span class="fo-stamp ${a.wound?'bad':''}">${a.wound?`${gA(a,'Blessé','Blessée')}<br>${a.wound} sem.`:'Disponible'}</span></div>
       ${FO_STRING}</div></div>`;}).join('');
