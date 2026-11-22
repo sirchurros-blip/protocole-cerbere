@@ -1645,6 +1645,9 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 .dlg:has(.arch){width:min(1120px,100%);padding:0;background:none;box-shadow:none}
 .msheet.arch{width:100%}
 .pl-btns{margin-left:auto;display:flex;flex-direction:column;gap:4px;flex:none;align-self:center}.pl-btns .pl-menu{margin:0;padding:4px 10px;font-size:11px;width:100%}
+
+.board .lane.mk{display:flex;flex-direction:column;align-items:center;line-height:1}
+.lane-mk{font-family:var(--f-display);font-weight:700;font-size:11px;background:#efe6cc;padding:0 4px;margin-top:2px;letter-spacing:.08em;text-transform:uppercase;color:#a3241a;text-shadow:none}
 /* dotation : cartes réelles */
 .prep.om .dk-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;align-items:stretch}
 .prep.om .dk{width:auto;text-align:left}
@@ -1803,8 +1806,28 @@ const ANOM={
     desc:"Grand miroir d'appartement au cadre de chêne. Ce qu'il montre n'est pas toujours ce qui se tient devant lui, et ce qui disparaît dans le tain n'en ressort pas toujours."},
   tel:{code:'ANO-733',name:"Le Téléphone à cadran",cls:'Sûr',res:14,resName:"Signal",atk:2,emptyBreach:1,verb:"assourdit",phone:true,handcap:true,mani:'Voix',strong:'Voix insistante',spawnEvery:2,maniMax:3,start:[0,5],decay:2,
     desc:"Téléphone mural en bakélite noire, débranché depuis 1974. Il sonne quand même. Ne pas répondre a toujours des conséquences."},
+  boite:{code:'ANO-108',name:"La Boîte à musique",cls:'Sûr',res:12,resName:"Mélodie",atk:2,emptyBreach:1,verb:"berce",lullaby:true,mani:'Danseuse',strong:'Ballerine',spawnEvery:3,maniMax:3,start:[1,4],decay:2,
+    desc:"Petite boîte à musique en marqueterie, ornée d'une ballerine qui tourne. Quiconque entend l'air jusqu'au bout s'endort, où qu'il se trouve."},
+  manege:{code:'ANO-523',name:"Le Manège",cls:'Euclide',res:14,resName:"Élan",atk:2,emptyBreach:1,verb:"renverse",carousel:true,mani:'Cheval de bois',strong:'Cheval cabré',spawnEvery:2,maniMax:4,start:[0,4],decay:2,
+    desc:"Carrousel forain des années 1920, retrouvé sur un terrain vague. Il tourne sans moteur ni forain, et tout ce qui l'approche finit par tourner avec lui."},
+  photoc:{code:'ANO-777',name:"La Photocopieuse",cls:'Euclide',res:15,resName:"Toner",atk:2,emptyBreach:1,verb:"aveugle d'un flash",copies:true,mani:'Double de papier',strong:'Double conforme',spawnEvery:2,maniMax:4,start:[1,5],decay:2,
+    desc:"Photocopieur de bureau des années 1970. Il reproduit tout ce qu'on lui confie, et parfois ce qu'on ne lui a pas confié. Les copies sont toujours un peu floues."},
+  manneq:{code:'ANO-095',name:"Le Mannequin de vitrine",cls:'Keter',res:16,resName:"Patience",atk:2,emptyBreach:2,verb:"agrippe",statue:true,mani:'Mannequin',strong:'Mannequin articulé',spawnEvery:3,maniMax:3,start:[0,4],decay:3,
+    desc:"Mannequin de grand magasin sans visage. Il ne bouge jamais quand on le regarde. Les vitrines où il est exposé changent de disposition chaque nuit."},
+  pluie:{code:'ANO-350',name:"La Pluie noire",cls:'Euclide',res:14,resName:"Densité",atk:2,emptyBreach:1,verb:"trempe",rain:true,mani:'Silhouette de pluie',strong:'Trombe',spawnEvery:2,maniMax:4,start:[1,4],decay:2,
+    desc:"Averse localisée d'un liquide noir et froid qui ne s'évapore pas. Elle tombe toujours sur une seule rue, et ceux qui restent dessous s'épuisent sans raison."},
+  ascens:{code:'ANO-812',name:"L'Ascenseur de service",cls:'Euclide',res:14,resName:"Câblage",atk:2,emptyBreach:1,verb:"aspire",lift:true,mani:'Liftier',strong:'Groom',spawnEvery:3,maniMax:4,start:[0,5],decay:2,
+    desc:"Cabine d'ascenseur à grille accordéon d'un ancien hôtel. Elle dessert un étage qui n'existe sur aucun plan. Ce qui y entre en ressort rarement au même endroit."},
+  radio:{code:'ANO-904',name:"La Radio de nuit",cls:'Euclide',res:14,resName:"Fréquence",atk:2,emptyBreach:1,verb:"brouille",radio:true,mani:'Parasite hertzien',strong:'Larsen',spawnEvery:2,maniMax:4,start:[1,4],decay:2,
+    desc:"Poste de radio à lampes qui capte, chaque nuit à 3 h, une émission sans indicatif. Le speaker lit des avis de décès. Les noms annoncés sont toujours vivants au moment de l'annonce."},
+  machine:{code:'ANO-266',name:"La Machine à écrire",cls:'Euclide',res:14,resName:"Encre",atk:2,emptyBreach:1,verb:"frappe",typewriter:true,mani:'Feuillet',strong:'Liasse',spawnEvery:2,maniMax:4,start:[0,4],decay:2,
+    desc:"Machine à écrire de bureau qui tape seule des rapports datés du lendemain. Ce qu'elle décrit se produit. Elle commet parfois des fautes, et la réalité les recopie."},
+  valise:{code:'ANO-019',name:"La Valise abandonnée",cls:'Sûr',res:12,resName:"Contenance",atk:1,emptyBreach:1,verb:"heurte",suitcase:true,mani:'Objet égaré',strong:'Bagage lourd',spawnEvery:2,maniMax:4,start:[1,5],decay:2,
+    desc:"Valise en cuir oubliée sur un quai, étiquette illisible. On n'en sort jamais deux fois la même chose, et rien de ce qu'on en sort n'appartient à personne."},
+  horloge:{code:'ANO-120',name:"L'Horloge de la mairie",cls:'Keter',res:16,resName:"Mécanisme",atk:2,emptyBreach:2,verb:"sonne l'heure sur",clock:true,ramp:9,mani:'Automate',strong:'Jacquemart',spawnEvery:3,maniMax:3,start:[1,4],decay:3,
+    desc:"Horloge du beffroi d'une mairie de province. Ses aiguilles indiquent parfois une heure impossible. Quand elle sonne, ce qui vient de se passer n'a jamais eu lieu."}
 };
-const MANI={Choriste:{hp:3,atk:2},Soliste:{hp:5,atk:3},'Témoin':{hp:2,atk:1},Canette:{hp:2,atk:2},Bouteille:{hp:4,atk:3},Passant:{hp:3,atk:2},'Passant pressé':{hp:4,atk:3},Reflet:{hp:4,atk:3},Voix:{hp:3,atk:2},'Voix insistante':{hp:4,atk:3}};
+const MANI={Choriste:{hp:3,atk:2},Soliste:{hp:5,atk:3},'Témoin':{hp:2,atk:1},Canette:{hp:2,atk:2},Bouteille:{hp:4,atk:3},Passant:{hp:3,atk:2},'Passant pressé':{hp:4,atk:3},Reflet:{hp:4,atk:3},Voix:{hp:3,atk:2},'Voix insistante':{hp:4,atk:3},Danseuse:{hp:3,atk:2},Ballerine:{hp:5,atk:3},'Cheval de bois':{hp:3,atk:2},'Cheval cabré':{hp:5,atk:3},'Double de papier':{hp:3,atk:2},'Double conforme':{hp:5,atk:3},Mannequin:{hp:4,atk:2},'Mannequin articulé':{hp:6,atk:3},'Silhouette de pluie':{hp:3,atk:2},Trombe:{hp:5,atk:3},Liftier:{hp:3,atk:2},Groom:{hp:4,atk:3},'Parasite hertzien':{hp:2,atk:2},Larsen:{hp:4,atk:3},Feuillet:{hp:2,atk:1},Liasse:{hp:4,atk:2},'Objet égaré':{hp:3,atk:1},'Bagage lourd':{hp:5,atk:2},Automate:{hp:4,atk:2},Jacquemart:{hp:6,atk:3}};
 const DMG=new Set(['tir','tirmortel','supp','feu','assautf','charge','couv','sol','enchain','rafale','mortier','gren','thermique','tirmvt','rupture']);
 const CARDS={
   tir:{name:"Tir de précision",dept:'sec',cost:2,target:'enemy',text:"4 dégâts à n'importe quel hostile."},
@@ -1869,6 +1892,27 @@ const CARDS={
   gyrophare:{name:"Gyrophare",dept:'ops',cost:1,target:'none',text:"Le feu tricolore passe au vert pour ce tour. Piochez 1."},
   drapnoir:{name:"Drap noir",dept:'sci',cost:1,target:'none',text:"Le miroir ne renvoie plus rien ce tour, et une carte qu'il retenait revient dans la défausse."},
   coupure:{name:"Coupure de ligne",dept:'sci',cost:1,target:'none',text:"Retirez tous les Appels entrants de votre main sans brèche. Piochez 1."},
+  reveil:{name:"Réveil-matin",dept:'ops',cost:0,target:'none',text:"Tous les agents endormis se réveillent. Piochez 1."},
+  cle:{name:"Clé de remontage",dept:'ops',cost:0,target:'none',anom:true,exile:true,text:"+2 accréditation ce tour. Retirée du combat après usage."},
+  frein:{name:"Frein de manège",dept:'ops',cost:1,target:'none',text:"Le manège ne tourne pas au prochain tour hostile. Piochez 1."},
+  tourdepiste:{name:"Tour de piste",dept:'ops',cost:1,target:'none',anom:true,text:"Tous les hostiles se décalent d'un couloir vers la droite. Piochez 1."},
+  recyclage:{name:"Bac de recyclage",dept:'sci',cost:0,target:'none',text:"Détruisez toutes les Copies floues de votre main et de la défausse. Piochez 1."},
+  duplicata:{name:"Duplicata",dept:'sci',cost:1,target:'none',anom:true,text:"Ajoutez à votre main une copie de la dernière carte de votre défausse."},
+  copie:{name:"Copie floue",dept:'sci',cost:1,target:'none',parasite:true,text:"Ne fait rien. Détruite une fois jouée."},
+  lampe:{name:"Lampe-torche braquée",dept:'sec',cost:1,target:'none',text:"Ce tour, les mannequins peuvent être blessés par les attaques en face. Piochez 1."},
+  pose:{name:"Pose figée",dept:'sec',cost:1,target:'enemy',anom:true,text:"L'hostile ciblé est étourdi au prochain tour hostile."},
+  parapluie:{name:"Parapluie de service",dept:'ops',cost:1,target:'none',text:"Tous les agents et le survivant gagnent 1 protection. Piochez 1."},
+  goutte:{name:"Goutte noire",dept:'sec',cost:1,target:'enemy',anom:true,text:"2 dégâts à un hostile. S'il survit, il est étourdi."},
+  cale:{name:"Cale-porte",dept:'ops',cost:1,target:'none',text:"Les portes de l'ascenseur restent fermées au prochain tour hostile. Piochez 1."},
+  sonnette:{name:"Bouton d'appel",dept:'ops',cost:1,target:'ally',anom:true,text:"Au prochain tour hostile, les hostiles ignorent cet allié. Il récupère 3 PV."},
+  brouillage:{name:"Brouilleur d'ondes",dept:'sci',cost:1,target:'ally',text:"Annule l'avis de décès de cet agent. Piochez 1."},
+  frequence:{name:"Fréquence libre",dept:'sci',cost:1,target:'none',anom:true,text:"+1 confinement. Tous les hostiles sont marqués (+1 dégât subi)."},
+  correcteur:{name:"Ruban correcteur",dept:'sci',cost:0,target:'none',text:"Efface toutes les fautes de frappe de votre main. Piochez 1."},
+  ruban:{name:"Ruban encreur",dept:'ops',cost:1,target:'none',anom:true,text:"Ce tour, vos autres cartes coûtent 1 de moins (minimum 0)."},
+  cadenas:{name:"Cadenas",dept:'ops',cost:1,target:'none',text:"La valise ne s'ouvre pas au prochain tour. Piochez 1."},
+  consigne:{name:"Ticket de consigne",dept:'ops',cost:0,target:'none',anom:true,text:"Sortez un objet de la valise : son effet est imprévisible."},
+  balancier:{name:"Balancier bloqué",dept:'sci',cost:1,target:'none',text:"L'horloge ne sonne pas à son prochain coup. Piochez 1."},
+  aiguille:{name:"Aiguille des minutes",dept:'sci',cost:2,target:'none',anom:true,text:"Récupérez toute votre accréditation."},
   refrain:{name:"Refrain",dept:null,cost:null,target:'never',text:"Injouable."},
 };
 const DEPT={sec:{name:"Sécurité",col:"var(--d-sec)"},sci:{name:"Recherche",col:"var(--d-sci)"},ops:{name:"Opérations",col:"var(--d-ops)"}};
@@ -1889,6 +1933,16 @@ const RESEARCH=[
   {id:'etude528',name:"Étude d'ANO-528",cost:10,need:'feu',card:'feuvert',text:"Ajoute la carte anomale « Feu vert » à l'arsenal."},
   {id:'etude614',name:"Étude d'ANO-614",cost:12,need:'miroir',card:'eclat',text:"Ajoute la carte anomale « Éclat de miroir » à l'arsenal."},
   {id:'etude733',name:"Étude d'ANO-733",cost:10,need:'tel',card:'lignedirecte',text:"Ajoute la carte anomale « Ligne directe » à l'arsenal."},
+  {id:'etude108',name:"Étude d'ANO-108",cost:8,need:'boite',card:'cle',text:"Ajoute la carte anomale « Clé de remontage » à l'arsenal."},
+  {id:'etude523',name:"Étude d'ANO-523",cost:10,need:'manege',card:'tourdepiste',text:"Ajoute la carte anomale « Tour de piste » à l'arsenal."},
+  {id:'etude777',name:"Étude d'ANO-777",cost:10,need:'photoc',card:'duplicata',text:"Ajoute la carte anomale « Duplicata » à l'arsenal."},
+  {id:'etude095',name:"Étude d'ANO-095",cost:12,need:'manneq',card:'pose',text:"Ajoute la carte anomale « Pose figée » à l'arsenal."},
+  {id:'etude350',name:"Étude d'ANO-350",cost:10,need:'pluie',card:'goutte',text:"Ajoute la carte anomale « Goutte noire » à l'arsenal."},
+  {id:'etude812',name:"Étude d'ANO-812",cost:10,need:'ascens',card:'sonnette',text:"Ajoute la carte anomale « Bouton d'appel » à l'arsenal."},
+  {id:'etude904',name:"Étude d'ANO-904",cost:10,need:'radio',card:'frequence',text:"Ajoute la carte anomale « Fréquence libre » à l'arsenal."},
+  {id:'etude266',name:"Étude d'ANO-266",cost:10,need:'machine',card:'ruban',text:"Ajoute la carte anomale « Ruban encreur » à l'arsenal."},
+  {id:'etude019',name:"Étude d'ANO-019",cost:8,need:'valise',card:'consigne',text:"Ajoute la carte anomale « Ticket de consigne » à l'arsenal."},
+  {id:'etude120',name:"Étude d'ANO-120",cost:12,need:'horloge',card:'aiguille',text:"Ajoute la carte anomale « Aiguille des minutes » à l'arsenal."},
 ];
 const PROF_LV={'Sûr':1,'Euclide':2,'Keter':3};
 const profMax=k=>PROF_LV[ANOM[k].cls]||2;
@@ -1953,7 +2007,7 @@ const SPECS={S:["Tireur de précision","Éclaireur"],A:["Briseur","Sentinelle"],
 const SPEC_TXT={S:["Dégâts à distance, exécutions.","Mobilité, marquage, soutien."],A:["Frappe en face, encaisse.","Protège les alliés, tient les couloirs."],G:["Explosifs et barricades.","Confinement, pièges, contrôle."],P:["Soins et réanimation.","Lutte contre les effets mémétiques."]};
 const SKILL_CARD={s3:'tirmortel',s7:'feu',s9:'execution',a3:'enchain',a6:'souffle',a8:'assautf',g3:'mortier',g6:'barr',g8:'champ',p3:'reanim',p7:'soin',p10:'conftotal',n8:'murbouclier',m5:'therapie',
   e3:'fusee',e5:'tirmvt',e8:'leurre',n2:'interpos',n6:'garde2',t3:'piege',t5:'stase',t10:'cage',m3:'contrechant',m9:'rupture'};
-const FRAG={choeur:"Fragments sonores",foule:"Résidus mémoriels",distrib:"Pièces altérées",feu:"Ampoules grillées",miroir:"Éclats de tain",tel:"Bobines de fil"};
+const FRAG={choeur:"Fragments sonores",foule:"Résidus mémoriels",distrib:"Pièces altérées",feu:"Ampoules grillées",miroir:"Éclats de tain",tel:"Bobines de fil",boite:"Ressorts de remontage",manege:"Éclats de dorure",photoc:"Feuillets carbone",manneq:"Éclats de vitrine",pluie:"Gouttes figées",ascens:"Boutons d'étage",radio:"Lampes radio",machine:"Rubans encreurs",valise:"Étiquettes de bagage",horloge:"Rouages"};
 const ARSENAL_MAX=12, ARSENAL_CAP=20;
 const FACILITIES={
   lab:{name:"Laboratoire",cost:90,text:"+2 recherche par semaine. Cumulable."},
@@ -1969,6 +2023,8 @@ const RECIPES=[
   {id:'decon',mat:2,frag:{choeur:1}},{id:'brouilleur',mat:1,frag:{choeur:2}},{id:'ancre',mat:1,frag:{foule:2}},
   {id:'projecteur',mat:3,frag:{foule:1},req:'projecteurs'},
   {id:'faussemonnaie',mat:1,frag:{distrib:2}},{id:'gyrophare',mat:1,frag:{feu:2}},{id:'drapnoir',mat:1,frag:{miroir:2}},{id:'coupure',mat:1,frag:{tel:2}},
+  {id:'reveil',mat:1,frag:{boite:2}},{id:'frein',mat:1,frag:{manege:2}},{id:'recyclage',mat:1,frag:{photoc:2}},{id:'lampe',mat:1,frag:{manneq:2}},{id:'parapluie',mat:2,frag:{pluie:2}},
+  {id:'cale',mat:1,frag:{ascens:2}},{id:'brouillage',mat:1,frag:{radio:2}},{id:'correcteur',mat:1,frag:{machine:2}},{id:'cadenas',mat:1,frag:{valise:2}},{id:'balancier',mat:1,frag:{horloge:2}},
 ];
 
 /* ================= ÉTAT ================= */
@@ -2423,7 +2479,7 @@ function catEntry(r){const i=RECIPES.indexOf(r);const d=CARDS[r.id];const why=cr
 function shopView(){
   const groups=[RECIPES.slice(0,2)];for(let i=2;i<RECIPES.length;i+=4)groups.push(RECIPES.slice(i,i+4));
   const n=groups.length+1;const cur=Math.max(0,Math.min(n-1,X.catPage||0));
-  const stock=`<li><span>Matériel</span><i></i><b>${S.mat}</b></li>`+Object.keys(FRAG).map(k=>`<li class="${S.frag[k]?'':'nil'}"><span>${FRAG[k]} <em>${ANOM_OF_FRAG(k)}</em></span><i></i><b>${S.frag[k]||0}</b></li>`).join('');
+  const stock=`<li><span>Matériel</span><i></i><b>${S.mat}</b></li>`+(()=>{const ks=Object.keys(FRAG).filter(k=>S.frag[k]||(S.seen&&S.seen[k]));return ks.length?'':'<li class="nil"><span>Aucun fragment anomal en stock</span><i></i><b>—</b></li>';})()+Object.keys(FRAG).filter(k=>S.frag[k]||(S.seen&&S.seen[k])).map(k=>`<li class="${S.frag[k]?'':'nil'}"><span>${FRAG[k]} <em>${ANOM_OF_FRAG(k)}</em></span><i></i><b>${S.frag[k]||0}</b></li>`).join('');
   const title=`<div class="cat-title"><span class="cat-kicker">Fondation · Service Logistique</span><h2>Catalogue du matériel homologué</h2><span class="cat-sub">Édition n° 7 · usage interne · ne pas sortir du site</span><div class="cat-orn">❦</div>
     <h3>État des stocks · semaine ${S.week}</h3><ul class="cat-cost stock">${stock}</ul>
     <p class="cat-fine">Chaque opération rapporte du matériel. Les manifestations dissipées et les captures laissent des fragments propres à chaque anomalie. Pour commander, tamponnez le bon correspondant. L'arsenal se gère au registre, en fin de catalogue.</p></div>`;
@@ -2676,7 +2732,9 @@ const laneOf=u=>{let i=C.p.indexOf(u);if(i<0)i=C.e.indexOf(u);return i;};
 const agentUnit=id=>C.p.find(u=>u&&u.kind==='agent'&&u.aid===id);
 const agentAlive=id=>!!agentUnit(id);
 const agentUp=id=>{const u=agentUnit(id);return !!u&&!u.down;};
-const standing=()=>C.p.some(x=>x&&x.kind==='agent'&&!x.down);
+const standing=()=>C.p.some(x=>x&&x.kind==='agent'&&!x.down)||!!(C.away&&C.away.length);
+const MELEE=new Set(['charge','sol','couv','enchain','assautf','rafale']);
+const calmA=()=>C.conf>=CONF_MAX/2;
 const core=()=>C.e.find(u=>u&&u.kind==='core');
 const enemies=()=>C.e.filter(Boolean);
 const allies=()=>C.p.filter(u=>u&&(u.kind==='agent'||u.kind==='surv'));
@@ -2697,12 +2755,12 @@ function addConf(n){const b=C.conf;C.conf=Math.min(CONF_MAX,C.conf+n);if(b<CONF_
   if(b<CONF_MAX/2&&C.conf>=CONF_MAX/2){if(C.mirror&&C.mirror.length){C.discard.push(...C.mirror);clog(`Le miroir rend ${C.mirror.length} carte${C.mirror.length>1?'s':''}.`,'good');C.mirror=[];}if(AN().light)C.light='vert';}
   if(b<CONF_MAX/2&&C.conf>=CONF_MAX/2)clog(`Seuil de 50 % : ${AN().name} faiblit${AN().hum?', le Bourdonnement cesse':''}, plus aucune manifestation n'apparaîtra.`,'good');
   if(C.conf>=CONF_MAX)finish('capture');}
-function hitEnemy(u,n){if(!u||C.over)return;if(u.mark)n+=1;if(u.kind==='core'&&C.actor&&sk(C.actor,'e9'))n+=2;u.hp-=n;fx(u,'−'+n,'dmg');
-  if(u.hp<=0){const i=laneOf(u);if(u.kind==='core'){u.hp=0;clog(`La ${AN().resName.toLowerCase()} de l'anomalie s'effondre.`,'good');finish('repel');return;}C.e[i]=null;C.killed++;if(C.actor&&C.agents[C.actor])C.kills[C.actor]=(C.kills[C.actor]||0)+1;clog(`${u.name} dissipé (couloir ${i+1}).`,'good');}}
+function hitEnemy(u,n){if(!u||C.over)return;if(AN().statue&&u.kind==='mani'&&MELEE.has(C.curCard)&&!calmA()&&!C.lit){fx(u,'IMMOBILE','info');clog(`${u.name} ne bronche pas : les coups portés de face glissent sur lui.`,'warn');return;}if(u.mark)n+=1;if(u.kind==='core')C.dmgTurn=(C.dmgTurn||0)+Math.min(n,u.hp);if(u.kind==='core'&&C.actor&&sk(C.actor,'e9'))n+=2;u.hp-=n;fx(u,'−'+n,'dmg');
+  if(u.hp<=0){const i=laneOf(u);if(u.kind==='core'){u.hp=0;clog(`La ${AN().resName.toLowerCase()} de l'anomalie s'effondre.`,'good');finish('repel');return;}C.e[i]=null;C.killed++;if(C.actor&&C.agents[C.actor]){C.kills[C.actor]=(C.kills[C.actor]||0)+1;const au=agentUnit(C.actor);if(au&&au.doom){au.doom=false;clog(`${au.name} déjoue l'avis de décès.`,'good');}}clog(`${u.name} dissipé (couloir ${i+1}).`,'good');}}
 const sk=(o,id)=>o!=='F'&&!!C.agents[o]&&!!C.agents[o].skills&&C.agents[o].skills.includes(id);
 const anyUp=id=>C.p.some(x=>x&&x.kind==='agent'&&!x.down&&sk(x.aid,id));
 const exe=(o,u)=>sk(o,'s9')&&u&&u.hp<=3?2:0;
-function costOf(c){const d=def(c);let k=d.cost;if(AN().light&&C.light==='orange'&&!d.parasite)k++;if(c.id==='fumi'&&sk(c.owner,'g7'))k--;if(c.id==='barr'&&sk(c.owner,'g10'))k=0;return Math.max(0,k);}
+function costOf(c){const d=def(c);let k=d.cost;if(AN().light&&C.light==='orange'&&!d.parasite)k++;if(c.id==='fumi'&&sk(c.owner,'g7'))k--;if(c.id==='barr'&&sk(c.owner,'g10'))k=0;if(!d.parasite){const au=c.owner&&C.agents&&C.agents[c.owner]?agentUnit(c.owner):null;if(au&&au.asleep)k++;k+=c.err||0;if(C.discount&&c.id!=='ruban')k-=C.discount;}return Math.max(0,k);}
 function hurt(u,n){if(!u||C.over)return;
   let d=n;if(u.prot){const a=Math.min(u.prot,d);u.prot-=a;d-=a;}
   if(d<=0){fx(u,'BLOQUÉ','info');return;}
@@ -2734,6 +2792,7 @@ function playable(c){
   const d=def(c);
   if(d.target==='never')return {ok:false,why:"Le Refrain ne peut pas être joué."};
   if(C.phase!=='player')return {ok:false,why:"Attendez votre tour."};
+  if(c.owner!=='F'&&c.owner!=='X'&&(C.away||[]).some(w=>w.u.aid===c.owner))return {ok:false,why:`${ownerName(c.owner)} a été emporté par l'ascenseur.`};
   if(c.owner!=='F'&&c.owner!=='X'&&!agentUp(c.owner))return {ok:false,why:`${ownerName(c.owner)} est à terre : un Soin peut le relever.`};
   if(AN().light&&C.light==='rouge'&&DMG.has(c.id))return {ok:false,why:"Feu rouge : les attaques sont suspendues ce tour."};
   if(C.mana<costOf(c))return {ok:false,why:`Accréditation insuffisante (${costOf(c)} requise).`};
@@ -2751,7 +2810,7 @@ function validTarget(c,o){const d=def(c);
   return false;}
 function heal(u,n){const a=Math.min(n,u.max-u.hp);u.hp+=a;fx(u,'+'+a,'heal');if(u.down&&u.hp>0){u.down=false;clog(`${u.name} se relève.`,'good');}}
 function resolve(c,t={}){
-  const d=def(c);C.mana-=costOf(c);C.hand=C.hand.filter(x=>x!==c);if(!d.parasite)C.discard.push(c);
+  const d=def(c);C.mana-=costOf(c);C.hand=C.hand.filter(x=>x!==c);c.err=0;if(!d.parasite&&!d.exile)C.discard.push(c);if(d.exile)C.lost++;C.curCard=c.id;
   clog(`${ownerName(c.owner)} : ${d.name}.`);
   const me=agentUnit(c.owner);C.actor=c.owner;const o=c.owner;
   switch(c.id){
@@ -2819,10 +2878,32 @@ function resolve(c,t={}){
     case 'silence':C.silence=true;clog("Protocole de silence : pas de propagation ce tour.",'info');break;
     case 'amn':{let n=0;for(let k=0;k<2;k++){const i=C.hand.findIndex(x=>x.id==='refrain');if(i<0)break;C.hand.splice(i,1);n++;C.lost++;}clog(`${n} Refrain effacé${n>1?'s':''}.`,'good');break;}
     case 'diapason':C.smoke=true;addBreach(1,"Le diapason résonne : les hostiles sont figés, mais l'anomalie s'en nourrit");break;
+    case 'reveil':C.p.forEach(u=>{if(u&&u.asleep){u.asleep=false;fx(u,'RÉVEILLÉ','info');}});clog("Le réveil sonne : l'escouade se réveille.",'good');draw(1);break;
+    case 'cle':C.mana+=2;clog("La clé est remontée une dernière fois : +2 accréditation.",'good');break;
+    case 'frein':C.brake=true;clog("Frein serré : le manège ne tournera pas au prochain tour.",'info');draw(1);break;
+    case 'tourdepiste':C.e.unshift(C.e.pop());clog("Tour de piste : les hostiles se décalent vers la droite.",'info');draw(1);break;
+    case 'recyclage':{const n=C.hand.filter(x=>x.id==='copie').length+C.discard.filter(x=>x.id==='copie').length;C.hand=C.hand.filter(x=>x.id!=='copie');C.discard=C.discard.filter(x=>x.id!=='copie');clog(`${n} copie${n>1?'s':''} détruite${n>1?'s':''}.`,'good');draw(1);break;}
+    case 'duplicata':{const l=[...C.discard].reverse().find(x=>x!==c&&!CARDS[x.id].parasite&&x.id!=='duplicata');if(l){C.hand.push({uid:nid(),id:l.id,owner:l.owner});clog(`Duplicata de « ${CARDS[l.id].name} ».`,'good');}else clog("Rien à dupliquer.");break;}
+    case 'copie':clog("La copie est illisible. Elle part au broyeur.");break;
+    case 'lampe':C.lit=true;clog("Les mannequins sont pris dans le faisceau : ils peuvent être frappés de face ce tour.",'good');draw(1);break;
+    case 'pose':t.unit.stun=true;fx(t.unit,'FIGÉ','info');break;
+    case 'parapluie':allies().forEach(u=>{if(!u.down){u.prot+=1;fx(u,'+1 PROT','info');}});draw(1);break;
+    case 'goutte':{const u=t.unit;hitEnemy(u,2);if(u.hp>0)u.stun=true;break;}
+    case 'cale':C.liftBlock=true;clog("Cale-porte : les portes resteront fermées au prochain tour.",'info');draw(1);break;
+    case 'sonnette':t.unit.hidden=true;heal(t.unit,3);fx(t.unit,'APPELÉ','info');break;
+    case 'brouillage':if(t.unit.doom){t.unit.doom=false;clog(`L'avis de décès de ${t.unit.name} est brouillé.`,'good');}draw(1);break;
+    case 'frequence':addConf(1);enemies().forEach(e=>e.mark=true);clog('Tous les hostiles sont marqués.','info');break;
+    case 'correcteur':{let n=0;C.hand.forEach(x=>{if(x.err){x.err=0;n++;}});clog(`${n} faute${n>1?'s':''} corrigée${n>1?'s':''}.`,'good');draw(1);break;}
+    case 'ruban':C.discount=1;clog("Ruban encreur : vos cartes coûtent 1 de moins ce tour.",'good');break;
+    case 'cadenas':C.locked=true;clog("La valise est cadenassée pour le prochain tour.",'info');draw(1);break;
+    case 'consigne':suitcase(true);break;
+    case 'balancier':C.noChime=true;clog("Balancier bloqué : l'horloge ne sonnera pas au prochain coup.",'info');draw(1);break;
+    case 'aiguille':C.mana=C.max;clog("Les aiguilles reculent : toute l'accréditation est récupérée.",'good');break;
     case 'anonymat':t.unit.hidden=true;fx(t.unit,'INVISIBLE','info');clog(`${t.unit.name} disparaît aux yeux des hostiles.`,'info');break;
   }
   if(AN().reflect&&!C.reflected&&C.conf<CONF_MAX/2&&me&&!me.down&&DMG.has(c.id)&&!C.over){clog(`Le miroir renvoie le coup sur ${me.name}.`,'bad');hurt(me,1);}
-  C.actor=null;C.sel=null;C.targeting=null;render();
+  if(AN().copies&&!d.parasite&&!calmA()&&!C.over&&Math.random()<.34){C.deck.splice(rnd(0,C.deck.length),0,{uid:nid(),id:'copie',owner:'X'});clog(`La photocopieuse reproduit « ${d.name} » : une Copie floue glisse dans la pioche.`,'bad');}
+  C.curCard=null;C.actor=null;C.sel=null;C.targeting=null;render();
 }
 function burn(c){
   if(C.burned||C.phase!=='player')return;C.burned=true;C.hand=C.hand.filter(x=>x!==c);
@@ -2835,12 +2916,14 @@ function moveUnit(u,lane){
   const i=laneOf(u);if(u.down)return;
   if(C.phase==='deploy'){if(C.p[lane]||u.kind!=='agent')return;C.p[i]=null;C.p[lane]=u;C.sel=null;render();return;}
   if(AN().light&&C.light==='rouge')return;
-  if(u.moved||C.p[lane])return;
-  const far=Math.abs(lane-i)!==1;const free=u.kind==='agent'&&sk(u.aid,'e1');if(far&&!free){if(C.mana<1)return;C.mana--;}
-  C.p[i]=null;C.p[lane]=u;u.moved=true;clog(`${u.name} se déplace au couloir ${lane+1}${far?' (1 accréditation)':''}.`);C.sel=null;render();
+  if(u.moved||C.p[lane]||u.asleep)return;
+  const far=Math.abs(lane-i)!==1;const free=(u.kind==='agent'&&sk(u.aid,'e1'))||C.freeMove;const fl=(C.flood||[]).includes(lane)?1:0;const cost=(far&&!free?1:0)+fl;if(C.mana<cost)return;C.mana-=cost;
+  C.p[i]=null;C.p[lane]=u;u.moved=true;clog(`${u.name} se déplace au couloir ${lane+1}${cost?` (${cost} accréditation${cost>1?'s':''})`:''}${fl?', dans l\'eau noire':''}.`);C.sel=null;render();
 }
 function startPlayerTurn(){
-  C.phase='player';C.mana=C.max;C.burned=false;
+  C.phase='player';C.mana=C.max;C.burned=false;C.discount=0;C.lit=false;C.freeMove=false;C.dmgTurn=0;
+  C.p.forEach(u=>{if(u)u.asleep=false;});
+  if(C.away&&C.away.length){C.away=C.away.filter(w=>{if(C.turn<w.ret)return true;let L=w.lane;if(C.p[L]){const fr=C.p.map((x,k)=>x?null:k).filter(k=>k!=null).sort((a,b)=>Math.abs(a-L)-Math.abs(b-L));L=fr.length?fr[0]:-1;}if(L<0)return true;C.p[L]=w.u;w.u.moved=false;clog(`Les portes s'ouvrent : ${w.u.name} réapparaît au couloir ${L+1}.`,'good');return false;});}
   C.p.forEach(u=>{if(u){const ag=u.kind==='agent'&&!u.down;if(!(ag&&sk(u.aid,'n9')))u.prot=0;if(ag)u.prot=Math.max(u.prot,(sk(u.aid,'e4')||sk(u.aid,'n1'))?2:sk(u.aid,'s4')?1:0);u.moved=false;u.hidden=false;}});
   C.e.forEach(u=>{if(u)u.mark=false;});
   if(anyUp('m6')&&C.turn%2===0){addConf(1);if(C.over){render();return;}}
@@ -2859,8 +2942,32 @@ function startPlayerTurn(){
   if(A.light){C.light=half?'vert':['vert','orange','rouge'][(C.turn-1)%3];clog(`Le feu passe au ${C.light}.`,'warn');}
   if(A.reflect)C.reflected=false;
   if(A.phone){if(C.hand.length<handMax()){C.hand.push({uid:nid(),id:'appel',owner:'X'});clog("Le téléphone sonne : appel entrant.",'warn');}else addBreach(2,"Le téléphone sonne dans le vide");}
+  newAnomTurn(A,half);if(C.over){render();return;}
   render();
 }
+function nearestAgent(L){const c=C.p.map((u,i)=>u&&u.kind==='agent'&&!u.down?i:null).filter(i=>i!=null).sort((a,b)=>Math.abs(a-L)-Math.abs(b-L));return c.length?C.p[c[0]]:null;}
+function newAnomTurn(A,half){
+  if(A.lullaby&&!half){const k=core();const u=k?nearestAgent(laneOf(k)):null;if(u){u.asleep=true;fx(u,'ENDORMI','info');clog(`La berceuse : ${u.name} s'endort (pas de déplacement, ses cartes coûtent +1).`,'bad');}}
+  if(A.rain){C.flood=half?[]:[rnd(0,LANES-1)];if(!half&&C.turn>=6){const o=[0,1,2,3,4,5].filter(i=>!C.flood.includes(i));C.flood.push(pick(o));}if(C.flood.length)clog(`L'eau noire inonde le${C.flood.length>1?'s':''} couloir${C.flood.length>1?'s':''} ${C.flood.map(i=>i+1).join(' et ')}.`,'warn');}
+  if(A.lift){C.liftNext=half?null:rnd(0,LANES-1);if(C.liftNext!=null)clog(`L'aiguille de l'ascenseur s'arrête sur le couloir ${C.liftNext+1} : les portes s'y ouvriront à la fin du tour.`,'warn');}
+  if(A.radio){for(const u of C.p.filter(x=>x&&x.kind==='agent'&&!x.down&&x.doom)){hurt(u,1);clog(`L'avis de décès pèse sur ${u.name}.`,'bad');if(C.over)return;}
+    if(!half&&C.turn%3===2){const cand=C.p.filter(x=>x&&x.kind==='agent'&&!x.down&&!x.doom);if(cand.length){const u=pick(cand);u.doom=true;fx(u,'AVIS','dmg');clog(`La radio annonce le décès de ${C.agents[u.aid].name}. Qu'il dissipe une manifestation pour déjouer l'annonce.`,'bad');}}}
+  if(A.typewriter){if(half)C.typed=null;else{const ag=C.p.map((u,i)=>u&&!u.down?i:null).filter(i=>i!=null);C.typed=ag.length&&Math.random()<.7?pick(ag):rnd(0,LANES-1);clog(`La machine tape : « frappe prévue au couloir ${C.typed+1} ».`,'warn');
+    const cand=C.hand.filter(x=>!CARDS[x.id].parasite&&x.id!=='refrain'&&!x.err);if(cand.length){const c=pick(cand);c.err=1;clog(`Faute de frappe : « ${CARDS[c.id].name} » coûte 1 de plus.`,'bad');}}}
+  if(A.suitcase&&!half){if(C.locked){C.locked=false;clog("La valise reste cadenassée.",'good');}else suitcase(false);}
+  if(A.clock&&!half&&C.turn%4===0&&!C.noChime)clog("L'horloge va sonner à la fin de ce tour : ce que vous infligerez à l'anomalie sera effacé.",'warn');
+}
+function suitcase(forced){const ev=[
+  ()=>{C.mana+=1;clog("La valise s'ouvre : un thermos de café chaud. +1 accréditation.",'good');},
+  ()=>{const u=pick(allies().filter(x=>x.hp<x.max)||[]);if(u){heal(u,2);clog(`La valise s'ouvre : une trousse de secours. ${u.name} récupère 2 PV.`,'good');}else{draw(1);clog("La valise s'ouvre : une trousse de secours, inutile. Piochez 1.",'good');}},
+  ()=>{draw(1);clog("La valise s'ouvre : un carnet d'adresses. Piochez 1.",'good');},
+  ()=>{C.freeMove=true;clog("La valise s'ouvre : un plan de la ville. Déplacements longs gratuits ce tour.",'good');},
+  ()=>{addBreach(2,"La valise s'ouvre : un réveil qui sonne sans fin");},
+  ()=>{const free=C.e.map((u,i)=>u?null:i).filter(i=>i!=null);if(free.length){const i=pick(free);C.e[i]=mkMani(AN().mani);clog(`La valise s'ouvre : une poupée en sort et grandit. ${AN().mani} au couloir ${i+1}.`,'bad');}else addBreach(1,"La valise s'ouvre : quelque chose s'échappe");},
+  ()=>{if(C.hand.length){const i=rnd(0,C.hand.length-1);const c=C.hand.splice(i,1)[0];C.deck.unshift(c);clog(`La valise s'ouvre : une lettre jamais postée. « ${def(c).name} » repart au fond de la pioche.`,'bad');}},
+  ()=>{clog("La valise s'ouvre. Elle est vide. Elle sent la naphtaline.");},
+  ()=>{const k=core();if(k){k.stun=true;clog("La valise s'ouvre : un vieux parapluie se coince dans le mécanisme. L'anomalie est étourdie.",'good');}}];
+  pick(ev)();}
 function spread(forced){
   if(refrains().length<2&&!forced)return;const cand=[];
   C.hand.forEach((c,i)=>{if(c.id!=='refrain')return;[i-1,i+1].forEach(j=>{const n=C.hand[j];if(n&&n.id!=='refrain'&&!immune(n.owner)&&!cand.includes(j))cand.push(j);});});
@@ -2873,9 +2980,12 @@ async function endTurn(){
   C.sel=null;C.targeting=null;if(C.silence)C.silence=false;else if(A.contagion&&!(anyUp('m10')&&C.conf>=CONF_MAX/2))spread(false);
   if(A.phone){const n=C.hand.filter(x=>x.id==='appel').length;if(n){C.hand=C.hand.filter(x=>x.id!=='appel');addBreach(2*n,`${n} appel${n>1?'s':''} manqué${n>1?'s':''}`);if(C.over){render();return;}}}
   if(A.mirror&&C.conf<CONF_MAX/2&&C.discard.length&&C.deck.length+C.discard.length>6){const m=C.discard.splice(rnd(0,C.discard.length-1),1)[0];C.mirror=C.mirror||[];C.mirror.push(m);clog(`Le miroir retient « ${def(m).name} ».`,'bad');}
+  C.lastDmg=C.dmgTurn||0;
   C.phase='enemy';render();await sleep(500);
   for(const e of enemies().filter(x=>x.trap)){const n=e.trap;e.trap=0;clog(`Le piège se déclenche sur ${e.name}.`,'good');hitEnemy(e,n);render();await sleep(300);if(C.over){render();return;}}
   const frozen=false;
+  if(A.rain&&!calmA()&&!C.smoke){for(const u of allies()){if(u.down||u.hidden)continue;if(u.prot>0){fx(u,'ABRITÉ','info');continue;}hurt(u,1);clog(`L'averse noire épuise ${u.name}.`,'bad');if(C.over){render();return;}}render();await sleep(350);}
+  if(A.statue&&!calmA()){for(let i=0;i<LANES;i++){const u=C.e[i];if(!u||u.kind!=='mani'||u.stun||u._mv||!ignored(C.p[i]))continue;const tgt=nearestAgent(i);if(!tgt)continue;const d=Math.sign(laneOf(tgt)-i);const j=i+d;if(d&&j>=0&&j<LANES&&!C.e[j]){C.e[i]=null;C.e[j]=u;u._mv=true;clog(`Personne ne regarde : ${u.name} glisse vers le couloir ${j+1}.`,'warn');}}C.e.forEach(u=>{if(u)delete u._mv;});render();await sleep(300);}
   if(A.mobile&&!frozen){for(let i=0;i<LANES;i++){const u=C.e[i];if(!u||u.kind!=='mani'||u.stun||ignored(C.p[i]))continue;const j=[i-1,i+1].find(j=>j>=0&&j<LANES&&!C.e[j]&&ignored(C.p[j]));if(j!=null){C.e[i]=null;C.e[j]=u;clog(`${u.name} se faufile vers le couloir ${j+1}.`,'warn');}}render();await sleep(300);}
   for(let i=0;i<LANES&&!frozen;i++){
     if(!C||C.over)break;const u=C.e[i];if(!u||u.kind!=='mani')continue;
@@ -2892,14 +3002,22 @@ async function endTurn(){
   if(C&&!C.over&&c&&!frozen){
     if(c.stun){c.stun=false;fx(c,'ÉTOURDI','info');clog(`${A.name} est étourdi.`);}
     else if(hitBarr(laneOf(c),C.smoke?0:c.atk,A.name)){}
-    else{const L=laneOf(c);const t=ignored(C.p[L])?null:C.p[L];
-      if(t){const d=C.smoke?0:c.atk;if(d&&t.reflect){t.reflect=false;fx(t,'RENVOI','info');hitEnemy(c,d);}else if(d)hurt(t,d);else fx(t,'0','info');clog(`${A.name} ${A.verb} ${t.name}.`,'warn');}
+    else{const typed=A.typewriter&&C.typed!=null&&!calmA();const L=typed?C.typed:laneOf(c);const t=ignored(C.p[L])?null:C.p[L];
+      if(typed)clog(`La machine frappe le couloir ${L+1}, comme prévu.`,'warn');
+      if(typed&&hitBarr(L,C.smoke?0:c.atk*2,A.name)){}
+      else if(t){const d=C.smoke?0:c.atk*(typed?2:1);if(d&&t.reflect){t.reflect=false;fx(t,'RENVOI','info');hitEnemy(c,d);}else if(d)hurt(t,d);else fx(t,'0','info');clog(`${A.name} ${A.verb} ${t.name}.`,'warn');}
       else if(guarded(L))clog(`${A.name} est contenu au couloir ${L+1}.`,'good');
       else addBreach(A.emptyBreach,`${A.name} s'étend par un couloir vide`);}
     render();await sleep(450);
   }
   if(!C||C.over){render();return;}
-  if(C.turn>=12){const n=C.turn>=16?2:1;addBreach(n,C.turn===12?`${A.name} s'intensifie : l'opération s'éternise`:`${A.name} s'intensifie`);if(C.over){render();return;}}
+  if(A.carousel&&!calmA()){if(C.brake){C.brake=false;clog("Le frein tient : le manège reste immobile.",'good');}else{C.e.unshift(C.e.pop());clog("Le manège tourne : tous les hostiles se décalent d'un couloir vers la droite.",'warn');}render();await sleep(400);}
+  if(A.lift&&C.liftNext!=null&&!calmA()){const L=C.liftNext;C.liftNext=null;if(C.liftBlock){C.liftBlock=false;clog("Les portes restent fermées : le cale-porte tient.",'good');}else{clog(`Les portes de l'ascenseur s'ouvrent au couloir ${L+1}.`,'warn');
+      if(!C.e[L]){C.e[L]=mkMani(C.turn>=8?A.strong:A.mani);clog(`Un ${C.e[L].name} sort de la cabine.`,'bad');}
+      const v=C.p[L];if(v&&(v.kind==='agent'||v.kind==='surv')&&!v.down){C.p[L]=null;(C.away=C.away||[]).push({u:v,lane:L,ret:C.turn+2});clog(`${v.name} est emporté par l'ascenseur.`,'bad');}}render();await sleep(450);}
+  if(A.clock&&C.turn%4===0&&!calmA()){const k=core();if(C.noChime){C.noChime=false;clog("Le balancier bloqué : l'horloge reste muette.",'good');}else if(k){const g=Math.min(C.lastDmg||0,k.max-k.hp);k.hp+=g;fx(k,'+'+g,'heal');clog(`L'horloge sonne : le tour précédent n'a jamais eu lieu (+${g} ${A.resName.toLowerCase()}).`,'bad');}render();await sleep(450);}
+  const RT=A.ramp||12;
+  if(C.turn>=RT){const n=C.turn>=RT+4?2:1;addBreach(n,C.turn===RT?`${A.name} s'intensifie : l'opération s'éternise`:`${A.name} s'intensifie`);if(C.over){render();return;}}
   const manis=enemies().filter(u=>u.kind==='mani').length;
   if(C.turn%A.spawnEvery===0&&C.conf<CONF_MAX/2&&manis<A.maniMax){const free=[];C.e.forEach((u,i)=>{if(!u)free.push(i);});
     if(free.length){const i=pick(free);const t=C.turn>=8?A.strong:A.mani;C.e[i]=mkMani(t);clog(`Nouvelle manifestation : ${t} au couloir ${i+1}.`,'warn');}}
@@ -2918,7 +3036,7 @@ function clickUnit(uid){
     if(s&&s!==u){const a=laneOf(s),b=laneOf(u);C.p[a]=u;C.p[b]=s;C.sel=null;}else C.sel=s===u?null:{type:'unit',uid};render();return;}
   if(C.targeting){const c=C.hand.find(x=>x.uid===C.targeting);if(c&&validTarget(c,{unit:u}))resolve(c,{unit:u});return;}
   if(C.sel&&C.sel.type==='unit'&&C.sel.uid!==uid&&(u.kind==='agent'||u.kind==='surv')){const s=findUnit(C.sel.uid);const a=laneOf(s),b=laneOf(u);
-    if(s&&!s.moved&&Math.abs(a-b)===1&&!(AN().light&&C.light==='rouge')){C.p[a]=u;C.p[b]=s;s.moved=true;clog(`${s.name} échange sa place avec ${u.name}.`);C.sel=null;render();return;}}
+    if(s&&!s.moved&&!s.asleep&&Math.abs(a-b)===1&&!(AN().light&&C.light==='rouge')){C.p[a]=u;C.p[b]=s;s.moved=true;clog(`${s.name} échange sa place avec ${u.name}.`);C.sel=null;render();return;}}
   if((u.kind==='agent'||u.kind==='surv')&&!u.moved&&!u.down){C.sel=(C.sel&&C.sel.uid===uid)?null:{type:'unit',uid};render();}
 }
 function clickLane(i){
@@ -2987,7 +3105,7 @@ function unitHTML(u,side,i){
   else if(u.kind==='barr'){sub="Bloque le couloir";nums=`<span>${u.hp} PV</span>`;}
   else if(u.kind==='core'){sub=`${C.code} · ${AN().cls}`;nums=`<span>⚔ ${u.atk}</span><span>${u.hp}</span>`;}
   else{sub="Manifestation";nums=`<span>⚔ ${u.atk}</span><span>${u.hp} PV</span>`;}
-  const badges=`${u.prot?`<span class="badge prot">PROT ${u.prot}</span>`:''}${u.stun?'<span class="badge stun">ÉTOURDI</span>':''}${u.hidden?'<span class="badge prot">INVISIBLE</span>':''}${u.mark?'<span class="badge stun">MARQUÉ</span>':''}${u.trap?'<span class="badge stun">PIÉGÉ</span>':''}`;
+  const badges=`${u.prot?`<span class="badge prot">PROT ${u.prot}</span>`:''}${u.stun?'<span class="badge stun">ÉTOURDI</span>':''}${u.hidden?'<span class="badge prot">INVISIBLE</span>':''}${u.mark?'<span class="badge stun">MARQUÉ</span>':''}${u.trap?'<span class="badge stun">PIÉGÉ</span>':''}${u.asleep?'<span class="badge stun">ENDORMI</span>':''}${u.doom?'<span class="badge stun">AVIS DE DÉCÈS</span>':''}${u.err?'':''}`;
   let face='';
   if(u.kind==='agent')face=icon({S:'aim',A:'melee',G:'blast',P:'heal'}[C.agents[u.aid].cls]||'shield','pw-ic pw-emb');
   else if(u.kind==='surv')face=icon('shield','pw-ic pw-emb');
@@ -3001,7 +3119,7 @@ function unitHTML(u,side,i){
 function boardHTML(){
   const tc=C.targeting&&C.hand.find(x=>x.uid===C.targeting);const mover=C.sel&&C.sel.type==='unit'?findUnit(C.sel.uid):null;const mi=mover?laneOf(mover):-9;
   const en=C.e.map((u,i)=>`<div class="slot">${u?unitHTML(u,'e',i):''}</div>`).join('');
-  const lanes=Array.from({length:LANES},(_,i)=>{const b=(C.barr||[])[i];const can=tc&&def(tc).target==='lane'&&!b;return `<span class="lane ${b?'has':''} ${can?'can':''}" ${can?`data-a="clane" data-v="${i}" role="button" tabindex="0" aria-label="Barricader le couloir ${i+1}"`:''}>${b?`<b>Barricade ${b.hp}/${b.max}</b>`:can?'Barricader':`C${i+1}`}</span>`;}).join('');
+  const lanes=Array.from({length:LANES},(_,i)=>{const b=(C.barr||[])[i];const can=tc&&def(tc).target==='lane'&&!b;const mk=[];if((C.flood||[]).includes(i))mk.push('inondé');if(C.liftNext===i)mk.push('portes');if(C.typed===i&&AN().typewriter&&C.conf<CONF_MAX/2)mk.push('frappe ×2');return `<span class="lane ${b?'has':''} ${can?'can':''} ${mk.length?'mk':''}" ${can?`data-a="clane" data-v="${i}" role="button" tabindex="0" aria-label="Barricader le couloir ${i+1}"`:''}>${b?`<b>Barricade ${b.hp}/${b.max}</b>`:can?'Barricader':`C${i+1}`}${mk.length?`<small class="lane-mk">${mk.join(' · ')}</small>`:''}</span>`;}).join('');
   const mine=C.p.map((u,i)=>{if(u)return `<div class="slot">${unitHTML(u,'p',i)}</div>`;
     const can=(mover&&(C.phase==='deploy'||Math.abs(i-mi)===1||C.mana>=1||(mover.kind==='agent'&&sk(mover.aid,'e1'))));
     return `<div class="slot ${can?'can':''}" ${can?`data-a="clane" data-v="${i}" role="button" tabindex="0" aria-label="Couloir ${i+1}"`:''}>${can&&mover&&C.phase==='player'&&Math.abs(i-mi)!==1?`<span class="slotcost">${mover.kind==='agent'&&sk(mover.aid,'e1')?'Déplacement long gratuit':'1 accréditation'}</span>`:''}</div>`;}).join('');
@@ -3032,7 +3150,8 @@ const ICONOF={tir:'aim',tirmortel:'aim',supp:'aim',couv:'aim',tirmvt:'aim',feu:'
   gren:'blast',thermique:'blast',mortier:'blast',garde:'shield',appui:'shield',escorte:'shield',interpos:'shield',garde2:'shield',soin:'heal',medikit:'heal',reanim:'heal',
   proto:'cell',chconf:'cell',omega:'cell',projecteur:'cell',champ:'cell',conftotal:'cell',cage:'cell',stase:'cell',analyse:'eye',obs:'eye',ravit:'eye',fusee:'eye',lignedirecte:'phone',
   barr:'wall',fumi:'smoke',decon:'clean',amn:'clean',silence:'clean',brouilleur:'clean',coupure:'phone',contrechant:'wave',ancre:'clean',drapnoir:'mirror',
-  adr:'bolt',faussemonnaie:'coin',monnaie:'coin',gyrophare:'light',feuvert:'light',diapason:'wave',anonymat:'mask',eclat:'mirror',rupture:'wave',piege:'trap',execution:'aim',souffle:'heal',murbouclier:'wall',therapie:'heal',leurre:'mask',jeton:'coin',appel:'phone',refrain:'note'};
+  adr:'bolt',faussemonnaie:'coin',monnaie:'coin',gyrophare:'light',feuvert:'light',diapason:'wave',anonymat:'mask',eclat:'mirror',rupture:'wave',piege:'trap',execution:'aim',souffle:'heal',murbouclier:'wall',therapie:'heal',leurre:'mask',jeton:'coin',appel:'phone',refrain:'note',
+  reveil:'bolt',cle:'coin',frein:'trap',tourdepiste:'wave',recyclage:'clean',duplicata:'note',copie:'note',lampe:'light',pose:'mask',parapluie:'shield',goutte:'smoke',cale:'wall',sonnette:'shield',brouillage:'phone',frequence:'wave',correcteur:'clean',ruban:'note',cadenas:'trap',consigne:'coin',balancier:'trap',aiguille:'bolt'};
 const icon=(k,cls='')=>`<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICON[k]||ICON.cell}</svg>`;
 
 /* Scènes photographiques des cartes (100x60), traitées en tirage sépia */
@@ -3121,6 +3240,16 @@ function anomProps(A){const L=[];
   if(A.mirror)L.push({n:"Le tain retient",on:"actif",off:"neutralisé",t:"En fin de tour, une carte de la défausse disparaît derrière le miroir. Elles reviennent toutes à 50 % de confinement."});
   if(A.phone)L.push({n:"Appel entrant",on:"actif",t:"Chaque tour, un Appel entre dans votre main. Répondre coûte 1 accréditation. Un appel manqué en fin de tour donne +2 brèche."});
   if(A.handcap)L.push({n:"Ligne occupée",on:"active",off:"libérée",t:"Tant que le confinement est sous 50 %, votre main est limitée à 6 cartes."});
+  if(A.lullaby)L.push({n:"Berceuse",on:"active",off:"éteinte",t:"Au début de chaque tour, l'agent en face de la boîte (ou le plus proche) s'endort : il ne peut pas se déplacer et ses cartes coûtent 1 de plus ce tour."});
+  if(A.carousel)L.push({n:"Tour de piste",on:"actif",off:"à l'arrêt",t:"À la fin de chaque tour hostile, tous les hostiles tournent d'un couloir vers la droite. Le dernier repasse à gauche."});
+  if(A.copies)L.push({n:"Copies",on:"actives",off:"taries",t:"Chaque carte jouée a une chance sur trois de glisser une Copie floue dans votre pioche. Une Copie coûte 1 et ne fait rien."});
+  if(A.statue)L.push({n:"Sous le regard",on:"actif",off:"rompu",t:"Les mannequins ne subissent aucun dégât des attaques en face (charge, mise au sol, rafale…). Seuls les tirs et les explosifs les blessent. Un mannequin sans agent devant lui se déplace vers l'agent le plus proche."});
+  if(A.rain)L.push({n:"Averse",on:"active",off:"calmée",t:"À chaque tour hostile, chaque agent sans protection subit 1 dégât. Un couloir est inondé à chaque tour : y entrer coûte 1 accréditation de plus."});
+  if(A.lift)L.push({n:"Étage inconnu",on:"actif",off:"hors service",t:"Chaque tour, les portes s'ouvrent sur un couloir annoncé à l'avance. Une manifestation en sort, et l'agent qui s'y trouve est emporté pendant un tour."});
+  if(A.radio)L.push({n:"Avis de décès",on:"actif",off:"brouillé",t:"Tous les trois tours, la radio annonce le nom d'un agent. Il perd 1 PV au début de chaque tour, jusqu'à ce qu'il dissipe une manifestation."});
+  if(A.typewriter)L.push({n:"Rapport prémonitoire",on:"actif",off:"raturé",t:"Au début de chaque tour, la machine annonce le couloir qu'elle frappera, pour le double de dégâts. Chaque tour, une carte de votre main subit une faute de frappe : elle coûte 1 de plus."});
+  if(A.suitcase)L.push({n:"Contenu inconnu",on:"actif",off:"refermé",t:"Au début de chaque tour, la valise libère un objet au hasard. Son effet peut vous aider ou vous nuire."});
+  if(A.clock)L.push({n:"Retour en arrière",on:"actif",off:"enrayé",t:"Tous les quatre tours, l'horloge sonne : les dégâts infligés à l'anomalie pendant le tour qui précède sont annulés. Elle s'intensifie dès le tour 9."});
   if(A.amnesia)L.push({n:"Oubli",on:"actif",t:"Au début de chaque tour, une carte de votre main repart au fond de la pioche."});
   return L;}
 function anomPropsHTML(A,lv,weak){const k=Object.keys(ANOM).find(x=>ANOM[x]===A);const m=profMax(k);lv=lv===true?m:lv===false?0:(lv||0);
@@ -3241,6 +3370,46 @@ const LORE={
   proc:"Conserver dans un local insonorisé avec un opérateur de garde, de jour comme de nuit. Chaque appel doit être décroché avant la quatrième sonnerie et consigné mot pour mot. L'opérateur ne doit jamais donner son propre nom.",
   desc:"Téléphone mural en bakélite noire, débranché depuis 1974. Il sonne quand même, plusieurs fois par jour. Au bout du fil, une voix calme récite une liste de noms. Ne pas répondre a toujours des conséquences.",
   hist:"Retiré d'un bureau de poste désaffecté en 1974. La standardiste, Mlle ██████, a déclaré y avoir répondu « tous les jours pendant onze ans » pour éviter que « la voix ne s'impatiente ». Les noms récités correspondent à des personnes vivantes. La Fondation n'a pas encore établi ce qu'il advient de ceux dont le nom est prononcé lors d'un appel manqué ██████████████."},
+ boite:{photo:"Chambre d'enfant, rue ██████. La boîte était ouverte à l'arrivée des équipes.",
+  proc:"L'objet est conservé fermé, dans un coffret capitonné scellé à la cire. Le personnel porte des bouchons d'oreilles en permanence à moins de 20 m. Personne ne doit remonter le mécanisme, même partiellement. Tout agent retrouvé endormi près de l'objet est réveillé par un tiers et relevé de ses fonctions pour la journée.",
+  desc:"Boîte à musique en marqueterie, couvercle orné d'une ballerine de porcelaine. Ouverte, elle joue une berceuse d'environ quarante secondes. Les auditeurs qui l'entendent jusqu'au bout s'endorment aussitôt, debout ou en marchant. Les dormeurs se réveillent quand l'air s'arrête et décrivent tous le même rêve : une chambre d'enfant dont ils ne trouvent pas la porte.",
+  hist:"Récupérée en 19██ dans un appartement de ██████ après le signalement d'une famille « endormie depuis trois jours ». Les parents dormaient au salon, l'aînée dans le couloir. Le berceau de la chambre était vide et n'a jamais servi, selon les voisins. La boîte, elle, était encore en train de jouer."},
+ manege:{photo:"Terrain vague de ██████, 21 h 40. Les ampoules étaient allumées sans aucun raccordement.",
+  proc:"Un périmètre de 50 m est maintenu en permanence. Aucun agent ne monte sur le plateau, quelle que soit la raison. Le manège est surveillé par caméra fixe : toute rotation est consignée, ainsi que le nombre de chevaux, qui varie.",
+  desc:"Carrousel forain de facture ancienne, à chevaux de bois peints. Il se met à tourner sans moteur, toujours dans le sens des aiguilles d'une montre, et entraîne tout ce qui se trouve à proximité dans sa ronde. Les témoins affirment que la musique ne s'arrête jamais, même quand le manège est à l'arrêt.",
+  hist:"Signalé en 19██ par des habitants de ██████ qui se plaignaient d'un orgue de Barbarie nocturne. Le terrain était vide depuis la faillite d'une fête foraine dix ans plus tôt. Les registres de la fête mentionnent un manège identique, démonté et vendu. L'acheteur n'a jamais été retrouvé. Un cheval porte, gravé sous la selle, le prénom d'un enfant disparu cette année-là."},
+ photoc:{photo:"Bureau 4, service des archives de ██████. Feuillets retrouvés au sol, tous identiques.",
+  proc:"L'appareil est débranché et privé de papier. Tout document produit malgré tout est incinéré sans être lu. Il est interdit de poser la main, un document ou un objet personnel sur la vitre. Les agents vérifient leurs propres papiers d'identité à la sortie de la zone.",
+  desc:"Photocopieur de bureau des années 1970. Il produit des copies sans alimentation et sans original. Les copies sont légèrement floues et ressemblent à des documents réels : notes de service, fiches de paie, comptes rendus de réunions qui n'ont pas eu lieu. Plus inquiétant, il arrive qu'un employé croise son propre double dans un couloir.",
+  hist:"Découvert en 19██ dans un service administratif de ██████ où deux employés portant le même nom et le même matricule se présentaient chaque matin. Aucun ne savait lequel était l'original. L'un des deux a disparu le jour de la saisie de l'appareil. L'autre a demandé à ne plus être appelé par son prénom."},
+ manneq:{photo:"Vitrine des Galeries ██████, relevé de nuit. Position du sujet modifiée entre deux clichés.",
+  proc:"L'objet est observé en continu par deux agents au moins, qui ne doivent jamais cligner des yeux en même temps. La cellule est éclairée en permanence. En cas de coupure de courant, le personnel évacue sans courir et sans tourner le dos à l'objet. Tout contact physique est proscrit.",
+  desc:"Mannequin de vitrine en plâtre peint, sans visage. Tant qu'il est observé, il est inerte et pratiquement indestructible. Les coups portés de près semblent glisser sur lui. Hors de toute observation, il se déplace, vite et sans bruit, toujours vers la personne la plus proche.",
+  hist:"Signalé en 19██ après la mort d'un étalagiste des Galeries ██████, retrouvé dans une vitrine, la nuque brisée, au milieu d'un décor qu'il n'avait pas installé. Les caméras du magasin montrent les mannequins immobiles sur chaque image. Sur aucune image ils ne sont deux fois dans la même position."},
+ pluie:{photo:"Rue ██████, troisième jour de précipitations. Le parapluie était déjà là.",
+  proc:"La zone de précipitation est bâchée et interdite. Le personnel porte des tenues imperméables intégrales, vérifiées à l'entrée et à la sortie. Aucune goutte ne doit être ramenée hors du périmètre. Les flaques sont pompées dans des citernes scellées, qui ne désemplissent pas.",
+  desc:"Averse d'un liquide noir, inodore et froid, qui tombe sur une surface de quelques rues sans aucun nuage visible. Le liquide ne sèche pas et forme des flaques profondes où les objets disparaissent. Les personnes exposées s'épuisent en quelques minutes, comme vidées de leurs forces, et ne parviennent plus à se réchauffer.",
+  hist:"Première manifestation en 19██ dans le centre de ██████. La pluie a duré onze jours sur une seule rue, laissant le reste de la ville au sec. Les habitants ont été relogés au motif d'une rupture de canalisation. Quatre d'entre eux sont revenus chercher des affaires. On a retrouvé leurs parapluies."},
+ ascens:{photo:"Hôtel ██████, sous-sol. La cabine était éclairée, l'immeuble était privé d'électricité.",
+  proc:"La grille est cadenassée et soudée. Le bouton d'appel a été retiré, sans effet. Aucun agent n'entre dans la cabine. Toute personne ressortie de l'ascenseur est placée en quarantaine et interrogée sur l'étage qu'elle a visité.",
+  desc:"Cabine d'ascenseur de service à grille accordéon. Ses portes s'ouvrent seules, sur un étage qui n'apparaît sur aucun plan. Des liftiers en uniforme d'époque en sortent parfois. Les personnes qui s'approchent trop sont emportées et reviennent quelques minutes plus tard, ailleurs dans le bâtiment, sans souvenir du trajet.",
+  hist:"Signalé en 19██ dans un hôtel de ██████ fermé pour travaux. Un ouvrier est entré dans la cabine pour la démonter. Il est ressorti trois heures plus tard au dernier étage, rasé de près, en uniforme de groom, et a demandé où était passé le reste du personnel. L'hôtel n'a jamais employé de grooms."},
+ radio:{photo:"Cuisine de M. ██████, la nuit de la troisième annonce.",
+  proc:"Le poste est conservé débranché, lampes retirées. L'émission est néanmoins enregistrée chaque nuit par un magnétophone placé à 5 m. Tout nom identifié est transmis au service du personnel. Les agents désignés sont placés sous surveillance médicale jusqu'à ce qu'ils accomplissent un acte de terrain décisif, ce qui semble rompre l'annonce.",
+  desc:"Poste de radio à lampes en bakélite. Chaque nuit, à 3 h précises, il capte une émission sans indicatif : une voix calme lit des avis de décès. Les personnes nommées sont vivantes au moment de l'annonce. Leur santé se dégrade ensuite, sauf si elles font quelque chose que la voix n'avait pas prévu.",
+  hist:"Saisi en 19██ chez un retraité de ██████ qui avait signalé à la gendarmerie que « la radio annonce les morts du lendemain ». Il avait noté les noms dans un cahier pendant deux ans. Le dernier nom du cahier était le sien. Il avait souligné la date, puis ajouté en marge : « pas cette fois »."},
+ machine:{photo:"Bureau du greffe, tribunal de ██████. Rapports dactylographiés retrouvés sur place.",
+  proc:"La machine est conservée sans ruban ni papier. Elle tape quand même. Chaque feuillet produit est lu par deux agents, puis classé selon la date qui y figure. Toute faute de frappe relevée est signalée : la réalité a tendance à la recopier.",
+  desc:"Machine à écrire de bureau en métal noir. Elle tape seule des rapports administratifs datés du lendemain, qui décrivent avec exactitude des événements à venir. Elle se trompe parfois sur un chiffre ou un nom. Dans ce cas, c'est l'événement qui se conforme à la faute.",
+  hist:"Découverte en 19██ au greffe d'un tribunal de ██████, où un greffier recevait chaque matin le compte rendu des audiences du jour, déjà tapé. Il a fini par corriger un nom au crayon. Le prévenu concerné a été remplacé, dans les registres et dans les souvenirs, par un homme qui portait le nom corrigé."},
+ valise:{photo:"Quai 3, gare de ██████. Objet laissé sans surveillance.",
+  proc:"La valise est conservée fermée, sanglée et posée à plat. Elle n'est ouverte qu'en salle d'expérimentation, une fois par semaine, par un agent volontaire. Tout objet qui en sort est photographié, inventorié et placé en casier. Les objets dangereux sont détruits. Aucun objet n'est rendu à quiconque le réclame.",
+  desc:"Valise en cuir fatiguée, étiquette effacée. À chaque ouverture, elle contient un objet différent : parfois utile, parfois banal, parfois dangereux. Ces objets ne correspondent à aucun propriétaire. Certains réapparaissent ailleurs, posés à côté de quelqu'un qui affirme les avoir perdus il y a des années.",
+  hist:"Trouvée en 19██ sur un quai de gare après une alerte au colis suspect. Le démineur l'a ouverte et en a sorti son propre portefeuille, qu'il avait encore en poche. La valise a été ouverte 214 fois depuis. Elle n'a jamais contenu deux fois le même objet."},
+ horloge:{photo:"Place de la mairie de ██████, 15 h 07. Les pigeons n'ont pas bougé pendant onze minutes.",
+  proc:"Le beffroi est fermé au public pour raisons de sécurité. Un agent relève l'heure affichée toutes les quinze minutes. Toute sonnerie est consignée avec précision. Après chaque sonnerie, le personnel compare ses notes : en cas de désaccord, c'est le registre qui fait foi.",
+  desc:"Horloge mécanique du beffroi d'une mairie de province. Ses aiguilles affichent parfois des positions impossibles. Lorsqu'elle sonne, les minutes qui précèdent sont annulées : les objets cassés sont intacts, les blessures refermées, les décisions oubliées. Seuls les registres écrits gardent une trace de ce qui s'est passé.",
+  hist:"Signalée en 19██ par un employé de mairie de ██████ qui recopiait chaque jour le même arrêté municipal, sans jamais parvenir à le signer. L'enquête a établi que la journée du 3 octobre s'était répétée, en partie, plus de quatre cents fois. Seul le sonneur de cloches, M. ██████, s'en souvenait. Il a demandé à être muté. Sa demande est toujours en attente."}
 };
 /* Images d'archive fournies plus tard : ANOM_IMG[k] = 'data:image/jpeg;base64,...' */
 const ANOM_IMG={};
@@ -3259,7 +3428,7 @@ const PHOTO_ART={
  tel:()=>`<rect width="120" height="90" fill="#b5ac93"/><path d="M0 60h120" stroke="#8a826a"/><rect x="44" y="14" width="32" height="50" rx="3" fill="#1e1b16"/><circle cx="60" cy="42" r="12" fill="#4d463a" stroke="#cfc6ad" stroke-width="1"/>${[0,1,2,3,4,5,6,7,8,9].map(k=>{const a=-Math.PI/2+k*0.55;return `<circle cx="${60+Math.cos(a)*8}" cy="${42+Math.sin(a)*8}" r="1.5" fill="#cfc6ad"/>`;}).join('')}<path d="M40 18q-7 0-7 7v20q0 7 7 7" fill="none" stroke="#1e1b16" stroke-width="6" stroke-linecap="round"/><path d="M36 52q-6 14 4 24t20 4" fill="none" stroke="#1e1b16" stroke-width="1.5"/>`,
 };
 const redactify=s=>s.replace(/█+/g,m=>`<span class="redact">${m}</span>`);
-function anomPhoto(k){const img=ANOM_IMG[k];
+function anomPhoto(k){const img=ANOM_IMG[k];if(!img&&!PHOTO_ART[k])PHOTO_ART[k]=()=>`<rect width="120" height="90" fill="#a59c84"/><rect y="62" width="120" height="28" fill="#6d6553"/><g fill="none" stroke="#2a2520" stroke-width="1.5"><circle cx="60" cy="40" r="16"/><path d="M60 24v-8M44 40h-8M76 40h8"/></g><text x="60" y="84" font-size="6" text-anchor="middle" fill="#e8dfc8" font-family="monospace">${ANOM[k].code}</text>`;
   return `<figure class="arch-photo"><span class="fix" aria-hidden="true"><svg viewBox="0 0 40 12"><path d="M12 8H30a2 2 0 000-4H8a3 3 0 000 6H34a4 4 0 000-8H4" fill="none" stroke="#8d949a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     ${img?`<img src="${img}" alt="Photo d'archive de ${esc(ANOM[k].name)}">`:`<svg viewBox="0 0 120 90" role="img" aria-label="Photo d'archive de ${esc(ANOM[k].name)}">${PHOTO_ART[k]()}</svg>`}
     <figcaption>${redactify(LORE[k].photo)}</figcaption></figure>`;}
@@ -3335,8 +3504,8 @@ function encyHTML(){
     body=`<p class="small muted">${sv?'Données issues de la campagne du profil actif.':'Aucune campagne sur ce profil : toutes les fiches sont verrouillées.'}</p>`+anomGridHTML(sv,k=>`<button class="btn ghost" data-a="m" data-v="rep:${k}" style="align-self:flex-start">Lire le rapport</button>`);}
   else if(tab==='cards'){
     const grp=[["Tireur d'élite",[...new Set(CLASS.S.cards)],'S1'],["Assaut",[...new Set(CLASS.A.cards)],'A1'],["Grenadier",[...new Set(CLASS.G.cards)],'G1'],["Spécialiste",[...new Set(CLASS.P.cards)],'P1'],
-      ...Object.keys(CLASS).map(k=>["Compétences · "+CLASS[k].name,[...new Set([0,1].flatMap(sp=>SKILLS[k][sp].flat().map(s=>SKILL_CARD[s.id]).filter(Boolean)))],k+'1']),["Fondation et atelier",['silence','omega','amn','ravit','escorte','medikit','thermique','decon','projecteur','faussemonnaie','gyrophare','drapnoir','coupure','brouilleur','ancre'],'F'],
-      ["Cartes anomales",['diapason','anonymat','monnaie','feuvert','eclat','lignedirecte'],'F'],["Parasites",['refrain','jeton','appel'],'X']];
+      ...Object.keys(CLASS).map(k=>["Compétences · "+CLASS[k].name,[...new Set([0,1].flatMap(sp=>SKILLS[k][sp].flat().map(s=>SKILL_CARD[s.id]).filter(Boolean)))],k+'1']),["Fondation et atelier",['silence','omega','amn','ravit','escorte','medikit','thermique','decon','projecteur','faussemonnaie','gyrophare','drapnoir','coupure','brouilleur','ancre','reveil','frein','recyclage','lampe','parapluie','cale','brouillage','correcteur','cadenas','balancier'],'F'],
+      ["Cartes anomales",['diapason','anonymat','monnaie','feuvert','eclat','lignedirecte','cle','tourdepiste','duplicata','pose','goutte','sonnette','frequence','ruban','consigne','aiguille'],'F'],["Parasites",['refrain','jeton','appel','copie'],'X']];
     body=grp.map(([n,ids,o])=>`<h3 class="enc-h">${n}</h3><div class="enc-cards">${ids.map(id=>cardStatic(id,o)).join('')}</div>`).join('');}
   else if(tab==='classes'){
     body=Object.keys(CLASS).map(k=>`<div class="enc-class"><h3>${CLASS[k].name} <span class="small muted">· ${CLASS[k].hp} PV de base</span></h3><div class="enc-specs">${[0,1].map(sp=>`<div><b>${SPECS[k][sp]}</b><p class="small muted">${SPEC_TXT[k][sp]}</p><ol class="small">${SKILLS[k][sp].map((tier,i)=>`<li><span class="muted">Grade ${TIER_LV[i]} :</span> ${tier[0].name} <em>ou</em> ${tier[1].name}</li>`).join('')}</ol></div>`).join('')}</div></div>`).join('');}
