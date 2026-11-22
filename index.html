@@ -1648,6 +1648,11 @@ html:has(.cgrid),html:has(.cgrid) body{background:#0d0b09 url(data:image/jpeg;ba
 
 .board .lane.mk{display:flex;flex-direction:column;align-items:center;line-height:1}
 .lane-mk{font-family:var(--f-display);font-weight:700;font-size:11px;background:#efe6cc;padding:0 4px;margin-top:2px;letter-spacing:.08em;text-transform:uppercase;color:#a3241a;text-shadow:none}
+
+.xf-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-family:"Courier New",monospace;font-size:14px}
+.xf-list li{display:grid;grid-template-columns:auto minmax(20px,1fr) auto;gap:8px;align-items:baseline}
+.xf-list i{border-bottom:2px dotted rgba(34,32,27,.45)}
+.xf-list b{font-family:var(--f-sig);font-size:20px;color:#1d2a52}
 /* dotation : cartes réelles */
 .prep.om .dk-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;align-items:stretch}
 .prep.om .dk{width:auto;text-align:left}
@@ -1927,6 +1932,7 @@ const RESEARCH=[
   {id:'veille',name:"Veille médiatique",cost:12,text:"Les rumeurs hebdomadaires ajoutent 1 exposition au lieu de 2."},
   {id:'simu',name:"Simulateurs tactiques",cost:12,text:"+1 XP pour chaque agent engagé dans une opération."},
   {id:'accred',name:"Accréditation élargie",cost:15,text:"+1 accréditation maximale au début de chaque combat."},
+  {id:'ailleB',name:"Aile de confinement B",cost:14,text:"Débloque l'excavation du niveau −4 : quatre cellules supplémentaires (150 cr chacune)."},
   {id:'etude203',name:"Étude d'ANO-203",cost:10,need:'choeur',card:'diapason',text:"Ajoute la carte anomale « Diapason d'ANO-203 » à l'arsenal."},
   {id:'etude317',name:"Étude d'ANO-317",cost:10,need:'foule',card:'anonymat',text:"Ajoute la carte anomale « Voile d'ANO-317 » à l'arsenal."},
   {id:'etude412',name:"Étude d'ANO-412",cost:10,need:'distrib',card:'monnaie',text:"Ajoute la carte anomale « Monnaie altérée » à l'arsenal."},
@@ -1950,7 +1956,7 @@ const profLv=(k,s)=>{s=s||S;return Math.min(profMax(k),(s&&s.prof&&s.prof[k])||(
 const knows=k=>profLv(k)>=profMax(k);
 const STUDY_COST=[5,7,9],STUDY_WEEKS=[1,2,2];
 const studyCap=()=>1+facCount('lab');
-function normS(){if(!S)return;S.prof=S.prof||{};S.studies=S.studies||[];Object.keys(ANOM).forEach(k=>{if(S.research.includes('profil_'+k))S.prof[k]=profMax(k);});}
+function normS(){if(!S)return;while(S.cells.length<8)S.cells.push({built:false,a:null});S.prof=S.prof||{};S.studies=S.studies||[];Object.keys(ANOM).forEach(k=>{if(S.research.includes('profil_'+k))S.prof[k]=profMax(k);});}
 function startStudy(k){normS();const lv=profLv(k);if(lv>=profMax(k)||!seenAnom(k)||S.studies.some(x=>x.k===k)||S.studies.length>=studyCap())return;const c=STUDY_COST[lv];if(S.rp<c)return;S.rp-=c;S.studies.push({k,lv:lv+1,weeks:STUDY_WEEKS[lv]});}
 function revealNote(k,lv){const m=profMax(k);if(lv>=m)return 'dossier complet';if(lv===1)return m===2?'chiffres et premières propriétés':'chiffres de combat';return 'premières propriétés';}
 const seenAnom=k=>!!(S.seen&&S.seen[k]);
@@ -2183,7 +2189,19 @@ function buildFac(i,f){const s=S.slots[i],F=FACILITIES[f];if(!s||!s.dug||s.f||S.
 function makeCandidates(){const out=[];const cls=shuffle(['S','A','G','P']);for(let i=0;i<4;i++){const a=newAgent(i<4?cls[i]:pick(['S','A','G','P']));a.will=rnd(32,66);out.push(a);}return out;}
 function candidates(){if(!S.candidates)S.candidates=makeCandidates();return S.candidates;}
 function recruit(v){const id=+v;const c=recruitCost();const a=candidates().find(x=>x.id===id);if(!a||S.credits<c)return;S.credits-=c;S.candidates=S.candidates.filter(x=>x!==a);S.roster.push(a);}
-function buildCell(i){if(S.credits<100||S.cells[i].built)return;S.credits-=100;S.cells[i].built=true;}
+const cellCost=i=>i<4?100:150;
+function buildCell(i){const c=cellCost(i);if(S.credits<c||S.cells[i].built||(i>=4&&!done('ailleB')))return;S.credits-=c;S.cells[i].built=true;}
+const XFER_CR={'Sûr':40,'Euclide':70,'Keter':120};
+function xferReward(k){return {cr:XFER_CR[ANOM[k].cls]||60,rp:2+2*profLv(k)};}
+function transfer(i){const c=S.cells[i];if(!c||!c.a||S.incidents.some(x=>x.internal&&x.cell===i))return;const k=c.a.type,r=xferReward(k);S.credits+=r.cr;S.rp+=r.rp;S.stats.transferred=(S.stats.transferred||0)+1;
+  S.telex=`TRANSFERT ${c.a.code} VERS SITE-19 · +${r.cr} CR · +${r.rp} PTS`;c.a=null;}
+function xferHTML(i){const c=S.cells[i];if(!c||!c.a)return '';const k=c.a.type,A=ANOM[k],r=xferReward(k);const R=RESEARCH.find(x=>x.need===k);const lose=R&&!done(R.id);
+  return `<div class="om bt">${mHead('Bordereau de transfert','Service des transports spéciaux · convoi vers le Site-19',`Cellule C-${i+1}<br>Semaine ${Math.min(S.week,WEEKS)}`)}
+  <div class="om-fields"><span><i>Objet</i><b>${c.a.code}</b></span><span style="grid-column:span 2"><i>Nom</i><b>« ${A.name} »</b></span><span><i>Classe</i><b>${A.cls}</b></span><span><i>Dossier</i><b>${profLv(k)}/${profMax(k)}</b></span></div>
+  <p class="om-hint">L'anomalie quitte définitivement le Site-Cerbère : sa cellule est libérée immédiatement. Le Conseil O5 crédite le site pour le confinement réalisé.</p>
+  <ul class="xf-list"><li><span>Prime de confinement</span><i></i><b>+${r.cr} cr</b></li><li><span>Données transmises au Département scientifique</span><i></i><b>+${r.rp} pts</b></li></ul>
+  ${lose?`<p class="om-warn">L'étude « ${R.name} » ne pourra plus être menée tant que l'anomalie n'est pas de nouveau en cellule.</p>`:''}
+  <div class="om-foot">${sigHTML()}<span class="om-btns"><button class="om-b" data-a="closemodal">Annuler</button><button class="om-b go" data-a="xferok" data-v="${i}">Signer le transfert</button></span></div></div>`;}
 function reinforce(i){const c=S.cells[i];if(!c.a||S.credits<20||c.a.stab>=10)return;S.credits-=20;c.a.stab=Math.min(10,c.a.stab+3);}
 function toggleStudy(i){const c=S.cells[i];if(c.a)c.a.study=!c.a.study;}
 const resWeeks=R=>R.cost<=8?1:R.cost<=12?2:3;
@@ -2366,13 +2384,14 @@ function bpRoom(i){const sl=S.slots[i];
   const F=FACILITIES[sl.f];
   return `<div class="bp-room built ${sl.weeks?'work':''}"><span class="bp-id">S-${i+1}</span>${icon(FAC_IC[sl.f]||'cell','bp-ic')}<span class="bp-name">${F.name}</span><span class="bp-note">${F.text}</span>${sl.weeks?'<span class="bp-stamp">En travaux</span>':''}</div>`;}
 function bpCell(c,i){
-  if(!c.built)return `<div class="bp-room rock cellr"><span class="bp-id">C-${i+1}</span><span class="bp-note">Emplacement prévu</span><button class="bp-btn" data-a="build" data-v="${i}" ${S.credits<100?'disabled':''}>Construire · 100 cr</button></div>`;
+  if(!c.built){if(i>=4&&!done('ailleB'))return `<div class="bp-room rock cellr"><span class="bp-id">C-${i+1}</span><span class="bp-note">Roche non excavée. Nécessite le projet « Aile de confinement B ».</span></div>`;
+    return `<div class="bp-room rock cellr"><span class="bp-id">C-${i+1}</span><span class="bp-note">Emplacement prévu</span><button class="bp-btn" data-a="build" data-v="${i}" ${S.credits<cellCost(i)?'disabled':''}>Construire · ${cellCost(i)} cr</button></div>`;}
   if(!c.a)return `<div class="bp-room free cellr"><span class="bp-id">C-${i+1}</span><span class="bp-name">Cellule vide</span><span class="bp-note">Prête à recevoir une anomalie capturée.</span></div>`;
   const A=ANOM[c.a.type];const low=c.a.stab<=3;
   return `<div class="bp-room built cellr occ ${low?'low':''}"><span class="bp-id">C-${i+1}</span><span class="bp-red">${A.cls}</span><span class="bp-name">${c.a.code}</span><span class="bp-note">« ${A.name} » · <button class="bp-link" data-a="arep" data-v="${c.a.type}">rapport</button></span>
     <span class="bp-gauge" title="Stabilité ${c.a.stab}/10">${Array.from({length:10},(_,k)=>`<i class="${k<c.a.stab?'on':''}"></i>`).join('')}</span>
     <span class="bp-note">Stabilité ${c.a.stab}/10 · −${decayOf(c)}/sem.${c.a.study?' · étude en cours':''}</span>
-    <span class="bp-acts"><button class="bp-btn" data-a="reinforce" data-v="${i}" ${S.credits<20||c.a.stab>=10?'disabled':''}>Renforcer · 20 cr</button><button class="bp-btn" data-a="study" data-v="${i}">${c.a.study?'Arrêter l\'étude':'Étudier'}</button></span></div>`;}
+    <span class="bp-acts"><button class="bp-btn" data-a="reinforce" data-v="${i}" ${S.credits<20||c.a.stab>=10?'disabled':''}>Renforcer · 20 cr</button><button class="bp-btn" data-a="study" data-v="${i}">${c.a.study?'Arrêter l\'étude':'Étudier'}</button><button class="bp-btn" data-a="xfer" data-v="${i}" ${S.incidents.some(x=>x.internal&&x.cell===i)?'disabled title="Brèche en cours"':''}>Transférer</button></span></div>`;}
 function surfaceSVG(){
   const W=(x,y,w=13,h=15)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" class="w"/><path d="M${x+w/2} ${y}v${h}M${x} ${y+h*.45}h${w}" class="t"/>`;
   let s=`<svg viewBox="0 0 1200 168" preserveAspectRatio="xMidYMax meet" aria-hidden="true">`;
@@ -2409,10 +2428,10 @@ function surfaceSVG(){
   s+=`<path d="M587 130V62h26v68M587 130V168M613 130V168" class="hid"/>`;
   // cotes
   s+=`<path d="M390 152H810M390 146v12M810 146v12M470 149v6M730 149v6" class="t"/><path d="M390 152l7-3v6zM810 152l-7-3v6z" class="ar"/>`;
-  s+=`<text x="530" y="148" class="tx" text-anchor="middle">48,00 m</text><text x="236" y="146" class="tx">Poste de garde</text><text x="622" y="164" class="tx">Monte-charge vers −1/−3</text><text x="800" y="16" class="tx">Antenne</text><text x="20" y="16" class="tx">SURFACE · ÉLÉVATION SUD</text>`;
+  s+=`<text x="530" y="148" class="tx" text-anchor="middle">48,00 m</text><text x="236" y="146" class="tx">Poste de garde</text><text x="622" y="164" class="tx">Monte-charge vers −1/−${done('ailleB')?4:3}</text><text x="800" y="16" class="tx">Antenne</text><text x="20" y="16" class="tx">SURFACE · ÉLÉVATION SUD</text>`;
   return s+`</svg>`;
 }
-function wingView(){
+function wingView(){normS();
   const lvl=(n,label,rooms)=>`<div class="bp-level"><span class="bp-lv">${n}</span><span class="bp-lvn">${label}</span><div class="bp-rooms">${rooms}</div></div>`;
   return `<div class="bp-desk"><div class="bp-pinned"><span class="bp-tape tl"></span><span class="bp-tape tr"></span><span class="bp-tape bl"></span><span class="bp-tape br"></span><div class="blueprint">
     <div class="bp-title"><span>Site-Cerbère</span><b>Coupe verticale A-A'</b><i>Plan n° 0-CERB-07 · échelle 1/200</i></div>
@@ -2420,7 +2439,8 @@ function wingView(){
     <div class="bp-shaft"></div>
     ${lvl('−1','Installations',[0,1,2].map(bpRoom).join(''))}
     ${lvl('−2','Installations',[3,4,5].map(bpRoom).join(''))}
-    ${lvl('−3','Aile de confinement · accès niveau 4',S.cells.map(bpCell).join(''))}
+    ${lvl('−3','Aile de confinement A · accès niveau 4',S.cells.slice(0,4).map(bpCell).join(''))}
+    ${lvl('−4','Aile de confinement B · accès niveau 4'+(done('ailleB')?'':' · en projet'),S.cells.slice(4,8).map((c,k)=>bpCell(c,k+4)).join(''))}
     <div class="bp-legend"><span><i class="lg rock"></i>Roche</span><span><i class="lg free"></i>Salle libre</span><span><i class="lg built"></i>Installation</span><span><i class="lg work"></i>En travaux</span><span><i class="lg occ"></i>Cellule occupée</span></div>
     <p class="bp-foot">Les travaux s'achèvent en fin de semaine. Chaque anomalie confinée perd de la stabilité chaque semaine ; à zéro, brèche interne.${S.sites.cerbere.ok?'':' <b>Site compromis.</b>'}</p>
   </div></div><span class="bp-memo">Penser à renforcer<br>les cellules !</span></div>`;
@@ -3607,6 +3627,8 @@ function act(a,v){
     case 'cover':cover();break;
     case 'recruit':recruit(v);if(X.modal)X.modal=null;break;
     case 'build':buildCell(+v);break;
+    case 'xfer':{const i=+v;X.modal=()=>xferHTML(i);break;}
+    case 'xferok':transfer(+v);X.modal=null;break;
     case 'reinforce':reinforce(+v);break;
     case 'study':toggleStudy(+v);break;
     case 'research':buyResearch(v);break;
