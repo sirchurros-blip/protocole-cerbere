@@ -469,6 +469,10 @@ body:has(.office)::after,body:has(.menu-wrap)::after{content:"";position:fixed;i
 .bp-lv{grid-row:span 2;font-family:var(--f-display);font-weight:700;font-size:26px;display:flex;align-items:flex-start;justify-content:center;border-right:1px solid rgba(232,241,248,.4)}
 .bp-lvn{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
 .bp-rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.bp-rooms>.bp-room{min-width:0}
+.bp-rooms>.bp-room.cellr{min-height:196px}
+.bp-rooms:has(.cellr){grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:700px){.bp-rooms:has(.cellr){grid-template-columns:repeat(2,minmax(0,1fr))}}
 .bp-room{position:relative;min-height:128px;border:2px solid #e8f1f8;padding:20px 10px 10px;display:flex;flex-direction:column;gap:5px;font-size:12px;line-height:1.35}
 .bp-room.rock{border-style:dashed;border-color:rgba(232,241,248,.55);background:repeating-linear-gradient(45deg,transparent 0 7px,rgba(232,241,248,.12) 7px 8px)}
 .bp-room.free{border-style:dashed}
