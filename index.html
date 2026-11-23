@@ -2717,7 +2717,9 @@ function renderModal(){
   else if(S.over)h=overHTML();
   else if(X.modal)h=X.modal();
   else if(S.notices.length){const n=S.notices[0];h=`${n.stamp?`<span class="stamp">${n.stamp}</span>`:''}<h2>${n.title}</h2>${n.body}<div class="foot"><button class="btn primary" data-a="closenotice">Continuer</button></div>`;}
+  const od=m.querySelector('.dlg');const ok=od&&od.firstElementChild?od.firstElementChild.className:null;const st=od?od.scrollTop:0,mst=m.scrollTop;
   m.hidden=!h;m.innerHTML=h?`<div class="dlg" role="dialog" aria-modal="true">${h}</div>`:'';
+  const nd=m.querySelector('.dlg');if(nd&&ok&&nd.firstElementChild&&nd.firstElementChild.className===ok){nd.scrollTop=st;m.scrollTop=mst;}
 }
 function render(){if(SCREEN==='menu'){renderMenu();return;}if(C)renderCombat();else renderStrategy();renderModal();save();}
 
