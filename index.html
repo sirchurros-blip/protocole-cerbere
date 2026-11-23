@@ -186,6 +186,12 @@ button{font:inherit;color:inherit}
 @media (max-width:560px){.arch-photo{float:none;width:92%;margin:18px auto 14px!important}}
 .linkname{background:none;border:0;padding:0;font-family:var(--f-type);font-size:16px;color:var(--ink);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:pointer;text-align:left}
 .dlg:has(.dfile){width:min(780px,100%)}
+.dlg:has(.trl){width:min(1100px,100%);background:#0b0b0a;color:#e8e4d8}
+.trl h2{margin:0 0 10px;font-family:"Courier New",monospace;letter-spacing:.08em;text-transform:uppercase}
+.trl .stamp{color:#c0392b;border-color:#c0392b}
+.trl-v{display:block;width:100%;aspect-ratio:16/9;background:#000;border:1px solid #333}
+.trl .foot{display:flex;justify-content:flex-end;margin-top:10px}
+.dlg .trl .foot .btn.ghost{color:#e8e4d8;border-color:#8a857a;background:transparent}
 .dfile{display:flex;flex-direction:column;gap:12px;position:relative}
 .dfile h2{padding-right:150px!important;font-size:28px}
 .dhead{font-family:var(--f-display);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);padding-right:150px}
@@ -3618,6 +3624,7 @@ function homeHTML(){const pr=curProf();const sv=peek(pr.id);const can=sv&&!sv.ov
   ent('new',can?'Nouvelle campagne':'Jouer',can?'Remplace la campagne de ce profil':'Lancer une campagne de 10 semaines',!can);
   ent('tuto:0','Tutoriel','Le manuel du commandant en 9 pages');
   ent('ency','Encyclopédie','Anomalies, cartes, classes et règles');
+  if(TRAILER)ent('trailer','Bande-annonce','Archives filmées · 1 min');
   ent('opts','Options','Profils de joueurs et réglages');
   return `<div class="cover">
     <span class="cover-tab">DOSSIER N° 0-CERB</span>
@@ -3632,11 +3639,18 @@ function diffHTML(){const sv=peek(PROF.cur);const can=sv&&!sv.over;
   return `<span class="stamp">NOUVEAU COMMANDEMENT</span><h2>Choisir la difficulté</h2>${can?'<p><strong>Attention :</strong> la campagne en cours de ce profil sera effacée.</p>':''}
     <div style="display:flex;flex-direction:column;gap:8px">${DIFF.map((d,i)=>`<button class="pickrow" data-a="m" data-v="start:${i}"><span class="box"></span><span><strong>${d.name}</strong><br><span class="small">${d.text}</span></span><span class="small">${d.credits} cr</span></button>`).join('')}</div>
     <div class="foot"><button class="btn ghost" data-a="m" data-v="closem">Annuler</button></div>`;}
+let TRAILER=location.protocol==='file:';
+try{fetch('trailer.mp4',{method:'HEAD',cache:'no-store'}).then(r=>{if(r.ok&&!TRAILER){TRAILER=true;if(SCREEN==='menu')render();}}).catch(()=>{});}catch(e){}
+function trailerHTML(){
+  return `<div class="trl"><span class="stamp">ARCHIVE FILMÉE</span><h2>Bande-annonce</h2>
+    <video class="trl-v" src="trailer.mp4" controls autoplay playsinline preload="auto" onerror="this.outerHTML='<p class=small>La bande-annonce est introuvable : le fichier trailer.mp4 doit se trouver à côté du jeu.</p>'"></video>
+    <div class="foot"><button class="btn ghost" data-a="m" data-v="closem">Fermer</button></div></div>`;}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&X.mm==='trailer'&&SCREEN==='menu'){X.mm=null;render();}});
 function renderMenu(){
   const sub=X.menu||'home';
   const inner=sub==='ency'?encyHTML():sub==='opts'?optsHTML():sub==='tuto'?tutoHTML():homeHTML();
   $('#root').innerHTML=`<div class="menu-wrap ${sub}">${inner}</div>`;
-  const m=$('#modal');const h=X.mm==='diff'?diffHTML():(sub==='ency'&&X.encRep)?anomReportHTML(X.encRep,peek(PROF.cur),'<button class="btn primary" data-a="m" data-v="rep:">Refermer le rapport</button>'):'';m.hidden=!h;m.innerHTML=h?`<div class="dlg" role="dialog" aria-modal="true">${h}</div>`:'';
+  const m=$('#modal');const h=X.mm==='diff'?diffHTML():X.mm==='trailer'?trailerHTML():(sub==='ency'&&X.encRep)?anomReportHTML(X.encRep,peek(PROF.cur),'<button class="btn primary" data-a="m" data-v="rep:">Refermer le rapport</button>'):'';m.hidden=!h;m.innerHTML=h?`<div class="dlg" role="dialog" aria-modal="true">${h}</div>`:'';
 }
 function menuAct(v){
   const [k,arg]=String(v).split(':');
@@ -3647,6 +3661,7 @@ function menuAct(v){
     case 'tuto':X.menu='tuto';X.tuto=Math.max(0,Math.min(TUTO.length-1,+arg||0));break;
     case 'new':X.mm='diff';break;
     case 'closem':X.mm=null;break;
+    case 'trailer':X.mm='trailer';break;
     case 'start':X.mm=null;C=null;X.modal=null;newGame(+arg);SCREEN='game';X.tab='net';$('#root').innerHTML='';render();return;
     case 'continue':{const d=load();if(!d)break;S=d.S;normS();C=d.C||null;UID=Math.max(d.UID||1,5000);if(C&&C.phase==='enemy')C.phase='player';syncDiff();SCREEN='game';X.tab='net';X.modal=null;$('#root').innerHTML='';render();return;}
     case 'pcreate':{const el=$('#newprof');const n=(el&&el.value||'').trim().slice(0,24);if(!n||PROF.list.length>=6)break;const id='p'+Date.now().toString(36);PROF.list.push({id,name:n,speed:'normal',created:Date.now(),last:0});PROF.cur=id;saveProfiles();applySettings();break;}
