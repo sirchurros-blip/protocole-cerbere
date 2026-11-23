@@ -3639,11 +3639,12 @@ function diffHTML(){const sv=peek(PROF.cur);const can=sv&&!sv.over;
   return `<span class="stamp">NOUVEAU COMMANDEMENT</span><h2>Choisir la difficulté</h2>${can?'<p><strong>Attention :</strong> la campagne en cours de ce profil sera effacée.</p>':''}
     <div style="display:flex;flex-direction:column;gap:8px">${DIFF.map((d,i)=>`<button class="pickrow" data-a="m" data-v="start:${i}"><span class="box"></span><span><strong>${d.name}</strong><br><span class="small">${d.text}</span></span><span class="small">${d.credits} cr</span></button>`).join('')}</div>
     <div class="foot"><button class="btn ghost" data-a="m" data-v="closem">Annuler</button></div>`;}
-let TRAILER=location.protocol==='file:';
-try{fetch('trailer.mp4',{method:'HEAD',cache:'no-store'}).then(r=>{if(r.ok&&!TRAILER){TRAILER=true;if(SCREEN==='menu')render();}}).catch(()=>{});}catch(e){}
+const TRAILER_URL=/github\.io$/.test(location.hostname)||location.protocol==='file:'?'trailer.mp4':'https://sirchurros-blip.github.io/protocole-cerbere/trailer.mp4';
+let TRAILER=location.protocol==='file:'||TRAILER_URL.startsWith('http');
+try{fetch(TRAILER_URL,{method:'HEAD',cache:'no-store'}).then(r=>{if(r.ok&&!TRAILER){TRAILER=true;if(SCREEN==='menu')render();}}).catch(()=>{});}catch(e){}
 function trailerHTML(){
   return `<div class="trl"><span class="stamp">ARCHIVE FILMÉE</span><h2>Bande-annonce</h2>
-    <video class="trl-v" src="trailer.mp4" controls autoplay playsinline preload="auto" onerror="this.outerHTML='<p class=small>La bande-annonce est introuvable : le fichier trailer.mp4 doit se trouver à côté du jeu.</p>'"></video>
+    <video class="trl-v" src="${TRAILER_URL}" controls autoplay playsinline preload="auto" onerror="this.outerHTML='<p class=small>La bande-annonce est introuvable : le fichier trailer.mp4 doit se trouver à côté du jeu.</p>'"></video>
     <div class="foot"><button class="btn ghost" data-a="m" data-v="closem">Fermer</button></div></div>`;}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&X.mm==='trailer'&&SCREEN==='menu'){X.mm=null;render();}});
 function renderMenu(){
