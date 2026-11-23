@@ -1964,6 +1964,8 @@ function normS(){if(!S)return;while(S.cells.length<8)S.cells.push({built:false,a
 function startStudy(k){normS();const lv=profLv(k);if(lv>=profMax(k)||!seenAnom(k)||S.studies.some(x=>x.k===k)||S.studies.length>=studyCap())return;const c=STUDY_COST[lv];if(S.rp<c)return;S.rp-=c;S.studies.push({k,lv:lv+1,weeks:STUDY_WEEKS[lv]});}
 function revealNote(k,lv){const m=profMax(k);if(lv>=m)return 'dossier complet';if(lv===1)return m===2?'chiffres et premières propriétés':'chiffres de combat';return 'premières propriétés';}
 const seenAnom=k=>!!(S.seen&&S.seen[k]);
+function cardAnom(id){const R=RESEARCH.find(r=>r.card===id&&r.need);if(R)return R.need;const P=RECIPES.find(r=>r.id===id&&r.frag);if(P)return Object.keys(P.frag)[0];return {refrain:'choeur',jeton:'distrib',appel:'tel',copie:'photoc'}[id]||null;}
+const cardKnown=(id,sv)=>{const k=cardAnom(id);return !k||!!(sv&&sv.seen&&sv.seen[k]);};
 function redactText(s){return s.replace(/<[^>]+>/g,'').split(/(\s+)/).map(w=>/\s/.test(w)||!w?w:'█'.repeat(Math.min(w.length,9))).join('');}
 const RANKS=["Agent","Agent confirmé","Caporal","Caporal-chef","Sergent","Sergent-chef","Adjudant","Lieutenant","Capitaine","Commandant"];
 const XPN=[0,3,7,12,18,25,33,42,52,63];
@@ -2463,7 +2465,8 @@ function buildHTML(i){
 }
 const nbWeeks=(tot,left)=>`<span class="nb-weeks" title="${left} semaine${left>1?'s':''} restante${left>1?'s':''}">${Array.from({length:tot},(_,i)=>`<i class="${i<tot-left?'on':''}"></i>`).join('')}</span>`;
 function studiesHTML(){normS();const cap=studyCap();
-  return Object.keys(ANOM).map(k=>{const A=ANOM[k];const m=profMax(k),lv=profLv(k);const st=S.studies.find(x=>x.k===k);const seen=seenAnom(k);
+  const ks=Object.keys(ANOM).filter(seenAnom);if(!ks.length)return `<p class="nb-hand">Aucune anomalie rencontrée sur le terrain pour l'instant.</p>`;
+  return ks.map(k=>{const A=ANOM[k];const m=profMax(k),lv=profLv(k);const st=S.studies.find(x=>x.k===k);const seen=seenAnom(k);
     const pips=Array.from({length:m},(_,i)=>`<i class="${i<lv?'on':st&&i===lv?'run':''}"></i>`).join('');
     let act='',cls='';
     if(!seen){cls='lock';act=`<span class="nb-hand">Aucune rencontre sur le terrain.</span>`;}
@@ -2474,7 +2477,7 @@ function studiesHTML(){normS();const cap=studyCap();
       <p>Classe ${A.cls} · ${m} étude${m>1?'s':''} pour un dossier complet.${seen&&lv<m?` Prochaine étape : ${revealNote(k,lv+1)}.`:''}</p><div class="nb-act">${act}</div></div>`;}).join('');}
 function labView(){normS();const cap=studyCap();
   const doneL=RESEARCH.filter(R=>done(R.id));
-  const proj=RESEARCH.filter(R=>!done(R.id)).map(R=>{const need=R.need&&!S.cells.some(c=>c.a&&c.a.type===R.need);const unseen=R.seen&&!seenAnom(R.seen);const run=S.proj&&S.proj.id===R.id;
+  const proj=RESEARCH.filter(R=>!done(R.id)&&!(R.need&&!seenAnom(R.need))&&!(R.seen&&!seenAnom(R.seen))).map(R=>{const need=R.need&&!S.cells.some(c=>c.a&&c.a.type===R.need);const unseen=R.seen&&!seenAnom(R.seen);const run=S.proj&&S.proj.id===R.id;
     const cls=run?'run':(unseen||need)?'lock':'';
     const act=run?`<span class="nb-hand">En cours</span>${nbWeeks(resWeeks(R),S.proj.weeks)}`:unseen?`<span class="nb-hand">Nécessite une rencontre avec ${ANOM[R.seen].code}.</span>`:need?`<span class="nb-hand">Nécessite ${ANOM[R.need].code} en cellule.</span>`:`<button class="nb-btn" data-a="research" data-v="${R.id}" ${S.rp<R.cost||S.proj?'disabled':''}>${S.proj?'Un projet est déjà en cours':'→ Lancer le projet'}</button>`;
     return `<div class="nb-e ${cls}"><div class="nb-t"><b>${R.name}</b><span class="nb-cost">${R.cost} pts · ${resWeeks(R)} sem.</span></div><p>${R.text}</p>${R.card?ownedHTML(R.card,'nb-own'):''}<div class="nb-act">${act}</div></div>`;}).join('');
@@ -2501,7 +2504,7 @@ function catEntry(r){const i=RECIPES.indexOf(r);const d=CARDS[r.id];const why=cr
     <ul class="cat-cost">${lines}</ul>
     <div class="bon"><span class="bon-h">✂ Bon de commande n° ${String(140+i*7)}</span>${stamped?`<span class="bon-stamp">Commandé</span><span class="bon-why ok">Ajoutée à l'arsenal.</span>`:why?`<span class="bon-why">${why}</span>`:`<button class="bon-btn" data-a="craft" data-v="${r.id}">Tamponner le bon</button>`}</div></div></div>`;}
 function shopView(){
-  const groups=[RECIPES.slice(0,2)];for(let i=2;i<RECIPES.length;i+=4)groups.push(RECIPES.slice(i,i+4));
+  const RV=RECIPES.filter(r=>!r.frag||Object.keys(r.frag).every(seenAnom));const groups=[RV.slice(0,2)];for(let i=2;i<RV.length;i+=4)groups.push(RV.slice(i,i+4));
   const n=groups.length+1;const cur=Math.max(0,Math.min(n-1,X.catPage||0));
   const stock=`<li><span>Matériel</span><i></i><b>${S.mat}</b></li>`+(()=>{const ks=Object.keys(FRAG).filter(k=>S.frag[k]||(S.seen&&S.seen[k]));return ks.length?'':'<li class="nil"><span>Aucun fragment anomal en stock</span><i></i><b>—</b></li>';})()+Object.keys(FRAG).filter(k=>S.frag[k]||(S.seen&&S.seen[k])).map(k=>`<li class="${S.frag[k]?'':'nil'}"><span>${FRAG[k]} <em>${ANOM_OF_FRAG(k)}</em></span><i></i><b>${S.frag[k]||0}</b></li>`).join('');
   const title=`<div class="cat-title"><span class="cat-kicker">Fondation · Service Logistique</span><h2>Catalogue du matériel homologué</h2><span class="cat-sub">Édition n° 7 · usage interne · ne pas sortir du site</span><div class="cat-orn">❦</div>
@@ -3542,7 +3545,7 @@ function encyHTML(){
     const grp=[["Tireur d'élite",[...new Set(CLASS.S.cards)],'S1'],["Assaut",[...new Set(CLASS.A.cards)],'A1'],["Grenadier",[...new Set(CLASS.G.cards)],'G1'],["Spécialiste",[...new Set(CLASS.P.cards)],'P1'],
       ...Object.keys(CLASS).map(k=>["Compétences · "+CLASS[k].name,[...new Set([0,1].flatMap(sp=>SKILLS[k][sp].flat().map(s=>SKILL_CARD[s.id]).filter(Boolean)))],k+'1']),["Fondation et atelier",['silence','omega','amn','ravit','escorte','medikit','thermique','decon','projecteur','faussemonnaie','gyrophare','drapnoir','coupure','brouilleur','ancre','reveil','frein','recyclage','lampe','parapluie','cale','brouillage','correcteur','cadenas','balancier'],'F'],
       ["Cartes anomales",['diapason','anonymat','monnaie','feuvert','eclat','lignedirecte','cle','tourdepiste','duplicata','pose','goutte','sonnette','frequence','ruban','consigne','aiguille'],'F'],["Parasites",['refrain','jeton','appel','copie'],'X']];
-    body=grp.map(([n,ids,o])=>`<h3 class="enc-h">${n}</h3><div class="enc-cards">${ids.map(id=>cardStatic(id,o)).join('')}</div>`).join('');}
+    body=grp.map(([n,ids,o])=>[n,ids.filter(id=>cardKnown(id,sv)),o]).filter(g=>g[1].length).map(([n,ids,o])=>`<h3 class="enc-h">${n}</h3><div class="enc-cards">${ids.map(id=>cardStatic(id,o)).join('')}</div>`).join('');}
   else if(tab==='classes'){
     body=Object.keys(CLASS).map(k=>`<div class="enc-class"><h3>${CLASS[k].name} <span class="small muted">· ${CLASS[k].hp} PV de base</span></h3><div class="enc-specs">${[0,1].map(sp=>`<div><b>${SPECS[k][sp]}</b><p class="small muted">${SPEC_TXT[k][sp]}</p><ol class="small">${SKILLS[k][sp].map((tier,i)=>`<li><span class="muted">Grade ${TIER_LV[i]} :</span> ${tier[0].name} <em>ou</em> ${tier[1].name}</li>`).join('')}</ol></div>`).join('')}</div></div>`).join('');}
   else body=`<dl class="enc-rules">${[["Accréditation","Ressource de combat qui paie les cartes. Brûler une carte augmente le maximum de 1."],["Gemmes","Gagnées en brûlant une carte du département correspondant. Certaines cartes en exigent."],["Brèche","Monte quand un hostile traverse un couloir vide. Pleine, l'anomalie s'échappe."],["Confinement","À 50 %, l'anomalie faiblit. Plein, elle est capturée."],["Résonance (et équivalents)","Les points de vie de l'anomalie. À zéro, elle est repoussée."],["À terre","Un agent à 0 PV est ignoré par les hostiles et meurt après 3 tours s'il n'est pas relevé."],["Sang-froid","Volonté de 60 ou plus : les cartes de l'agent ne peuvent pas être contaminées."],["Exposition","Ce que le public sait. À 100, la campagne est perdue."],["Stabilité","Baisse chaque semaine pour les anomalies en cellule. À 0 : brèche interne."],["Fragments","Ramassés sur le terrain, propres à chaque anomalie. Servent à l'atelier."],["Repli","Abandonne une opération : compte comme un échec, mais l'escouade rentre."]].map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>`;
